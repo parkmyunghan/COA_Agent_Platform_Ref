@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Versions
+.python-version
+
+# Environments
+.env
+.venv
+.venv_backup*
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv*/
+
+# Logs (temporarily disabled for analysis)
+# logs/
+# *.log
+npm-debug.log*
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Project Specific - Generated/Temp
+outputs/
+reports/
+debug_sparql_log.txt
+debug_sparql_out.txt
+debug_user_query_log.txt
+test_output.txt
+test_perf_log.txt
+verify_*.txt
+final_verify.txt
+final_final_verify.txt
+verification.log
+ui_graph_temp.html
+tactical_map_backup.py
+*_backup.py
+*.bak
+
+# models
+models/*
+
+# config
+config/*

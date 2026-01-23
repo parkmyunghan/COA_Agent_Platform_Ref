@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 4: LLM-based Reasoning (LLM 기반 추론)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1976D2;
+            border-bottom: 3px solid #1976D2;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #0288D1;
+            margin-top: 30px;
+            border-left: 4px solid #0288D1;
+            padding-left: 10px;
+        }
+
+        h3 {
+            color: #0277BD;
+        }
+
+        .diagram-container {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .step-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976D2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .prompt-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1976D2;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🤖 Phase 4: LLM-based Reasoning (LLM 기반 추론)</h1>
+
+        <div class="info-box">
+            <strong>Phase 개요</strong><br />
+            Phase 3에서 산정한 정량적 점수에 **자연어 기반 추론**을 추가하여 방책 추천의 설명 가능성(Explainability)을 확보합니다.
+            LLM은 두 가지 시점에서 활용됩니다:
+            <ol>
+                <li><strong>Phase 2 후반</strong>: 상황 분석 시 전술적 인사이트 추출</li>
+                <li><strong>Phase 3 후반</strong>: 방책별 부대 운용 근거 및 탐색 과정 설명</li>
+            </ol>
+        </div>
+
+        <h2>🔄 전체 프로세스 흐름</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+                graph TB
+                Start([Phase 4 시작]) --> Branch{LLM 활용<br />지점}
+
+                Branch -->|Phase 2| Situation[A. 상황 분석 LLM<br />_llm_analyze_situation]
+                Branch -->|Phase 3| Adaptation[B. 방책 구체화 LLM<br />_adapt_coas_with_llm]
+
+                Situation --> SitPrompt[프롬프트 작성<br />상황 정보 텍스트화]
+                SitPrompt --> SitLLM[LLM 호출<br />gemini-1.5-flash-002]
+                SitLLM --> SitParse[JSON 응답 파싱]
+                SitParse --> SitResult{파싱 성공?}
+
+                SitResult -->|성공| ExtractInsights[인사이트 추출<br />key_factors, constraints]
+                SitResult -->|실패| Fallback1[폴백: 기본 구조 반환]
+
+                ExtractInsights --> MergePhase2[Phase 2 결과에<br />LLM 인사이트 병합]
+                Fallback1 --> MergePhase2
+
+                Adaptation --> TopN[Top-N COA<br />병렬 처리]
+                TopN --> COAPrompt[COA별 프롬프트 작성<br />부대 운용 설명 요청]
+                COAPrompt --> COALLM[LLM 호출<br />병렬 실행 max 5]
+                COALLM --> COAParse[응답 파싱<br />운용근거/탐색과정]
+                COAParse --> COAResult{파싱 성공?}
+
+                COAResult -->|성공| EnrichCOA[COA 객체에<br />unit_rationale, system_search_path 추가]
+                COAResult -->|실패| Fallback2[폴백: 기본 문구]
+
+                EnrichCOA --> Output([Phase 4 완료<br />설명 가능한 추천])
+                Fallback2 --> Output
+                MergePhase2 -.->|컨텍스트 제공| COAPrompt
+
+                style Start fill:#4CAF50,color:#fff
+                style Output fill:#2196F3,color:#fff
+                style SitLLM fill:#FF9800,color:#fff
+                style COALLM fill:#9C27B0,color:#fff
+            </div>
+        </div>
+
+        <h2>📋 LLM 활용 시나리오</h2>
+
+        <div class="step-box">
+            <h3>A. 상황 분석 LLM (Phase 2 통합)</h3>
+            <p><strong>함수</strong>: <code>_llm_analyze_situation(situation_info, user_query)</code></p>
+            <p><strong>목적</strong>: 구조화된 데이터만으로는 표현하기 어려운 전술적 맥락과 제약사항을 자연어로 이해</p>
+
+            <h4>프롬프트 템플릿</h4>
+            <div class="prompt-box">
+                다음 상황을 분석하세요:
+
+                [상황 정보]
+                위협유형: Air Assault
+                심각도: 0.85
+                발생위치: CELL_A3
+                관련부대: 1대대, 2중대
+
+                사용자 질문: [사용자 입력]
+
+                다음을 분석해주세요:
+                1. 위협의 핵심 특성 및 심각도
+                2. 상황의 맥락 및 배경
+                3. 주요 고려사항 및 제약조건
+                4. 권장 접근 방식
+
+                JSON 형식으로 답변:
+                {
+                "threat_assessment": {
+                "severity": "High/Medium/Low",
+                "key_characteristics": ["특성1", "특성2"],
+                "urgency": 0.0-1.0
+                },
+                "context": "상황의 맥락 설명",
+                "insights": {
+                "key_factors": ["요인1", "요인2"],
+                "constraints": ["제약1", "제약2"],
+                "recommended_approach": "접근 방식 설명"
+                }
+                }
+            </div>
+
+            <h4>LLM 파라미터</h4>
+            <div class="code-block">
+                response = llm_manager.generate(
+                prompt,
+                max_tokens=512,
+                temperature=0.0, # 일관성 중시
+                do_sample=False
+                )
+            </div>
+
+            <h4>응답 처리</h4>
+            <div class="code-block">
+                # JSON 파싱 시도
+                json_start = response.find('{')
+                json_end = response.rfind('}') + 1
+                json_text = response[json_start:json_end]
+                llm_result = json.loads(json_text)
+
+                # 성공 시: situation_analysis에 병합
+                situation_info['llm_key_factors'] = llm_result['insights']['key_factors']
+                situation_info['llm_constraints'] = llm_result['insights']['constraints']
+
+                # 실패 시: 기본 구조 반환 (빈 리스트, 중간 심각도)
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>B. 방책 구체화 LLM (Phase 3 후반)</h3>
+            <p><strong>함수</strong>: <code>_adapt_coas_with_llm(recommendations, situation_info
+
+)</code></p>
+            <p><strong>목적</strong>: 방책별 부대 배치의 이유와 시스템 탐색 과정을 설명 (Process Transparency)</p>
+
+            <h4>프롬프트 템플릿</h4>
+            <div class="prompt-box">
+                당신은 작전 참모이자 시스템 설계자입니다. 다음 방책(COA)에 할당된 부대(Resource)의 선정 근거와 시스템적 탐색 과정을 지휘관에게 설명하세요.
+
+                [상황 정보]
+                위협: Air Assault, 수준: 0.85, 환경: 산악지형, 적군: 헬기부대
+
+                [선택된 방책]
+                명칭: 공중 기동 방어
+
+                [할당된 아군 부대/자산]
+                공병대대, 대공포대, 통신중대
+
+                다음 두 가지 항목을 군사적 전문성과 시스템적 투명성을 담아 한글로 작성하세요:
+                1. 부대 운용 근거 (Unit Rationale): 선택된 부대(예: 공병대대 등)가 이 작전에서 왜 필요한지, 어떤 전술적 기여를 하는지 설명 (2~3문장)
+                2. 시스템 탐색 과정 (Search Path): 에이전트가 지식 그래프(Knowledge Graph)에서 이 부대를 어떻게 찾아냈는지 설명 (1~2문장)
+
+                응답 형식:
+                [운용근거]
+                ...
+
+                [탐색과정]
+                ...
+            </div>
+
+            <h4>LLM 파라미터</h4>
+            <div class="code-block">
+                response = llm_manager.generate(
+                prompt,
+                temperature=0.1, # 약간의 창의성 허용
+                max_tokens=512
+                )
+            </div>
+
+            <h4>병렬 처리 로직</h4>
+            <div class="code-block">
+                from concurrent.futures import ThreadPoolExecutor, wait
+
+                with ThreadPoolExecutor(max_workers=min(len(recommendations), 5)) as executor:
+                futures = [executor.submit(adapt_coa, rec) for rec in recommendations]
+                wait(futures) # 모든 작업 완료 대기
+            </div>
+
+            <h4>응답 파싱 (정규표현식)</h4>
+            <div class="code-block">
+                import re
+
+                # [운용근거] 섹션 추출
+                rat_match = re.search(r'\[운용근거\](.*?)(?=\[탐색과정\]|$)', text, re.S)
+
+                # [탐색과정] 섹션 추출
+                path_match = re.search(r'\[탐색과정\](.*?)$', text, re.S)
+
+                if rat_match:
+                coa_item['unit_rationale'] = rat_match.group(1).strip()
+
+                if path_match:
+                coa_item['system_search_path'] = path_match.group(1).strip()
+            </div>
+
+            <h4>폴백 메커니즘</h4>
+            <p>LLM 호출 실패 시 기본 문구 사용:</p>
+            <div class="code-block">
+                # 기본값 (Fallback)
+                coa_item['unit_rationale'] = f"'{coa_name}' 작전의 성공적인 수행을 위해 가용 자원을 최적화하여 할당하였습니다."
+                coa_item['system_search_path'] = "Defense Ontology의 자산-임무 연관성 분석을 통해 도출됨."
+            </div>
+        </div>
+
+        <h2>🛠️ LLM 통합 아키텍처</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>컴포넌트</th>
+                    <th>역할</th>
+                    <th>파일 위치</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>LLM Manager</td>
+                    <td>LLM API 호출 및 응답 관리</td>
+                    <td><code>core_pipeline/llm_manager.py</code></td>
+                </tr>
+                <tr>
+                    <td>Prompt Builder</td>
+                    <td>상황 정보 → 프롬프트 변환</td>
+                    <td><code>_format_situation_for_llm()</code></td>
+                </tr>
+                <tr>
+                    <td>Response Parser</td>
+                    <td>JSON/텍스트 파싱 및 오류 처리</td>
+                    <td>각 LLM 호출 함수 내부</td>
+                </tr>
+                <tr>
+                    <td>Fallback Handler</td>
+                    <td>LLM 실패 시 기본값 제공</td>
+                    <td>각 함수의 try-except 블록</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>📊 LLM 설정 및 모델</h2>
+        <div class="info-box">
+            <h3>현재 사용 모델</h3>
+            <ul>
+                <li><strong>모델명</strong>: <code>gemini-1.5-flash-002</code> (config에서 설정)</li>
+                <li><strong>Provider</strong>: Google Gemini API</li>
+                <li><strong>선택 이유</strong>:
+                    <ul>
+                        <li>빠른 응답 속도 (Flash 모델)</li>
+                        <li>한글 지원 우수</li>
+                        <li>JSON 구조화 응답 가능</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2>⚡ 성능 최적화</h2>
+        <div class="step-box">
+            <h3>병렬 처리 전략</h3>
+            <p>방책 구체화 LLM은 <strong>병렬 실행</strong>으로 처리 시간 단축:</p>
+            <ul>
+                <li><code>max_workers=5</code>: 동시에 최대 5개 COA 처리</li>
+                <li>Top-3 추천만 처리하므로 평균 실행 시간 ~2초</li>
+                <li>각 COA는 독립적으로 처리 가능 (상태 공유 없음)</li>
+            </ul>
+        </div>
+
+        <h2>🔍 예시: LLM 응답 샘플</h2>
+        <div class="step-box">
+            <h3>A. 상황 분석 응답</h3>
+            <div class="code-block">
+                {
+                "threat_assessment": {
+                "severity": "High",
+                "key_characteristics": [
+                "공중 기동성",
+                "신속한 침투 가능",
+                "야간 작전 우려"
+                ],
+                "urgency": 0.9
+                },
+                "context": "적 헬기부대의 기습 공격 가능성이 높은 상황으로, 대공 방어체계 즉시 가동 필요",
+                "insights": {
+                "key_factors": [
+                "대공 화기 배치 상태",
+                "조기 경보 시스템 가동 여부",
+                "아군 기동 예비대 위치"
+                ],
+                "constraints": [
+                "야간 시계 제한",
+                "산악 지형으로 인한 레이더 음영 구역",
+                "통신 재밍 우려"
+                ],
+                "recommended_approach": "방어적 대응을 기본으로 하되, 대공포 및 휴대용 대공미사일 우선 배치"
+                }
+                }
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>B. 방책 구체화 응답</h3>
+            <div class="code-block">
+                [운용근거]
+                공병대대는 신속한 방어진지 구축 및 장애물 설치를 담당하여 적 헬기의 착륙 지점을 제한합니다.
+                대공포대는 직접적인 공중 위협 대응의 핵심 전력으로, 적 헬기 접근 시 즉각 타격이 가능합니다.
+                통신중대는 조기 경보 및 부대 간 협조를 위한 통신망 유지를 보장합니다.
+
+                [탐색과정]
+                시스템은 지식 그래프에서 '공중 위협(Air Threat)' 노드와 'countersThreat' 관계로 연결된
+                자산(Asset) 엔티티를 탐색하였고, 'locatedIn' 관계를 통해 해당 전장 구역 내 배치된
+                공병대대, 대공포대, 통신중대를 추출하였습니다.
+            </div>
+        </div>
+
+        <h2>📂 코드 참조</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>파일</th>
+                    <th>주요 함수</th>
+                    <th>라인</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_llm_analyze_situation()</code></td>
+                    <td>3132-3220</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_adapt_coas_with_llm()</code></td>
+                    <td>698-762</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_format_situation_for_llm()</code></td>
+                    <td>~3230 (추정)</td>
+                </tr>
+                <tr>
+                    <td>llm_manager.py</td>
+                    <td><code>generate(prompt, ...)</code></td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ 검증 포인트</h2>
+        <div class="warning-box">
+            <h3>Phase 4 품질 확보 체크리스트</h3>
+            <ol>
+                <li><strong>프롬프트 명확성</strong>: 요청 내용이 명확하고 구체적인지</li>
+                <li><strong>응답 파싱 안정성</strong>: JSON 파싱 실패 시 폴백이 작동하는지</li>
+                <li><strong>LLM 가용성 체크</strong>: LLM 서비스 장애 시 시스템이 중단되지 않는지</li>
+                <li><strong>응답 품질</strong>: 생성된 설명이 군사적으로 타당하고 이해 가능한지</li>
+                <li><strong>성능</strong>: 병렬 처리가 정상 작동하며 응답 시간이 허용 범위 내인지</li>
+                <li><strong>보안</strong>: 민감 정보가 LLM 프롬프트에 포함되지 않는지</li>
+            </ol>
+        </div>
+
+        <h2>🎯 LLM 활용의 핵심 가치</h2>
+        <div class="info-box">
+            <h3>1. 설명 가능성 (Explainability)</h3>
+            <p>단순 점수만으로는 전달하기 어려운 <strong>"왜 이 방책인가?"</strong>에 대한 답을 자연어로 제공</p>
+
+            <h3>2. 프로세스 투명성 (Process Transparency)</h3>
+            <p>시스템이 어떻게 부대를 찾고 할당했는지 <strong>탐색 경로</strong>를 설명하여 신뢰성 확보</p>
+
+            <h3>3. 사용자 경험 개선</h3>
+            <p>지휘관이 의사결정에 필요한 <strong>맥락(Context)</strong>과 <strong>제약사항(Constraints)</strong>을 명시적으로 제공</p>
+        </div>
+
+        <h2>🔗 Next Phase</h2>
+        <p><strong>Phase 5: Final Recommendation</strong>으로 이동</p>
+        <p>LLM으로 강화된 Top-3 COA를 최종 랭킹하고, UI 출력 형식으로 포맷팅합니다.</p>
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

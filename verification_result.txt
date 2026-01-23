@@ -1,0 +1,4 @@
+Types for WTH001: ['기상상황', 'Resource']
+FAIL: Node has forbidden types: ['Resource']
+Linked to terrain: 지형셀_TERR001
+PASS: Linked terrain node '지형셀_TERR001' is present in JSON.

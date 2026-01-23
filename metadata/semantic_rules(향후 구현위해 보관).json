@@ -1,0 +1,126 @@
+{
+    "version": "1.0",
+    "description": "의미 기반 관계 추론 규칙 설정 (COA 관계 추가)",
+    "rules": [
+      {
+        "source_keywords": ["인물", "person", "personnel"],
+        "target_keywords": ["일정", "schedule", "event"],
+        "relation": "participatesIn",
+        "confidence": 0.85,
+        "enabled": true,
+        "description": "인물이 일정에 참여"
+      },
+      {
+        "source_keywords": ["인물", "person", "personnel"],
+        "target_keywords": ["이동기록", "movement", "travel"],
+        "relation": "hasMovement",
+        "confidence": 0.90,
+        "enabled": true,
+        "description": "인물의 이동 기록"
+      },
+      {
+        "source_keywords": ["건강기록", "health", "record"],
+        "target_keywords": ["인물", "person", "personnel"],
+        "relation": "belongsToPerson",
+        "confidence": 0.95,
+        "enabled": true,
+        "description": "건강기록이 인물에 속함"
+      },
+      {
+        "source_keywords": ["날씨", "weather"],
+        "target_keywords": ["장소", "location", "place"],
+        "relation": "occursAt",
+        "confidence": 0.88,
+        "enabled": true,
+        "description": "날씨가 장소에서 발생"
+      },
+      {
+        "source_keywords": ["일정", "schedule", "event"],
+        "target_keywords": ["장소", "location", "place"],
+        "relation": "occursAt",
+        "confidence": 0.90,
+        "enabled": true,
+        "description": "일정이 장소에서 발생"
+      },
+      {
+        "source_keywords": ["일정", "schedule", "event"],
+        "target_keywords": ["물품", "item", "product"],
+        "relation": "requiresItem",
+        "confidence": 0.85,
+        "enabled": true,
+        "description": "일정이 물품을 필요로 함"
+      },
+      {
+        "source_keywords": ["지출", "expense", "spending"],
+        "target_keywords": ["일정", "schedule", "event"],
+        "relation": "relatedToSchedule",
+        "confidence": 0.90,
+        "enabled": true,
+        "description": "지출이 일정과 관련됨"
+      },
+      {
+        "source_keywords": ["지출", "expense", "spending"],
+        "target_keywords": ["장소", "location", "place"],
+        "relation": "occursAt",
+        "confidence": 0.88,
+        "enabled": true,
+        "description": "지출이 장소에서 발생"
+      },
+      {
+        "source_keywords": ["이동기록", "movement", "travel"],
+        "target_keywords": ["장소", "location", "place"],
+        "relation": "connectsLocation",
+        "confidence": 0.87,
+        "enabled": true,
+        "description": "이동기록이 장소를 연결"
+      },
+      {
+        "source_keywords": ["건강기록", "health", "record"],
+        "target_keywords": ["일정", "schedule", "event"],
+        "relation": "relatedToSchedule",
+        "confidence": 0.80,
+        "enabled": true,
+        "description": "건강기록이 일정과 관련될 수 있음"
+      },
+      {
+        "source_keywords": ["COA", "방책", "coa", "course", "action", "라이브러리"],
+        "target_keywords": ["위협", "threat", "위협상황"],
+        "relation": "hasThreat",
+        "confidence": 0.90,
+        "enabled": true,
+        "description": "COA가 대응하는 위협 관계"
+      },
+      {
+        "source_keywords": ["COA", "방책", "coa", "course", "action", "라이브러리"],
+        "target_keywords": ["자산", "asset", "아군가용자산"],
+        "relation": "hasAsset",
+        "confidence": 0.88,
+        "enabled": true,
+        "description": "COA 실행에 필요한 자산"
+      },
+      {
+        "source_keywords": ["기상", "weather", "기상상황", "날씨"],
+        "target_keywords": ["COA", "방책", "coa", "course", "action", "라이브러리"],
+        "relation": "hasWeatherImpact",
+        "confidence": 0.85,
+        "enabled": true,
+        "description": "기상이 COA에 미치는 영향"
+      },
+      {
+        "source_keywords": ["보급", "supply", "보급상태", "자원"],
+        "target_keywords": ["COA", "방책", "coa", "course", "action", "라이브러리"],
+        "relation": "hasSupplyConstraint",
+        "confidence": 0.87,
+        "enabled": true,
+        "description": "보급 제약이 COA에 미치는 영향"
+      },
+      {
+        "source_keywords": ["전력", "준비태세", "readiness", "전력준비태세"],
+        "target_keywords": ["COA", "방책", "coa", "course", "action", "라이브러리"],
+        "relation": "hasReadinessLink",
+        "confidence": 0.86,
+        "enabled": true,
+        "description": "전력준비태세가 COA에 미치는 영향"
+      }
+    ]
+  }

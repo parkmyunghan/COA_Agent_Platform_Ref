@@ -1,0 +1,35 @@
+{
+  "coa_templates": [
+    {
+      "coa_id": "Main_Defense",
+      "name": "주요 방어 방책",
+      "description": "높은 위협 수준에 대한 주요 방어 방책",
+      "actions": [
+        "전체 방어 자산 동원",
+        "즉시 대응 조치",
+        "상황 모니터링 강화"
+      ]
+    },
+    {
+      "coa_id": "Moderate_Defense",
+      "name": "중간 방어 방책",
+      "description": "중간 위협 수준에 대한 방어 방책",
+      "actions": [
+        "선택적 자산 동원",
+        "준비 태세 유지",
+        "상황 관찰"
+      ]
+    },
+    {
+      "coa_id": "Minimal_Defense",
+      "name": "최소 방어 방책",
+      "description": "낮은 위협 수준에 대한 최소 방어 방책",
+      "actions": [
+        "기본 감시 유지",
+        "상황 인지",
+        "대기 상태"
+      ]
+    }
+  ]
+}
+

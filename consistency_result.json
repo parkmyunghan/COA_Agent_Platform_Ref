@@ -1,0 +1,82 @@
+[
+  {
+    "table": "아군부대현황",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "적군부대현황",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "지형셀",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "전장축선",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "임무정보",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "위협상황",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "제약조건",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "COA_Library",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "시나리오모음",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "아군가용자산",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "기상상황",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "임무별_자원할당",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "방책유형_위협유형_관련성",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "위협유형_마스터",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "평가기준_가중치",
+    "status": "OK",
+    "message": "Perfectly matched"
+  },
+  {
+    "table": "민간인지역",
+    "status": "OK",
+    "message": "Perfectly matched"
+  }
+]

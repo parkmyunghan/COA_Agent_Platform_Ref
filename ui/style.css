@@ -1,0 +1,191 @@
+/* Military Tactical Theme (C4I Style) - Enhanced Readability */
+
+/* Global Reset & Background */
+.stApp {
+    background-color: #0d1117; /* Darker Github-like Black */
+    color: #c9d1d9; /* High contrast text */
+    font-family: 'Segoe UI', 'Roboto', sans-serif; /* Modern Sans-serif for readability */
+    background-image: 
+        linear-gradient(rgba(30, 30, 30, 0.9) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 30, 30, 0.9) 1px, transparent 1px);
+    background-size: 40px 40px; /* Larger Grid */
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+    font-weight: 600;
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+h1 {
+    border-bottom: 2px solid #2d9cdb;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    font-size: 2.0rem;
+    border-left: 5px solid #2d9cdb;
+    padding-left: 15px;
+    background: linear-gradient(90deg, rgba(45, 156, 219, 0.1), transparent);
+}
+
+h2 {
+    color: #58a6ff;
+    font-size: 1.5rem;
+    margin-top: 24px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 8px;
+}
+
+h3 {
+    color: #79c0ff;
+    font-size: 1.2rem;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #010409;
+    border-right: 1px solid #30363d;
+}
+
+[data-testid="stSidebar"] .block-container {
+    padding-top: 2rem;
+}
+
+/* Buttons (Tactical Style - Cleaner) */
+.stButton>button {
+    background-color: #21262d;
+    color: #58a6ff;
+    border: 1px solid #30363d;
+    border-radius: 4px; /* Slight radius */
+    transition: all 0.2s ease;
+    font-weight: 500;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.stButton>button:hover {
+    background-color: #58a6ff;
+    color: #ffffff;
+    border-color: #58a6ff;
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+}
+
+/* Primary Button */
+.stButton>button[kind="primary"] {
+    background-color: #1f6feb;
+    color: white;
+    border: none;
+}
+.stButton>button[kind="primary"]:hover {
+    background-color: #388bfd;
+}
+
+/* Metrics (HUD Style - Readable) */
+[data-testid="stMetricValue"] {
+    color: #3fb950; /* Green */
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-weight: 600;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #8b949e;
+    font-size: 0.9rem;
+}
+
+/* Dataframes & Tables */
+[data-testid="stDataFrame"] {
+    border: 1px solid #30363d;
+}
+
+/* Tabs (Modern Tabs) */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: transparent;
+    border-bottom: 1px solid #30363d;
+}
+
+.stTabs [data-baseweb="tab"] {
+    height: 40px;
+    white-space: pre-wrap;
+    background-color: transparent;
+    border-radius: 4px 4px 0 0;
+    color: #8b949e;
+    font-weight: 500;
+    border: 1px solid transparent;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #0d1117;
+    color: #58a6ff;
+    border: 1px solid #30363d;
+    border-bottom: 1px solid #0d1117; /* Blend with content */
+}
+
+/* Info/Warning/Error Boxes */
+.stAlert {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    border-radius: 6px;
+}
+
+/* Custom Containers (HUD Panel - Refined) */
+.css-card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.css-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* High Contrast Text */
+p, li, span, label, .stMarkdown, .stText {
+    color: #c9d1d9 !important;
+    line-height: 1.6;
+}
+
+/* Input Fields */
+.stTextInput>div>div>input,
+.stSelectbox>div>div>div {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+}
+
+.stTextInput>div>div>input:focus,
+.stSelectbox>div>div>div:focus {
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.2);
+}
+
+/* Divider */
+hr {
+    border-color: #30363d !important;
+    border-style: solid !important;
+}
+
+/* Header Fix */
+header[data-testid="stHeader"] {
+    background-color: #0d1117 !important;
+    border-bottom: 1px solid #30363d;
+}
+
+/* Status Lights */
+.status-light {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+.status-green { background-color: #3fb950; box-shadow: 0 0 4px #3fb950; }
+.status-red { background-color: #da3633; box-shadow: 0 0 4px #da3633; }
+.status-yellow { background-color: #d29922; box-shadow: 0 0 4px #d29922; }

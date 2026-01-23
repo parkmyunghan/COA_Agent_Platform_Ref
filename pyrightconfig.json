@@ -1,0 +1,21 @@
+{
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__",
+        ".venv*",
+        "models",
+        "frontend/node_modules",
+        ".git"
+    ],
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false,
+    "pythonVersion": "3.10",
+    "executionEnvironments": [
+        {
+            "root": "api"
+        },
+        {
+            "root": "core_pipeline"
+        }
+    ]
+}

@@ -1,0 +1,307 @@
+[
+  {
+    "notification_id": "NOTIF_20251120_230108_660884",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251120_230108)",
+    "data": {
+      "request_id": "REQ_20251120_230108",
+      "recommendation_id": "TEST_REC_001",
+      "requester_id": "USER002",
+      "action_url": "/approval/REQ_20251120_230108"
+    },
+    "read": false,
+    "created_at": "2025-11-20T23:01:08.660884"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230108_675665",
+    "user_id": "USER002",
+    "type": "review_comment",
+    "message": "분석가가 검토 의견을 추가했습니다.",
+    "data": {
+      "request_id": "REQ_20251120_230108",
+      "reviewer_id": "USER003",
+      "requester_id": "USER002",
+      "comment": "테스트 검토 의견"
+    },
+    "read": false,
+    "created_at": "2025-11-20T23:01:08.675665"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230108_677669",
+    "user_id": "USER002",
+    "type": "approval_result",
+    "message": "방책이 승인되었습니다!",
+    "data": {
+      "request_id": "REQ_20251120_230108",
+      "recommendation_id": "TEST_REC_001",
+      "requester_id": "USER002",
+      "approver_id": "USER001",
+      "comments": "테스트 승인"
+    },
+    "read": false,
+    "created_at": "2025-11-20T23:01:08.677669"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230108_691270",
+    "user_id": "TEST_USER_001",
+    "type": "test_notification",
+    "message": "테스트 알림 메시지",
+    "data": {
+      "test": "data"
+    },
+    "read": true,
+    "created_at": "2025-11-20T23:01:08.691270",
+    "read_at": "2025-11-20T23:01:08.692278"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230108_691270",
+    "user_id": "TEST_USER_001",
+    "type": "test_notification",
+    "message": "지휘관에게 전송되는 테스트 알림",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-20T23:01:08.691270"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230109_031908",
+    "user_id": "TEST_USER_001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251120_230109)",
+    "data": {
+      "request_id": "REQ_20251120_230109",
+      "recommendation_id": "INTEGRATION_REC_001",
+      "requester_id": "INTEGRATION_USER_001",
+      "action_url": "/approval/REQ_20251120_230109"
+    },
+    "read": false,
+    "created_at": "2025-11-20T23:01:09.031908"
+  },
+  {
+    "notification_id": "NOTIF_20251120_230109_033117",
+    "user_id": "INTEGRATION_USER_002",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251120_230109)",
+    "data": {
+      "request_id": "REQ_20251120_230109",
+      "recommendation_id": "INTEGRATION_REC_001",
+      "requester_id": "INTEGRATION_USER_001",
+      "action_url": "/approval/REQ_20251120_230109"
+    },
+    "read": false,
+    "created_at": "2025-11-20T23:01:09.033117"
+  },
+  {
+    "notification_id": "NOTIF_20251121_000149_074608",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T00:01:49.074608"
+  },
+  {
+    "notification_id": "NOTIF_20251121_000349_539908",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_000349)",
+    "data": {
+      "request_id": "REQ_20251121_000349",
+      "recommendation_id": "REC_20251121_000349",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_000349"
+    },
+    "read": false,
+    "created_at": "2025-11-21T00:03:49.539908"
+  },
+  {
+    "notification_id": "NOTIF_20251121_000349_556080",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T00:03:49.556080"
+  },
+  {
+    "notification_id": "NOTIF_20251121_004859_340978",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_004859)",
+    "data": {
+      "request_id": "REQ_20251121_004859",
+      "recommendation_id": "REC_20251121_004859",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_004859"
+    },
+    "read": false,
+    "created_at": "2025-11-21T00:48:59.340978"
+  },
+  {
+    "notification_id": "NOTIF_20251121_004859_357647",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T00:48:59.357647"
+  },
+  {
+    "notification_id": "NOTIF_20251121_005608_770841",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_005608)",
+    "data": {
+      "request_id": "REQ_20251121_005608",
+      "recommendation_id": "REC_20251121_005608",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_005608"
+    },
+    "read": false,
+    "created_at": "2025-11-21T00:56:08.770841"
+  },
+  {
+    "notification_id": "NOTIF_20251121_005608_782764",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T00:56:08.782764"
+  },
+  {
+    "notification_id": "NOTIF_20251121_010112_326677",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_010112)",
+    "data": {
+      "request_id": "REQ_20251121_010112",
+      "recommendation_id": "REC_20251121_010112",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_010112"
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:01:12.326677"
+  },
+  {
+    "notification_id": "NOTIF_20251121_010200_187028",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_010200)",
+    "data": {
+      "request_id": "REQ_20251121_010200",
+      "recommendation_id": "REC_20251121_010200",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_010200"
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:02:00.187028"
+  },
+  {
+    "notification_id": "NOTIF_20251121_010200_198818",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T01:02:00.198818"
+  },
+  {
+    "notification_id": "NOTIF_20251121_010517_050573",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_010517)",
+    "data": {
+      "request_id": "REQ_20251121_010517",
+      "recommendation_id": "REC_20251121_010517",
+      "requester_id": "test_user",
+      "action_url": "/approval/REQ_20251121_010517"
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:05:17.050573"
+  },
+  {
+    "notification_id": "NOTIF_20251121_010517_077012",
+    "user_id": "test_user",
+    "type": "테스트 알림",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T01:05:17.077012"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012749_105076",
+    "user_id": "USER001",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_012749)",
+    "data": {
+      "request_id": "REQ_20251121_012749",
+      "recommendation_id": "REC_20251121_012749",
+      "requester_id": "test_planner",
+      "action_url": "/approval/REQ_20251121_012749"
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:27:49.105076"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012749_106517",
+    "user_id": "USER009",
+    "type": "approval_request",
+    "message": "새로운 승인 요청이 생성되었습니다. (요청 ID: REQ_20251121_012749)",
+    "data": {
+      "request_id": "REQ_20251121_012749",
+      "recommendation_id": "REC_20251121_012749",
+      "requester_id": "test_planner",
+      "action_url": "/approval/REQ_20251121_012749"
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:27:49.106517"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012749_108643",
+    "user_id": "test_planner",
+    "type": "review_comment",
+    "message": "분석가가 검토 의견을 추가했습니다.",
+    "data": {
+      "request_id": "REQ_20251121_012749",
+      "reviewer_id": "test_analyst",
+      "requester_id": "test_planner",
+      "comment": "검토 의견: 방책이 적절해 보입니다."
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:27:49.108643"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012749_111724",
+    "user_id": "test_planner",
+    "type": "approval_result",
+    "message": "방책이 승인되었습니다!",
+    "data": {
+      "request_id": "REQ_20251121_012749",
+      "recommendation_id": "REC_20251121_012749",
+      "requester_id": "test_planner",
+      "approver_id": "test_commander",
+      "comments": "승인합니다."
+    },
+    "read": false,
+    "created_at": "2025-11-21T01:27:49.111724"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012750_679099",
+    "user_id": "user2_analyst",
+    "type": "방책 추천 요청이 생성되었습니다.",
+    "message": "info",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T01:27:50.679099"
+  },
+  {
+    "notification_id": "NOTIF_20251121_012750_680156",
+    "user_id": "user3_commander",
+    "type": "승인 요청이 생성되었습니다.",
+    "message": "warning",
+    "data": {},
+    "read": false,
+    "created_at": "2025-11-21T01:27:50.680156"
+  }
+]

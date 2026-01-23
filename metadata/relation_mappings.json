@@ -1,0 +1,126 @@
+{
+  "위협상황": {
+    "발생위치셀ID": {
+      "target": "지형셀",
+      "relation": "has지형셀"
+    },
+    "위협유형코드": {
+      "target": "위협유형_마스터",
+      "relation": "has위협유형"
+    },
+    "추론:affectsCivilianArea": {
+      "target": "민간인지역",
+      "confidence": 0.7,
+      "column": "발생위치셀ID",
+      "inference_rule": "같은 지형셀에 민간인지역이 있으면 영향 관계 생성"
+    }
+  },
+  "적군부대현황": {
+    "추론:relatedTo": {
+      "target": "위협상황",
+      "confidence": 0.8,
+      "column": "부대유형"
+    },
+    "배치지형셀ID": {
+      "target": "지형셀",
+      "relation": "locatedIn"
+    }
+  },
+  "아군부대현황": {
+    "배치지형셀ID": {
+      "target": "지형셀",
+      "relation": "locatedIn"
+    },
+    "할당임무ID": {
+      "target": "임무정보",
+      "relation": "hasMission"
+    }
+  },
+  "임무정보": {},
+  "전장축선": {
+    "시작지형셀ID": {
+      "target": "지형셀",
+      "relation": "has지형셀"
+    },
+    "종단지형셀ID": {
+      "target": "지형셀",
+      "relation": "has지형셀"
+    }
+  },
+  "제약조건": {
+    "동적FK:적용대상ID": {
+      "target": "동적",
+      "relation": "appliesTo",
+      "type_column": "적용대상유형",
+      "type_mapping": {
+        "임무": "임무정보",
+        "아군부대": "아군부대현황",
+        "적부대": "적군부대현황",
+        "축선": "전장축선",
+        "지형": "지형셀",
+        "부대": "아군부대현황"
+      },
+      "dynamic": true
+    }
+  },
+  "지형셀": {},
+  "아군가용자산": {
+    "배치지형셀ID": {
+      "target": "지형셀",
+      "relation": "locatedIn"
+    }
+  },
+  "기상상황": {
+    "지형셀ID": {
+      "target": "지형셀",
+      "relation": "locatedIn"
+    }
+  },
+  "시나리오모음": {
+    "임무ID": {
+      "target": "임무정보",
+      "relation": "has임무정보"
+    },
+    "위협ID": {
+      "target": "위협상황",
+      "relation": "has위협상황"
+    }
+  },
+  "COA_Library": {
+    "추론:적합위협유형": {
+      "target": "위협유형_마스터",
+      "confidence": 0.7,
+      "column": "적합위협유형"
+    }
+  },
+  "가용자원": {
+    "추론:location": {
+      "target": "지형셀",
+      "confidence": 0.6,
+      "column": "location"
+    },
+    "추론:resource_type": {
+      "target": "아군가용자산",
+      "confidence": 0.6,
+      "column": "resource_type"
+    }
+  },
+  "방책유형_위협유형_관련성": {
+    "coa_type": {
+      "target": "COA_Library",
+      "relation": "hasCOAType"
+    },
+    "threat_type": {
+      "target": "위협유형_마스터",
+      "relation": "has위협유형"
+    }
+  },
+  "위협유형_마스터": {},
+  "평가기준_가중치": {},
+  "민간인지역": {
+    "위치지형셀ID": {
+      "target": "지형셀",
+      "relation": "locatedIn"
+    }
+  }
+}

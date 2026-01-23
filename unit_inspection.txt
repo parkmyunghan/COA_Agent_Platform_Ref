@@ -1,0 +1,19 @@
+Unit: http://coa-agent-platform.org/ontology#아군부대현황_FRU001
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type -> http://coa-agent-platform.org/ontology#아군부대현황
+  http://www.w3.org/2000/01/rdf-schema#label -> 00사단 1여단
+  http://coa-agent-platform.org/ontology#hasCombatPower -> 75.0
+  http://coa-agent-platform.org/ontology#hasLatitude -> 37.999084
+  http://coa-agent-platform.org/ontology#hasLongitude -> 126.99547
+  http://coa-agent-platform.org/ontology#hasMaxSpeed -> 0.0
+  http://coa-agent-platform.org/ontology#has전장축선 -> http://coa-agent-platform.org/ontology#전장축선_AXIS01
+  http://coa-agent-platform.org/ontology#locatedIn -> http://coa-agent-platform.org/ontology#지형셀_TERR002
+  http://coa-agent-platform.org/ontology#가용상태 -> 가용
+  http://coa-agent-platform.org/ontology#고유명칭 -> 여단-1여단
+  http://coa-agent-platform.org/ontology#병종 -> 기계화
+  http://coa-agent-platform.org/ontology#상급부대 -> 제1군단
+  http://coa-agent-platform.org/ontology#상태 -> Operational
+  http://coa-agent-platform.org/ontology#이동방향 -> 200
+  http://coa-agent-platform.org/ontology#임무역할 -> 주공
+  http://coa-agent-platform.org/ontology#전투력 -> 0.75
+  http://coa-agent-platform.org/ontology#제대 -> 여단
+  http://coa-agent-platform.org/ontology#좌표정보 -> 126.995470, 37.999084

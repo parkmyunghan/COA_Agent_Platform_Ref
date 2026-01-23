@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시스템 아키텍처 및 데이터 흐름도</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Malgun Gothic", "맑은 고딕", Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                padding: 20px;
+            }
+        }
+
+        h1 {
+            color: #1976D2;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid #1976D2;
+            font-size: 32px;
+        }
+
+        .diagram-container {
+            width: 100%;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mermaid-wrapper {
+            width: 100%;
+            height: 70vh;
+            min-height: 600px;
+            overflow: auto;
+            cursor: grab;
+            position: relative;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .mermaid-wrapper.dragging {
+            cursor: grabbing !important;
+            user-select: none;
+        }
+
+        .mermaid-wrapper:not(.dragging) {
+            cursor: grab;
+        }
+
+        .mermaid {
+            text-align: left;
+            font-size: 20px;
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            display: inline-block;
+            position: relative;
+            min-width: fit-content;
+        }
+
+        .mermaid svg {
+            display: block;
+            width: auto;
+            height: auto;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .zoom-btn {
+            background: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 50px;
+            transition: background 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: #1565C0;
+        }
+
+        .zoom-btn:active {
+            background: #0D47A1;
+        }
+
+        .zoom-info {
+            text-align: center;
+            padding: 5px;
+            font-size: 14px;
+            color: #424242;
+        }
+
+        .description {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f9f9f9 0%, #e8f4f8 100%);
+            border-left: 5px solid #1976D2;
+            border-radius: 8px;
+        }
+
+        .description h2 {
+            color: #1976D2;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .description h3 {
+            color: #424242;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .description ul {
+            line-height: 2;
+            margin-left: 20px;
+        }
+
+        .description li {
+            margin-bottom: 8px;
+        }
+
+        .description strong {
+            color: #1976D2;
+        }
+
+        .tip-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #E3F2FD;
+            border-left: 4px solid #1976D2;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: #0D47A1;
+        }
+
+        /* 컴포넌트 링크 섹션 */
+        .component-links {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe8cc 100%);
+            border-left: 5px solid #FF9800;
+            border-radius: 8px;
+        }
+
+        .component-links h2 {
+            color: #FF9800;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .component-links h3 {
+            color: #E65100;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #FFB74D;
+        }
+
+        .layer-section {
+            margin-bottom: 20px;
+        }
+
+        .component-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .component-list li {
+            margin-bottom: 10px;
+            padding: 8px 0;
+        }
+
+        .component-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #FFF3E0;
+            color: #E65100;
+            text-decoration: none;
+            border-radius: 5px;
+            border: 2px solid #FFB74D;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .component-link:hover {
+            background-color: #FFE0B2;
+            border-color: #FF9800;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+        }
+
+        .component-link:active {
+            transform: translateX(3px);
+        }
+
+        /* Mermaid 노드 클릭 가능 스타일 */
+        .mermaid svg .node {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .mermaid svg .node:hover {
+            opacity: 0.8;
+        }
+
+        /* 스크롤바 스타일링 */
+        .diagram-container::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .diagram-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 6px;
+        }
+
+        .diagram-container::-webkit-scrollbar-thumb {
+            background: #1976D2;
+            border-radius: 6px;
+        }
+
+        .diagram-container::-webkit-scrollbar-thumb:hover {
+            background: #1565C0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>시스템 아키텍처 및 데이터 흐름도</h1>
+
+        <div class="diagram-container">
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomIn()" title="확대">+</button>
+                <div class="zoom-info">
+                    <span id="zoom-level">100%</span>
+                </div>
+                <button class="zoom-btn" onclick="zoomOut()" title="축소">-</button>
+                <button class="zoom-btn" onclick="resetZoom()" title="초기화"
+                    style="font-size: 14px; padding: 8px;">⟲</button>
+            </div>
+            <div class="mermaid-wrapper" id="mermaid-wrapper">
+                <div class="mermaid" id="mermaid-diagram">
+                    graph TB
+                    subgraph Data["🏗️ 전술 데이터 레이어 (Data Layer)"]
+                    direction LR
+                    SourceDB[("실시간 전술 데이터<br />(16개 엑셀 테이블)")]
+                    Docs[("비정형 군사 교범<br />(PDF/Text)")]
+                    DataMgr[데이터 관리자<br />Data Manager]
+                    OntoEngine[온톨로지 고도화 엔진]
+                    RAGEngine[시맨틱 임베딩 엔진]
+                    KG[("전술 지식그래프<br />(RDF/TTL)")]
+                    VectorDB[("벡터 지식베이스<br />(FAISS)")]
+
+                    SourceDB -->|로드| DataMgr
+                    DataMgr -->|지형/부대/위협| OntoEngine
+                    OntoEngine -->|관계 추론| KG
+                    Docs -->|임베딩| RAGEngine
+                    RAGEngine -->|저장| VectorDB
+                    end
+
+                    subgraph Orchestration["⚙️ 인텔리전트 오케스트레이션 (API Layer)"]
+                    Orchestrator{FastAPI<br />Orchestrator}
+                    end
+
+                    subgraph Agents["🤖 지능형 에이전트 (Agent Layer)"]
+                    direction LR
+                    COAAgent[COA 추천 엔진<br />EnhancedCOAEngine]
+                    LLMMgr[LLM 매니저]
+                    Scorer[적응형 점수 계산기<br />6대 평가 요소]
+                    Reasoner[시맨틱 추론기<br />SPARQL]
+
+                    COAAgent -->|데이터 요청| Scorer
+                    Scorer -->|평가 점수| COAAgent
+                    COAAgent -->|상황 해석| LLMMgr
+                    LLMMgr -.->|근거 생성| COAAgent
+                    COAAgent <-->|추론 쿼리| Reasoner
+                        end
+
+                        subgraph User["👤 전술 상황도 (Command Layer)"]
+                        direction LR
+                        UserInput[React Tactical Dashboard<br />상황 입력]
+                        ResultView[방책 추천 시각화<br />MIL-STD-2525]
+                        ChainViz[전략 추론 체인<br />Graphviz]
+                        Feedback[지휘관 피드백]
+
+                        UserInput --> ResultView
+                        ResultView --> ChainViz
+                        end
+
+                        %% 레이어 간 연결
+                        KG -.->|지식 베이스| Orchestrator
+                        Orchestrator -->|작전 요청| COAAgent
+                        KG -.->|교리 추론| Reasoner
+                        VectorDB -.->|Context| Scorer
+                        UserInput ==>|API 요청| Orchestrator
+                        COAAgent ==>|최적 방책| ResultView
+                        Feedback -.->|학습 루프| Orchestrator
+
+                        %% 스타일 정의
+                        classDef dataLayer fill:#E3F2FD,stroke:#1976D2,stroke-width:3px,color:#0D47A1,font-size:16px
+                        classDef agentLayer fill:#F3E5F5,stroke:#7B1FA2,stroke-width:3px,color:#4A148C,font-size:16px
+                        classDef userLayer fill:#E8F5E9,stroke:#388E3C,stroke-width:3px,color:#1B5E20,font-size:16px
+                        classDef orchestration fill:#ECEFF1,stroke:#546E7A,stroke-width:3px,color:#263238,font-size:16px
+                        classDef mainFlow stroke:#388E3C,stroke-width:5px
+
+                        %% 스타일 적용
+                        class SourceDB,Docs,DataMgr,OntoEngine,KG,VectorDB dataLayer
+                        class COAAgent,Scorer,Reasoner agentLayer
+                        class UserInput,ResultView,ChainViz,Feedback userLayer
+                        class Orchestrator orchestration
+                        class RAGEngine,LLMMgr orchestration
+                        class UserInput,Orchestrator,COAAgent,ResultView mainFlow
+                </div>
+            </div>
+        </div>
+
+        <div class="description">
+            <h2>시스템 개요</h2>
+            <p style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                이 다이어그램은 Defense Intelligent Agent Platform의 전체 아키텍처와 데이터 흐름을 보여줍니다.
+                시스템은 4개의 주요 레이어로 구성되어 있으며, 각 레이어는 명확한 역할과 책임을 가지고 있습니다.
+            </p>
+
+            <h3>주요 구성 요소</h3>
+            <ul>
+                <li><strong>🏗️ Data Layer (전술 데이터 레이어)</strong>: 16개 핵심 엑셀 테이블과 교범 문서를 지식그래프와 벡터 지식베이스로 정규화</li>
+                <li><strong>⚙️ API Layer (인텔리전트 오케스트레이션)</strong>: FastAPI 기반의 서버로서 에이전트 서비스와 전면 프론트엔드 간의 통신/조율 담당</li>
+                <li><strong>🤖 Agent Layer (지능형 에이전트)</strong>: 상황 분석, 방책 추천, 적응형 점수 계산 등 핵심 전술 지능 로직 수행</li>
+                <li><strong>👤 Command Layer (전술 상황도)</strong>: React 기반의 현대적 대시보드를 통해 MIL-STD-2525 시각화 및 지휘 결심 지원</li>
+            </ul>
+
+            <h3>데이터 흐름</h3>
+            <ul>
+                <li><strong>실선 (→)</strong>: 직접적인 데이터 흐름 및 모듈 간 호출</li>
+                <li><strong>점선 (-.->)</strong>: 시맨틱 참조, 근거 생성 또는 비동기 학습 루프</li>
+                <li><strong>굵은 실선 (==>)</strong>: 주 작전 흐름 (사용자 요청 → AI 추론 → 시각화 제언)</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 사용 방법:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li><strong>드래그 이동:</strong> 마우스로 다이어그램 빈 공간을 클릭하고 드래그하여 이동</li>
+                    <li><strong>확대/축소:</strong> Ctrl + 마우스 휠 또는 우측 상단 +/- 버튼</li>
+                    <li><strong>컴포넌트 클릭:</strong> 다이어그램의 각 노드를 클릭하면 해당 컴포넌트의 상세 구현 명세(Markdown)로 이동합니다.</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="component-links">
+            <h2>📚 컴포넌트 상세 문서</h2>
+            <p style="font-size: 16px; line-height: 1.8; margin-bottom: 20px;">
+                다이어그램의 각 컴포넌트를 클릭하거나 아래 링크를 통해 상세 문서를 확인할 수 있습니다.
+            </p>
+
+            <div class="layer-section">
+                <h3>🏗️ Data Layer</h3>
+                <ul class="component-list">
+                    <li><a href="20_Components/data_layer/01_데이터관리자.md" target="_blank" class="component-link">데이터관리자
+                            (Data Manager)</a></li>
+                    <li><a href="20_Components/data_layer/02_온톨로지변환기.md" target="_blank" class="component-link">온톨로지 고도화
+                            엔진</a></li>
+                    <li><a href="20_Components/data_layer/03_임베딩엔진.md" target="_blank" class="component-link">시맨틱 임베딩
+                            엔진</a></li>
+                    <li><a href="20_Components/data_layer/04_지식그래프.md" target="_blank" class="component-link">전술 지식그래프
+                            (RDF/TTL)</a></li>
+                    <li><a href="20_Components/data_layer/05_벡터DB.md" target="_blank" class="component-link">벡터 지식베이스
+                            (FAISS)</a></li>
+                </ul>
+            </div>
+
+            <div class="layer-section">
+                <h3>⚙️ API/Orchestration Layer</h3>
+                <ul class="component-list">
+                    <li><a href="20_Components/orchestration_layer/01_Orchestrator.md" target="_blank"
+                            class="component-link">FastAPI Orchestrator</a></li>
+                </ul>
+            </div>
+
+            <div class="layer-section">
+                <h3>🤖 Agent Layer</h3>
+                <ul class="component-list">
+                    <li><a href="20_Components/agent_layer/01_COA_추천_Agent.md" target="_blank"
+                            class="component-link">COA 추천 엔진</a></li>
+                    <li><a href="20_Components/agent_layer/02_LLM_Manager.md" target="_blank" class="component-link">LLM
+                            매니저</a></li>
+                    <li><a href="20_Components/agent_layer/03_점수계산기.md" target="_blank" class="component-link">적응형 점수
+                            계산기</a></li>
+                    <li><a href="20_Components/agent_layer/04_온톨로지추론기.md" target="_blank" class="component-link">시맨틱 추론기
+                            (SPARQL)</a></li>
+                </ul>
+            </div>
+
+            <div class="layer-section">
+                <h3>👤 Command Layer</h3>
+                <ul class="component-list">
+                    <li><a href="20_Components/command_layer/01_상황입력.md" target="_blank" class="component-link">React
+                            Tactical Dashboard</a></li>
+                    <li><a href="20_Components/command_layer/02_방책결과시각화.md" target="_blank" class="component-link">방책
+                            시각화(MIL-STD-2525)</a></li>
+                    <li><a href="20_Components/command_layer/03_전략체인시각화.md" target="_blank" class="component-link">전략 추론
+                            체인 시각화</a></li>
+                    <li><a href="20_Components/command_layer/04_사용자피드백.md" target="_blank" class="component-link">지휘관
+                            피드백 루프</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // 컴포넌트 문서 매핑 (상대 경로)
+        const componentDocs = {
+            "DataMgr": "20_Components/data_layer/01_데이터관리자.md",
+            "OntoEngine": "20_Components/data_layer/02_온톨로지변환기.md",
+            "RAGEngine": "20_Components/data_layer/03_임베딩엔진.md",
+            "KG": "20_Components/data_layer/04_지식그래프.md",
+            "VectorDB": "20_Components/data_layer/05_벡터DB.md",
+            "Orchestrator": "20_Components/orchestration_layer/01_Orchestrator.md",
+            "COAAgent": "20_Components/agent_layer/01_COA_추천_Agent.md",
+            "LLMMgr": "20_Components/agent_layer/02_LLM_Manager.md",
+            "Scorer": "20_Components/agent_layer/03_점수계산기.md",
+            "Reasoner": "20_Components/agent_layer/04_온톨로지추론기.md",
+            "UserInput": "20_Components/command_layer/01_상황입력.md",
+            "ResultView": "20_Components/command_layer/02_방책결과시각화.md",
+            "ChainViz": "20_Components/command_layer/03_전략체인시각화.md",
+            "Feedback": "20_Components/command_layer/04_사용자피드백.md"
+        };
+
+        // 컴포넌트 ID를 노드 ID로 변환하는 함수
+        function getNodeIdFromComponentId(componentId) {
+            return componentId;
+        }
+
+        // 문서 경로를 열기
+        function openComponentDoc(componentId) {
+            if (componentDocs[componentId]) {
+                const docRelativePath = componentDocs[componentId];
+                // 상대 경로를 사용하여 새 창에서 열기
+                window.open(docRelativePath, '_blank');
+            }
+        }
+
+        let currentZoom = 1.0;
+        const minZoom = 0.5;
+        const maxZoom = 3.0;
+        const zoomStep = 0.2;
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                fontSize: '20px',
+                fontFamily: 'Malgun Gothic, 맑은 고딕, Arial, sans-serif',
+                primaryColor: '#E3F2FD',
+                primaryTextColor: '#0D47A1',
+                primaryBorderColor: '#1976D2',
+                lineColor: '#757575',
+                secondaryColor: '#F3E5F5',
+                tertiaryColor: '#E8F5E9'
+            },
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20,
+                nodeSpacing: 60,
+                rankSpacing: 100
+            },
+            securityLevel: 'loose'
+        });
+
+        let baseSvgWidth = null;
+        let baseSvgHeight = null;
+
+        function updateZoom() {
+            const diagram = document.getElementById('mermaid-diagram');
+            const svg = diagram.querySelector('svg');
+            if (svg) {
+                // 기본 크기 저장 (첫 번째 호출 시)
+                if (!baseSvgWidth || !baseSvgHeight) {
+                    baseSvgWidth = parseFloat(svg.getAttribute('width')) || svg.viewBox.baseVal.width;
+                    baseSvgHeight = parseFloat(svg.getAttribute('height')) || svg.viewBox.baseVal.height;
+                }
+
+                // SVG 크기를 확대/축소
+                const newWidth = baseSvgWidth * currentZoom;
+                const newHeight = baseSvgHeight * currentZoom;
+                svg.setAttribute('width', newWidth);
+                svg.setAttribute('height', newHeight);
+                svg.style.width = newWidth + 'px';
+                svg.style.height = newHeight + 'px';
+            }
+            document.getElementById('zoom-level').textContent = Math.round(currentZoom * 100) + '%';
+        }
+
+        // Mermaid 렌더링 완료 후 초기 크기 저장 및 노드 클릭 이벤트 추가
+        function setupDiagram() {
+            const diagram = document.getElementById('mermaid-diagram');
+            const svg = diagram.querySelector('svg');
+            if (svg) {
+                // 기본 크기 저장
+                baseSvgWidth = parseFloat(svg.getAttribute('width')) || svg.viewBox.baseVal.width;
+                baseSvgHeight = parseFloat(svg.getAttribute('height')) || svg.viewBox.baseVal.height;
+
+                // SVG가 원래 크기로 표시되도록
+                svg.setAttribute('preserveAspectRatio', 'none');
+                svg.style.width = baseSvgWidth + 'px';
+                svg.style.height = baseSvgHeight + 'px';
+
+                // 노드에 클릭 이벤트 추가
+                setupNodeClickEvents(svg);
+            }
+        }
+
+        // 텍스트 기반 컴포넌트 매핑 (노드 ID를 찾을 수 없을 때 사용)
+        const textToComponentMap = {
+            '데이터관리자': 'DataMgr',
+            'Data Manager': 'DataMgr',
+            '온톨로지 변환기': 'OntoEngine',
+            '임베딩 엔진': 'RAGEngine',
+            'rogel-embedding-v2': 'RAGEngine',
+            '지식그래프': 'KG',
+            'RDF/TTL': 'KG',
+            '벡터 DB': 'VectorDB',
+            'FAISS': 'VectorDB',
+            'Orchestrator': 'Orchestrator',
+            'Core Pipeline': 'Orchestrator',
+            'COA 추천 Agent': 'COAAgent',
+            'EnhancedDefenseCOAAgent': 'COAAgent',
+            'LLM Manager': 'LLMMgr',
+            '점수 계산기': 'Scorer',
+            'COA Scorer': 'Scorer',
+            '온톨로지 추론기': 'Reasoner',
+            'SPARQL': 'Reasoner',
+            '상황 입력': 'UserInput',
+            'Dashboard': 'UserInput',
+            '방책 결과 시각화': 'ResultView',
+            'Top 3': 'ResultView',
+            '전략 체인 시각화': 'ChainViz',
+            'Graphviz': 'ChainViz',
+            '사용자 피드백': 'Feedback'
+        };
+
+        // 텍스트에서 컴포넌트 ID 찾기
+        function findComponentIdFromText(text) {
+            if (!text) return null;
+            const normalizedText = text.trim();
+            for (const [key, compId] of Object.entries(textToComponentMap)) {
+                if (normalizedText.includes(key)) {
+                    return compId;
+                }
+            }
+            return null;
+        }
+
+        // Mermaid 노드에 클릭 이벤트 추가 (완전히 새로운 접근)
+        function setupNodeClickEvents(svg) {
+            console.log('setupNodeClickEvents 시작');
+
+            // 모든 가능한 노드 선택
+            const allNodes = svg.querySelectorAll('g');
+            console.log('전체 g 요소 수:', allNodes.length);
+
+            // 노드 ID와 컴포넌트 매핑 저장
+            const nodeComponentMap = new Map();
+
+            // 1단계: 모든 노드를 순회하며 ID와 텍스트 수집
+            allNodes.forEach((node, index) => {
+                let nodeId = null;
+                let nodeText = '';
+
+                // title에서 ID 추출
+                const title = node.querySelector('title');
+                if (title) {
+                    nodeId = title.textContent.trim();
+                }
+
+                // id 속성에서 추출
+                if (!nodeId && node.id) {
+                    nodeId = node.id.replace(/^flowchart-/, '').replace(/-node$/, '');
+                }
+
+                // 텍스트 수집
+                const textElements = node.querySelectorAll('text');
+                textElements.forEach(text => {
+                    nodeText += (text.textContent || '') + ' ';
+                });
+                nodeText = nodeText.trim();
+
+                // 텍스트에서 컴포넌트 ID 찾기
+                if (nodeText) {
+                    const foundId = findComponentIdFromText(nodeText);
+                    if (foundId && componentDocs[foundId]) {
+                        nodeId = foundId;
+                    }
+                }
+
+                // 노드 ID가 있으면 매핑에 저장
+                if (nodeId && componentDocs[nodeId]) {
+                    nodeComponentMap.set(node, nodeId);
+                    console.log('노드 매핑:', nodeId, '텍스트:', nodeText.substring(0, 50));
+                }
+            });
+
+            console.log('매핑된 노드 수:', nodeComponentMap.size);
+
+            // 2단계: SVG 전체에 클릭 이벤트 추가 (이벤트 위임)
+            svg.addEventListener('click', function (e) {
+                // 클릭된 요소에서 가장 가까운 노드 찾기
+                let target = e.target;
+                let clickedNode = null;
+
+                // 위로 올라가며 노드 찾기
+                while (target && target !== svg) {
+                    if (nodeComponentMap.has(target)) {
+                        clickedNode = target;
+                        break;
+                    }
+                    // 부모 노드도 확인
+                    if (target.parentElement && nodeComponentMap.has(target.parentElement)) {
+                        clickedNode = target.parentElement;
+                        break;
+                    }
+                    target = target.parentElement;
+                }
+
+                if (clickedNode) {
+                    const componentId = nodeComponentMap.get(clickedNode);
+                    console.log('노드 클릭 감지:', componentId);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    openComponentDoc(componentId);
+                    return false;
+                }
+            }, true); // capture phase
+
+            // 3단계: 각 노드에 호버 효과 추가
+            nodeComponentMap.forEach((componentId, node) => {
+                node.style.cursor = 'pointer';
+
+                node.addEventListener('mouseenter', function () {
+                    node.style.opacity = '0.85';
+                    node.style.filter = 'brightness(1.1)';
+                });
+
+                node.addEventListener('mouseleave', function () {
+                    node.style.opacity = '1';
+                    node.style.filter = 'none';
+                });
+            });
+
+            console.log('setupNodeClickEvents 완료');
+        }
+
+        // Mermaid 렌더링 완료 대기
+        const checkMermaidReady = setInterval(function () {
+            const svg = document.querySelector('#mermaid-diagram svg');
+            if (svg && svg.getAttribute('width')) {
+                clearInterval(checkMermaidReady);
+                setupDiagram();
+                // 추가로 노드 클릭 이벤트 재설정 (렌더링 완료 후)
+                setTimeout(function () {
+                    const svg = document.querySelector('#mermaid-diagram svg');
+                    if (svg) {
+                        setupNodeClickEvents(svg);
+                    }
+                }, 500);
+            }
+        }, 100);
+
+        // 최대 5초 후에도 렌더링이 안 되면 강제 설정
+        setTimeout(function () {
+            if (!baseSvgWidth || !baseSvgHeight) {
+                setupDiagram();
+            }
+        }, 5000);
+
+        function zoomIn() {
+            if (currentZoom < maxZoom) {
+                currentZoom = Math.min(currentZoom + zoomStep, maxZoom);
+                updateZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > minZoom) {
+                currentZoom = Math.max(currentZoom - zoomStep, minZoom);
+                updateZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentZoom = 1.0;
+            updateZoom();
+            // 스크롤 위치도 초기화
+            const wrapper = document.getElementById('mermaid-wrapper');
+            wrapper.scrollTop = 0;
+            wrapper.scrollLeft = 0;
+        }
+
+        // 마우스 휠로 확대/축소 (Ctrl + 휠)
+        const mermaidWrapper = document.getElementById('mermaid-wrapper');
+        mermaidWrapper.addEventListener('wheel', function (e) {
+            // Ctrl 키를 누르고 있을 때만 확대/축소
+            if (e.ctrlKey) {
+                e.preventDefault(); // 브라우저 기본 확대/축소 방지
+
+                // 휠 방향에 따라 확대/축소
+                if (e.deltaY < 0) {
+                    // 휠 위로 = 확대
+                    zoomIn();
+                } else {
+                    // 휠 아래로 = 축소
+                    zoomOut();
+                }
+            }
+        }, { passive: false });
+
+        // 드래그로 이동 (Pan) 기능
+        let isDragging = false;
+        let startX, startY;
+        let scrollLeft, scrollTop;
+        const wrapper = document.getElementById('mermaid-wrapper');
+        const diagram = document.getElementById('mermaid-diagram');
+
+        // 마우스 이벤트 (드래그)
+        wrapper.addEventListener('mousedown', function (e) {
+            // 확대/축소 버튼이나 다른 요소 클릭 시 드래그 방지
+            if (e.target.classList.contains('zoom-btn') ||
+                e.target.closest('.zoom-controls') ||
+                e.target.tagName === 'BUTTON') {
+                return;
+            }
+
+            // SVG 내부의 텍스트나 요소 클릭도 허용
+            const svgElement = e.target.closest('svg');
+            if (svgElement) {
+                // 노드 클릭인지 확인 (노드의 text나 rect, path 등을 클릭한 경우)
+                const isNodeClick = e.target.closest('g.node, g[class*="node"]') ||
+                    e.target.tagName === 'text' ||
+                    e.target.closest('g') !== null;
+
+                // 노드 클릭이면 드래그 시작하지 않음
+                if (isNodeClick) {
+                    // 잠시 대기하여 클릭 이벤트가 처리될 시간을 줌
+                    setTimeout(function () {
+                        // 클릭 이벤트가 처리되지 않았다면 드래그 시작
+                        if (!e.defaultPrevented) {
+                            isDragging = true;
+                            wrapper.classList.add('dragging');
+                            startX = e.pageX;
+                            startY = e.pageY;
+                            scrollLeft = wrapper.scrollLeft;
+                            scrollTop = wrapper.scrollTop;
+                        }
+                    }, 100);
+                    return;
+                }
+
+                isDragging = true;
+                wrapper.classList.add('dragging');
+                startX = e.pageX;
+                startY = e.pageY;
+                scrollLeft = wrapper.scrollLeft;
+                scrollTop = wrapper.scrollTop;
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
+
+        document.addEventListener('mousemove', function (e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const x = e.pageX;
+            const y = e.pageY;
+            const walkX = (startX - x); // 반대 방향으로 이동
+            const walkY = (startY - y);
+            wrapper.scrollLeft = scrollLeft + walkX;
+            wrapper.scrollTop = scrollTop + walkY;
+        });
+
+        document.addEventListener('mouseup', function (e) {
+            if (isDragging) {
+                isDragging = false;
+                wrapper.classList.remove('dragging');
+            }
+        });
+
+        // 터치 이벤트 지원 (모바일)
+        let touchStartX, touchStartY;
+        let touchScrollLeft, touchScrollTop;
+
+        wrapper.addEventListener('touchstart', function (e) {
+            if (e.target.classList.contains('zoom-btn') ||
+                e.target.closest('.zoom-controls') ||
+                e.target.tagName === 'BUTTON') {
+                return;
+            }
+
+            if (e.target.closest('svg') || e.target.closest('.mermaid')) {
+                const touch = e.touches[0];
+                touchStartX = touch.pageX;
+                touchStartY = touch.pageY;
+                touchScrollLeft = wrapper.scrollLeft;
+                touchScrollTop = wrapper.scrollTop;
+                wrapper.classList.add('dragging');
+            }
+        }, { passive: false });
+
+        wrapper.addEventListener('touchmove', function (e) {
+            if (!touchStartX || !touchStartY) return;
+            const touch = e.touches[0];
+            const walkX = touchStartX - touch.pageX;
+            const walkY = touchStartY - touch.pageY;
+            wrapper.scrollLeft = touchScrollLeft + walkX;
+            wrapper.scrollTop = touchScrollTop + walkY;
+            e.preventDefault();
+        }, { passive: false });
+
+        wrapper.addEventListener('touchend', function () {
+            touchStartX = null;
+            touchStartY = null;
+            wrapper.classList.remove('dragging');
+        }, { passive: true });
+
+        // 마우스 휠로 확대/축소 (Ctrl 키와 함께) 또는 스크롤
+        wrapper.addEventListener('wheel', function (e) {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    zoomIn();
+                } else {
+                    zoomOut();
+                }
+            }
+            // Ctrl 없이 휠을 돌리면 스크롤 (기본 동작)
+        }, { passive: false });
+
+        // 키보드 단축키
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === '=') {
+                e.preventDefault();
+                zoomIn();
+            } else if ((e.ctrlKey || e.metaKey) && e.key === '-') {
+                e.preventDefault();
+                zoomOut();
+            } else if ((e.ctrlKey || e.metaKey) && e.key === '0') {
+                e.preventDefault();
+                resetZoom();
+            }
+        });
+    </script>
+</body>
+
+</html>

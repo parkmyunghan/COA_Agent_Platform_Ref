@@ -1,0 +1,15 @@
+# knowledge/ontology/reasoning_rules.sparql
+# SPARQL 추론 규칙 예시
+# 높은 위협 수준 탐지
+
+PREFIX def: <http://defense-ai.kr/ontology#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?unit ?threat ?location WHERE {
+  ?unit def:ThreatLevel ?threat .
+  ?unit def:Location ?location .
+  FILTER (?threat > 80)
+}
+ORDER BY DESC(?threat)
+

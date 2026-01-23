@@ -1,0 +1,123 @@
+# agents/ccir_recommendation_agent/rules_ccir.yaml
+# CCIR 추천 규칙 정의
+
+# CCIR 분류 규칙
+ccir_classification:
+  # PIR (Priority Intelligence Requirements) - 적 정보
+  pir:
+    keywords:
+      - "적"
+      - "위협"
+      - "적군"
+      - "enemy"
+      - "threat"
+      - "적성"
+    priority: 1
+    category: "PIR"
+  
+  # FFIR (Friendly Force Information Requirements) - 아군 정보
+  ffir:
+    keywords:
+      - "아군"
+      - "우군"
+      - "friendly"
+      - "우리"
+      - "자군"
+    priority: 2
+    category: "FFIR"
+  
+  # EEFI (Essential Elements of Friendly Information) - 보호해야 할 정보
+  eefi:
+    keywords:
+      - "기밀"
+      - "보호"
+      - "비밀"
+      - "classified"
+      - "민감"
+      - "sensitive"
+    priority: 3
+    category: "EEFI"
+
+# 자산 추천 규칙
+asset_recommendation:
+  # 자산 타입별 적합성 점수
+  asset_types:
+    - name: "위성"
+      suitable_for: ["PIR", "FFIR"]
+      capability_score: 0.9
+      coverage: "광역"
+    
+    - name: "무인기"
+      suitable_for: ["PIR", "FFIR"]
+      capability_score: 0.85
+      coverage: "지역"
+    
+    - name: "인적첩보"
+      suitable_for: ["PIR", "EEFI"]
+      capability_score: 0.75
+      coverage: "지점"
+    
+    - name: "신호첩보"
+      suitable_for: ["PIR", "FFIR"]
+      capability_score: 0.80
+      coverage: "지역"
+    
+    - name: "영상첩보"
+      suitable_for: ["PIR", "FFIR"]
+      capability_score: 0.85
+      coverage: "지역"
+
+# 요청 관리 규칙
+request_management:
+  # 우선순위 결정 기준
+  priority_criteria:
+    threat_level: 0.4
+    timeliness: 0.3
+    information_gap: 0.2
+    resource_availability: 0.1
+  
+  # 경보 임계값
+  alert_thresholds:
+    high_priority: 0.8
+    medium_priority: 0.5
+    low_priority: 0.3
+  
+  # 자동 요약 규칙
+  summarization:
+    max_length: 200
+    include_keywords: true
+    include_priority: true
+
+# 동적 갱신 규칙
+dynamic_update:
+  # 갱신 트리거 조건
+  update_triggers:
+    - situation_change: true
+    - threat_level_change: 0.1  # 10% 이상 변화
+    - new_intel_received: true
+    - time_elapsed: 3600  # 1시간 경과
+  
+  # 갱신 빈도
+  update_frequency:
+    high_priority: 300  # 5분
+    medium_priority: 1800  # 30분
+    low_priority: 3600  # 1시간
+
+# 평가 기준
+evaluation_criteria:
+  information_quality: 0.3
+  timeliness: 0.25
+  relevance: 0.25
+  completeness: 0.2
+
+
+
+
+
+
+
+
+
+
+
+

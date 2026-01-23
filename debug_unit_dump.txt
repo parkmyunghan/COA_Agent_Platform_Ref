@@ -1,0 +1,13 @@
+         아군부대ID    부대명  제대   병종  전투력지수  배치축선ID  배치지형셀ID 가용상태   임무역할                   좌표정보       고유명칭  상급부대   이동방향  이동속도_kmh   전투력           상태 현재위치_지형셀ID 주둔지역_축선ID   기동속도  탐지범위       부대부호(SIDC)
+0        FRU001  기계화여단  여단  기계화     75  AXIS01  TERR002   가용     주공  126.995470, 37.999084     여단-1여단  제1군단  200.0       0.0  0.75  Operational        NaN       NaN    NaN   NaN              NaN
+1        FRU002   보병여단  여단   보병     65  AXIS02  TERR003   가용     조공  127.002824, 37.997618     여단-2여단  제1군단  111.0       0.0  0.65  Operational        NaN       NaN    NaN   NaN              NaN
+2        FRU003   기갑여단  여단   기갑     85  AXIS01  TERR005   가용     주공  126.996438, 37.986055     여단-3여단  제1군단  263.0       0.0  0.85  Operational        NaN       NaN    NaN   NaN              NaN
+3        FRU004   포병여단  여단   포병     90  AXIS05  TERR001   가용   화력지원  126.998611, 38.001584  여단-00포병여단  제1군단  208.0       0.0  0.90  Operational        NaN       NaN    NaN   NaN              NaN
+4        FRU005   수색대대  대대   수색     60  AXIS02  TERR004   가용     탐지  126.997534, 37.994287  대대-00수색대대  제1군단  276.0       0.0  0.60  Operational        NaN       NaN    NaN   NaN              NaN
+5        FRU006   전차대대  대대   기갑     80  AXIS03  TERR009   가용     차단  126.985692, 38.010244  대대-00전차대대  제1군단    4.0      40.0  0.80  Operational        NaN       NaN    NaN   NaN              NaN
+6        FRU007   공병대대  대대   공병     70  AXIS01  TERR002   가용  장애물설치  126.995470, 37.999084  대대-00공병대대  제1군단  320.0       0.0  0.70  Operational        NaN       NaN    NaN   NaN              NaN
+7        FRU008   통신대대  대대   통신     55  AXIS05  TERR010   가용     지원  126.987083, 37.999053  대대-00통신대대  제1군단  338.0       0.0  0.55  Operational        NaN       NaN    NaN   NaN              NaN
+8        FRU009   의무중대  중대   의무     50  AXIS01  TERR005   가용     지원  126.996438, 37.986055  중대-00의무중대  제1군단  112.0       0.0  0.50  Operational        NaN       NaN    NaN   NaN              NaN
+9        FRU010   보급대대  대대   군수     60  AXIS05  TERR010   가용     지원  126.987083, 37.999053  대대-00보급대대  제1군단   11.0       0.0  0.60  Operational        NaN       NaN    NaN   NaN              NaN
+10  FR_UNIT_005  1항공여단  여단   항공     90     NaN      NaN  NaN    NaN                    NaN        NaN   NaN    NaN       NaN   NaN           가용    TERR002    AXIS06  100.0  20.0  SFG*H-----*****
+11  FR_UNIT_006  특수작전팀   팀  특수전     85     NaN      NaN  NaN    NaN                    NaN        NaN   NaN    NaN       NaN   NaN           가용    TERR005    AXIS01   40.0  10.0  SFG*U-----*****

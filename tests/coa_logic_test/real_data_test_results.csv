@@ -1,0 +1,4 @@
+threat_id,threat_type,threat_level,top_choice,top_score,all_scores
+THR001,침투,0.9,maneuver,0.765,"{'maneuver': 0.765, 'offensive': 0.755, 'preemptive': 0.745, 'counter_attack': 0.72, 'deterrence': 0.72, 'defense': 0.718, 'information_ops': 0.695}"
+THR002,포병준비,0.5,maneuver,0.685,"{'maneuver': 0.685, 'offensive': 0.675, 'preemptive': 0.665, 'deterrence': 0.66, 'information_ops': 0.635, 'counter_attack': 0.62, 'defense': 0.59}"
+THR006,공중위협,0.9,maneuver,0.765,"{'maneuver': 0.765, 'offensive': 0.755, 'preemptive': 0.745, 'defense': 0.724, 'counter_attack': 0.72, 'deterrence': 0.72, 'information_ops': 0.695}"

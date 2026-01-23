@@ -1,0 +1,28 @@
+2026-01-23 13:20:50,923 - root - INFO - Logging initialized. File: logs\platform_20260123.log
+2026-01-23 13:20:50,933 - root - INFO - [시스템] 디버깅 모드 활성화됨 - 상세 로그가 기록됩니다.
+2026-01-23 13:20:50,935 - api.dependencies - INFO - Initializing Orchestrator...
+2026-01-23 13:20:50,977 - OntologyManager - INFO - 기존 온톨로지 파일 발견: instances.ttl. 자동 로드를 시도합니다.
+2026-01-23 13:20:50,978 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\schema.ttl)
+2026-01-23 13:20:51,020 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 624
+2026-01-23 13:20:51,022 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\instances.ttl)
+2026-01-23 13:20:51,303 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 6613
+2026-01-23 13:20:51,379 - OntologyManager - INFO - 'instances.ttl' 기반으로 그래프 초기화 완료. 원본 크기: 6613 triples
+2026-01-23 13:20:51,393 - OntologyManager - INFO - 추론 여부 판단 - 원본: 6613 triples, 현재: 6613 triples, 비율: 1.00x
+2026-01-23 13:20:51,413 - OntologyManager - INFO - instances_reasoned.ttl이 없어 OWL-RL 추론을 자동 실행합니다...
+2026-01-23 13:20:51,426 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 시작: 원본 트리플 수 = 6613
+2026-01-23 13:20:51,531 - core_pipeline.owl_reasoner - INFO - RDFS 추론 실행 중...
+2026-01-23 13:20:55,694 - core_pipeline.owl_reasoner - INFO - RDFS 추론 후: 9359 triples (+2746)
+2026-01-23 13:20:55,696 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 실행 중...
+2026-01-23 13:21:07,647 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 완료: 6221개 새로운 트리플 생성 (16.23초)
+2026-01-23 13:21:07,648 - core_pipeline.owl_reasoner - INFO -   원본: 6613 → 추론: 12834 triples
+2026-01-23 13:21:07,650 - OntologyManager - INFO - OWL-RL 추론 완료: 6221개 새로운 트리플 생성
+2026-01-23 13:21:12,192 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-23 13:21:12,211 - LLMManager - INFO - OpenAI API 초기화 및 검증(생성 테스트) 완료 (모델: gpt-4o)
+2026-01-23 13:21:24,227 - LLMManager - INFO - 사내망 모델 4개 중 0개 사용 가능
+2026-01-23 13:21:24,230 - RuleEngine - INFO - 규칙 파일 로드 완료: 3개 규칙, 3개 가중치
+2026-01-23 13:21:35,956 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-23 13:21:36,511 - api.dependencies - INFO - Initializing COAService...
+2026-01-23 13:21:36,523 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-23 13:21:36,545 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-23 13:21:36,545 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-23 13:21:36,550 - api.dependencies - INFO - Global State Initialized.

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 2: Situation Analysis (상황 분석)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1976D2;
+            border-bottom: 3px solid #1976D2;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #0288D1;
+            margin-top: 30px;
+            border-left: 4px solid #0288D1;
+            padding-left: 10px;
+        }
+
+        h3 {
+            color: #0277BD;
+        }
+
+        .diagram-container {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .step-box {
+            background: #e3f2fd;
+            border-left: 4px solid #1976D2;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .code-block {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+        }
+
+        .info-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1976D2;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📌 Phase 2: Situation Analysis (상황 분석)</h1>
+
+        <div class="info-box">
+            <strong>Phase 개요</strong><br />
+            사용자가 선택한 위협 상황을 다각도로 분석하고, 온톨로지 그래프와 RAG 시스템을 활용하여 상황 정보를 enrichment합니다.
+            LLM 협력을 통해 상황 인사이트를 추출하고, Phase 3 COA 평가를 위한 종합 정보를 준비합니다.
+        </div>
+
+        <h2>🔄 전체 프로세스 흐름</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+                graph TB
+                Start([Phase 2 시작]) --> Input{입력 유형 확인}
+
+                Input -->|situation_id 제공| LoadSituation[1. 상황 정보 로드<br />_load_situation]
+                Input -->|selected_situation_info| UseManual[수동입력/데모 정보 사용]
+                Input -->|질문만 제공| GenericAnalysis[일반 상황 분석<br />_analyze_situation_generic]
+
+                LoadSituation --> DimAnalysis[2. 다차원 분석<br />_analyze_situation_dimensions]
+                UseManual --> DimAnalysis
+                GenericAnalysis --> DimAnalysis
+
+                DimAnalysis --> CheckGraph{온톨로지<br />그래프 존재?}
+
+                CheckGraph -->|Yes| EntitySearch[3. 관련 엔티티 탐색<br />_find_related_entities_enhanced]
+                CheckGraph -->|No| SkipEntity[Skip]
+
+                EntitySearch --> EntityResult[SPARQL 쿼리 실행<br />부대/축선/지형 연관성 조회]
+                EntityResult --> CheckRAG{RAG 활성화?}
+                SkipEntity --> CheckRAG
+
+                CheckRAG -->|Yes| RAGSearch[4. RAG 문서 검색<br />retrieve_with_context]
+                CheckRAG -->|No| SkipRAG[Skip]
+
+                RAGSearch --> RAGResult[교리/작전지침 문서 검색]
+                RAGResult --> LLMAnalysis[5. LLM 상황 분석<br />_llm_analyze_situation]
+                SkipRAG --> LLMAnalysis
+
+                LLMAnalysis --> Integration[6. 결과 통합<br />situation_analysis 생성]
+
+                Integration --> Output([Phase 2 완료<br />situation_analysis 반환])
+
+                style Start fill:#4CAF50,color:#fff
+                style Output fill:#2196F3,color:#fff
+                style EntitySearch fill:#FF9800,color:#fff
+                style RAGSearch fill:#9C27B0,color:#fff
+                style LLMAnalysis fill:#E91E63,color:#fff
+            </div>
+        </div>
+
+        <h2>📋 단계별 상세 설명</h2>
+
+        <div class="step-box">
+            <h3>Step 1: 상황 정보 로드</h3>
+            <p><strong>함수</strong>: <code>_load_situation(situation_id)</code></p>
+            <p><strong>입력</strong>:</p>
+            <ul>
+                <li><code>situation_id</code>: 위협상황 ID (예: "THREAT_001")</li>
+                <li><strong>또는</strong> <code>selected_situation_info</code>: 수동입력/데모 시나리오 정보 (딕셔너리)</li>
+            </ul>
+            <p><strong>처리 로직</strong>:</p>
+            <ol>
+                <li><code>data_manager</code>를 통해 위협상황 테이블 조회</li>
+                <li>해당 위협ID의 레코드를 딕셔너리로 변환</li>
+                <li>주요 필드: <code>위협ID</code>, <code>위협유형</code>, <code>심각도</code>, <code>발생위치셀ID</code> 등</li>
+                <li>조회 실패 시 <code>selected_situation_info</code> 폴백 사용</li>
+            </ol>
+            <p><strong>출력 예시</strong>:</p>
+            <div class="code-block">
+                situation_info = {
+                "위협ID": "THREAT_001",
+                "위협유형": "Air Assault",
+                "심각도": 0.85,
+                "발생위치셀ID": "CELL_A3",
+                "관련축선ID": "AXIS01",
+                "상황명": "적 헬기 공습"
+                }
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 2: 다차원 상황 분석</h3>
+            <p><strong>함수</strong>: <code>_analyze_situation_dimensions(situation_info)</code></p>
+            <p><strong>분석 차원</strong>:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>차원</th>
+                        <th>분석 내용</th>
+                        <th>활용</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>위협 수준</td>
+                        <td>심각도를 High/Medium/Low로 변환</td>
+                        <td>우선순위 결정</td>
+                    </tr>
+                    <tr>
+                        <td>공간 정보</td>
+                        <td>발생 위치 지형셀 특성 파악</td>
+                        <td>지형 기반 방책 선택</td>
+                    </tr>
+                    <tr>
+                        <td>시간 정보</td>
+                        <td>긴급도, 대응 시간 추정</td>
+                        <td>방책 실현가능성 평가</td>
+                    </tr>
+                    <tr>
+                        <td>전투력 균형</td>
+                        <td>아군 vs 적군 전투력 비교</td>
+                        <td>방책 유형 결정</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>코드 참조</strong>: <code>logic_defense_enhanced.py</code> 라인 1493-1521</p>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 3: 관련 엔티티 탐색 (온톨로지 그래프 활용)</h3>
+            <p><strong>함수</strong>: <code>_find_related_entities_enhanced(situation_info, use_reasoned=True)</code></p>
+            <p><strong>SPARQL 쿼리 패턴</strong>:</p>
+            <div class="code-block">
+                # 위협과 관련된 부대 조회
+                SELECT ?unit ?unitLabel ?location
+                WHERE {
+                ?threat a ns:위협상황 .
+                ?threat ns:위협ID "THREAT_001" .
+                ?threat ns:has지형셀 ?terrain .
+                ?unit ns:locatedIn ?terrain .
+                ?unit rdfs:label ?unitLabel .
+                }
+
+                # 위협 축선상의 아군 부대 조회
+                SELECT ?unit ?axis
+                WHERE {
+                ?threat ns:관련축선ID "AXIS01" .
+                ?unit ns:hasAxis ?axis .
+                FILTER(?axis = ns:AXIS01)
+                }
+            </div>
+            <p><strong>검색 대상</strong>:</p>
+            <ul>
+                <li>위협 지역에 배치된 아군 부대 (locatedIn 관계)</li>
+                <li>관련 축선상의 부대 (hasAxis 관계)</li>
+                <li>인접 지형셀의 자산 (spatial proximity)</li>
+                <li>적용 가능한 제약조건 (동적 FK)</li>
+            </ul>
+            <p><strong>출력 예시</strong>:</p>
+            <div class="code-block">
+                related_entities = [
+                { "type": "아군부대", "id": "UNIT_001", "label": "1대대", "relation": "locatedIn" },
+                { "type": "전장축선", "id": "AXIS01", "label": "주공축선", "relation": "threat_axis" },
+                { "type": "제약조건", "id": "CONST_002", "label": "야간작전불가", "relation": "appliesTo" }
+                ]
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 4: RAG 문서 검색</h3>
+            <p><strong>조건</strong>: <code>use_embedding=True</code> AND <code>rag_manager.is_available()</code></p>
+            <p><strong>검색 쿼리 생성</strong>:</p>
+            <div class="code-block">
+                threat_query = f"위협 상황 {situation_info.get('위협유형', '일반')}"
+                # 예: "위협 상황 Air Assault"
+
+                rag_results = rag_manager.retrieve_with_context(threat_query, top_k=5)
+            </div>
+            <p><strong>검색 대상 문서</strong>:</p>
+            <ul>
+                <li><code>ROE_및_제약조건.txt</code> - 교전 규칙</li>
+                <li><code>작전_방책선정_지침.txt</code> - 방책 선정 기준</li>
+                <li><code>통신_보급_체크리스트.txt</code> - 자원 점검 항목</li>
+            </ul>
+            <p><strong>하이브리드 검색</strong>: TF-IDF + Vector Similarity 점수 결합</p>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 5: LLM 기반 상황 분석 (신규)</h3>
+            <p><strong>함수</strong>:
+                <code>_llm_analyze_situation(situation_info, user_query, selected_situation_info)</code></p>
+            <p><strong>목적</strong>: 구조화된 데이터만으로는 포착하기 어려운 전술적 인사이트 추출</p>
+            <p><strong>LLM 요청 내용</strong>:</p>
+            <ul>
+                <li>주요 위협 요소 (key_factors)</li>
+                <li>작전 제약사항 (constraints)</li>
+                <li>위협 평가 (threat_assessment)</li>
+            </ul>
+            <p><strong>통합 방식</strong>:</p>
+            <div class="code-block">
+                # LLM 인사이트를 situation_info에 추가
+                situation_info["llm_key_factors"] = llm_analysis["insights"]["key_factors"]
+                situation_info["llm_constraints"] = llm_analysis["insights"]["constraints"]
+            </div>
+        </div>
+
+        <div class="step-box">
+            <h3>Step 6: 결과 통합 및 반환</h3>
+            <p><strong>최종 출력 구조</strong>:</p>
+            <div class="code-block">
+                situation_analysis = {
+                "situation_info": { # 원본 상황 정보 + LLM 인사이트
+                "위협ID": "THREAT_001",
+                "위협유형": "Air Assault",
+                "심각도": 0.85,
+                "llm_key_factors": ["헬기 기동성", "야간 작전 가능성"],
+                "llm_constraints": ["대공포 사거리 제한", "통신 재밍 우려"]
+                },
+                "dimension_analysis": { # 다차원 분석 결과
+                "threat_level": "High",
+                "urgency": "Immediate",
+                "force_balance": "Symmetrical"
+                },
+                "related_entities": [...], # 관련 엔티티 리스트
+                "rag_results": [...], # RAG 검색 결과
+                "llm_insights": {...}, # LLM 분석 원본
+                "llm_analysis_used": true # LLM 사용 여부 플래그
+                }
+            </div>
+        </div>
+
+        <h2>🔍 데이터 흐름 추적</h2>
+        <div class="info-box">
+            <h3>입력 → 처리 → 출력</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>단계</th>
+                        <th>입력 데이터</th>
+                        <th>처리 모듈</th>
+                        <th>출력 데이터</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>situation_id: "THREAT_001"</td>
+                        <td>data_manager → Excel 조회</td>
+                        <td>situation_info (dict)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>situation_info</td>
+                        <td>dimension_analysis()</td>
+                        <td>dimension_analysis (dict)</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>situation_info</td>
+                        <td>SPARQL 쿼리 → RDF Graph</td>
+                        <td>related_entities (list)</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>"위협 상황 Air Assault"</td>
+                        <td>RAG: TF-IDF + Vector Search</td>
+                        <td>rag_results (list)</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>situation_info + user_query</td>
+                        <td>LLM API 호출</td>
+                        <td>llm_insights (dict)</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>All above</td>
+                        <td>결과 병합</td>
+                        <td>situation_analysis (dict)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>⚙️ 구성 및 설정</h2>
+        <div class="step-box">
+            <h3>활성화/비활성화 옵션</h3>
+            <ul>
+                <li><code>use_embedding</code>: RAG 검색 활성화 (기본: <code>True</code>)</li>
+                <li><code>use_reasoned_graph</code>: 추론된 트리플 포함 여부 (기본: <code>True</code>)</li>
+                <li><code>enable_llm_analysis</code>: LLM 상황 분석 사용 (현재 활성화 중)</li>
+            </ul>
+        </div>
+
+        <h2>📂 코드 참조</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>파일</th>
+                    <th>주요 함수</th>
+                    <th>라인</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>execute_reasoning()</code></td>
+                    <td>100-696</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_analyze_situation()</code></td>
+                    <td>1194-1276</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_load_situation()</code></td>
+                    <td>1370-1438</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_analyze_situation_dimensions()</code></td>
+                    <td>1493-1521</td>
+                </tr>
+                <tr>
+                    <td>logic_defense_enhanced.py</td>
+                    <td><code>_find_related_entities_enhanced()</code></td>
+                    <td>~2200 (추정)</td>
+                </tr>
+                <tr>
+                    <td>rag_manager.py</td>
+                    <td><code>retrieve_with_context()</code></td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>✅ 검증 포인트</h2>
+        <div class="warning-box">
+            <h3>Phase 2 품질 확보를 위한 체크리스트</h3>
+            <ol>
+                <li><strong>상황 정보 완전성</strong>: 필수 필드 (위협ID, 위협유형, 심각도) 존재 여부</li>
+                <li><strong>엔티티 탐색 범위</strong>: SPARQL 쿼리가 모든 관련 테이블 커버하는지 확인</li>
+                <li><strong>RAG 검색 정확도</strong>: 검색된 문서가 위협 유형과 관련성이 있는지</li>
+                <li><strong>LLM 인사이트 품질</strong>: LLM이 실질적인 전술적 가치를 제공하는지</li>
+                <li><strong>폴백 메커니즘</strong>: 각 단계 실패 시 안전하게 계속 진행 가능한지</li>
+            </ol>
+        </div>
+
+        <h2>🔗 Next Phase</h2>
+        <p><strong>Phase 3: COA Generation & Scoring</strong>으로 이동</p>
+        <p><code>situation_analysis</code> 딕셔너리가 Phase 3의 입력으로 전달되어 방책 후보 생성 및 점수 산정에 활용됩니다.</p>
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

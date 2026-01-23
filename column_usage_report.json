@@ -1,0 +1,674 @@
+{
+  "COA_Library.xlsx": [
+    {
+      "column": "COA_ID",
+      "usage_count": 41
+    },
+    {
+      "column": "명칭",
+      "usage_count": 26
+    },
+    {
+      "column": "방책유형",
+      "usage_count": 23
+    },
+    {
+      "column": "설명",
+      "usage_count": 59
+    },
+    {
+      "column": "적용조건",
+      "usage_count": 8
+    },
+    {
+      "column": "키워드",
+      "usage_count": 16
+    },
+    {
+      "column": "필요자원",
+      "usage_count": 14
+    },
+    {
+      "column": "전장환경_제약",
+      "usage_count": 7
+    },
+    {
+      "column": "워게임_모의_분석_승률",
+      "usage_count": 12
+    },
+    {
+      "column": "환경호환성",
+      "usage_count": 3
+    },
+    {
+      "column": "환경비호환성",
+      "usage_count": 3
+    },
+    {
+      "column": "단계정보",
+      "usage_count": 3
+    },
+    {
+      "column": "주노력여부",
+      "usage_count": 3
+    },
+    {
+      "column": "시각화스타일",
+      "usage_count": 7
+    },
+    {
+      "column": "적합위협유형",
+      "usage_count": 19
+    },
+    {
+      "column": "자원우선순위",
+      "usage_count": 13
+    },
+    {
+      "column": "전장환경_최적조건",
+      "usage_count": 3
+    },
+    {
+      "column": "연계방책",
+      "usage_count": 4
+    },
+    {
+      "column": "적대응전술",
+      "usage_count": 3
+    }
+  ],
+  "가용자원.xlsx": [
+    {
+      "column": "situation_id",
+      "usage_count": 120
+    },
+    {
+      "column": "resource_type",
+      "usage_count": 20
+    },
+    {
+      "column": "resource_name",
+      "usage_count": 28
+    },
+    {
+      "column": "available_quantity",
+      "usage_count": 29
+    },
+    {
+      "column": "location",
+      "usage_count": 88
+    },
+    {
+      "column": "status",
+      "usage_count": 188
+    },
+    {
+      "column": "unit",
+      "usage_count": 6
+    },
+    {
+      "column": "notes",
+      "usage_count": 0
+    },
+    {
+      "column": "수량",
+      "usage_count": 0
+    }
+  ],
+  "기상상황.xlsx": [
+    {
+      "column": "기상ID",
+      "usage_count": 0
+    },
+    {
+      "column": "지형셀ID",
+      "usage_count": 41
+    },
+    {
+      "column": "기상유형",
+      "usage_count": 5
+    },
+    {
+      "column": "시각",
+      "usage_count": 3
+    },
+    {
+      "column": "비고",
+      "usage_count": 17
+    }
+  ],
+  "민간인지역.xlsx": [
+    {
+      "column": "민간인지역ID",
+      "usage_count": 6
+    },
+    {
+      "column": "지역명",
+      "usage_count": 7
+    },
+    {
+      "column": "위치지형셀ID",
+      "usage_count": 9
+    },
+    {
+      "column": "인구밀도",
+      "usage_count": 6
+    },
+    {
+      "column": "보호우선순위",
+      "usage_count": 7
+    },
+    {
+      "column": "대피경로",
+      "usage_count": 6
+    },
+    {
+      "column": "중요시설",
+      "usage_count": 6
+    },
+    {
+      "column": "좌표정보",
+      "usage_count": 54
+    },
+    {
+      "column": "비고",
+      "usage_count": 17
+    }
+  ],
+  "방책유형_위협유형_관련성.xlsx": [
+    {
+      "column": "coa_type",
+      "usage_count": 72
+    },
+    {
+      "column": "threat_type",
+      "usage_count": 112
+    },
+    {
+      "column": "base_relevance",
+      "usage_count": 52
+    },
+    {
+      "column": "description",
+      "usage_count": 201
+    }
+  ],
+  "시나리오모음.xlsx": [
+    {
+      "column": "ID",
+      "usage_count": 51
+    },
+    {
+      "column": "상황명",
+      "usage_count": 11
+    },
+    {
+      "column": "위협유형",
+      "usage_count": 75
+    },
+    {
+      "column": "심각도",
+      "usage_count": 42
+    },
+    {
+      "column": "설명",
+      "usage_count": 59
+    },
+    {
+      "column": "threat_level",
+      "usage_count": 147
+    },
+    {
+      "column": "enemy_type",
+      "usage_count": 10
+    },
+    {
+      "column": "terrain",
+      "usage_count": 43
+    }
+  ],
+  "아군가용자산.xlsx": [
+    {
+      "column": "자산ID",
+      "usage_count": 1
+    },
+    {
+      "column": "자산명",
+      "usage_count": 5
+    },
+    {
+      "column": "자산종류",
+      "usage_count": 10
+    },
+    {
+      "column": "수량",
+      "usage_count": 0
+    },
+    {
+      "column": "배치지형셀ID",
+      "usage_count": 36
+    },
+    {
+      "column": "가용상태",
+      "usage_count": 2
+    },
+    {
+      "column": "비고",
+      "usage_count": 17
+    },
+    {
+      "column": "SIDC",
+      "usage_count": 1
+    },
+    {
+      "column": "전투력지수",
+      "usage_count": 22
+    },
+    {
+      "column": "이동속도_kmh",
+      "usage_count": 9
+    },
+    {
+      "column": "감지범위_km",
+      "usage_count": 4
+    }
+  ],
+  "아군부대현황.xlsx": [
+    {
+      "column": "아군부대ID",
+      "usage_count": 16
+    },
+    {
+      "column": "부대명",
+      "usage_count": 38
+    },
+    {
+      "column": "제대",
+      "usage_count": 37
+    },
+    {
+      "column": "병종",
+      "usage_count": 39
+    },
+    {
+      "column": "전투력지수",
+      "usage_count": 22
+    },
+    {
+      "column": "배치축선ID",
+      "usage_count": 16
+    },
+    {
+      "column": "배치지형셀ID",
+      "usage_count": 36
+    },
+    {
+      "column": "가용상태",
+      "usage_count": 2
+    },
+    {
+      "column": "임무역할",
+      "usage_count": 1
+    },
+    {
+      "column": "좌표정보",
+      "usage_count": 54
+    },
+    {
+      "column": "고유명칭",
+      "usage_count": 6
+    },
+    {
+      "column": "상급부대",
+      "usage_count": 5
+    },
+    {
+      "column": "이동방향",
+      "usage_count": 20
+    },
+    {
+      "column": "이동속도",
+      "usage_count": 23
+    },
+    {
+      "column": "전투력",
+      "usage_count": 26
+    },
+    {
+      "column": "상태",
+      "usage_count": 24
+    }
+  ],
+  "위협상황.xlsx": [
+    {
+      "column": "위협ID",
+      "usage_count": 70
+    },
+    {
+      "column": "위협명",
+      "usage_count": 16
+    },
+    {
+      "column": "발생시각",
+      "usage_count": 5
+    },
+    {
+      "column": "위협유형코드",
+      "usage_count": 20
+    },
+    {
+      "column": "관련축선ID",
+      "usage_count": 42
+    },
+    {
+      "column": "발생위치셀ID",
+      "usage_count": 23
+    },
+    {
+      "column": "관련_적부대ID",
+      "usage_count": 3
+    },
+    {
+      "column": "위협수준",
+      "usage_count": 60
+    },
+    {
+      "column": "관련임무ID",
+      "usage_count": 4
+    },
+    {
+      "column": "원시보고텍스트",
+      "usage_count": 3
+    },
+    {
+      "column": "좌표정보",
+      "usage_count": 54
+    },
+    {
+      "column": "고유명칭",
+      "usage_count": 6
+    },
+    {
+      "column": "상급부대",
+      "usage_count": 5
+    },
+    {
+      "column": "이동방향",
+      "usage_count": 20
+    },
+    {
+      "column": "이동속도",
+      "usage_count": 23
+    },
+    {
+      "column": "전투력",
+      "usage_count": 26
+    },
+    {
+      "column": "상태",
+      "usage_count": 24
+    },
+    {
+      "column": "위협유형",
+      "usage_count": 75
+    },
+    {
+      "column": "임무유형",
+      "usage_count": 14
+    },
+    {
+      "column": "자원가용성",
+      "usage_count": 5
+    },
+    {
+      "column": "기상",
+      "usage_count": 15
+    },
+    {
+      "column": "지형",
+      "usage_count": 14
+    },
+    {
+      "column": "시간",
+      "usage_count": 12
+    }
+  ],
+  "위협유형_마스터.xlsx": [
+    {
+      "column": "위협유형코드",
+      "usage_count": 20
+    },
+    {
+      "column": "위협유형명",
+      "usage_count": 0
+    },
+    {
+      "column": "위협카테고리",
+      "usage_count": 0
+    },
+    {
+      "column": "위협심도",
+      "usage_count": 0
+    },
+    {
+      "column": "설명",
+      "usage_count": 59
+    },
+    {
+      "column": "대표키워드",
+      "usage_count": 0
+    },
+    {
+      "column": "사용여부",
+      "usage_count": 0
+    }
+  ],
+  "임무정보.xlsx": [
+    {
+      "column": "임무ID",
+      "usage_count": 44
+    },
+    {
+      "column": "임무명",
+      "usage_count": 21
+    },
+    {
+      "column": "임무종류",
+      "usage_count": 20
+    },
+    {
+      "column": "작전지역",
+      "usage_count": 1
+    },
+    {
+      "column": "지휘관의도",
+      "usage_count": 2
+    },
+    {
+      "column": "상급부대지침",
+      "usage_count": 1
+    },
+    {
+      "column": "주공축선ID",
+      "usage_count": 4
+    },
+    {
+      "column": "조공축선ID",
+      "usage_count": 2
+    },
+    {
+      "column": "예비축선ID",
+      "usage_count": 2
+    },
+    {
+      "column": "작전개시시각",
+      "usage_count": 0
+    },
+    {
+      "column": "작전종료예상",
+      "usage_count": 0
+    }
+  ],
+  "적군부대현황.xlsx": [
+    {
+      "column": "적군부대ID",
+      "usage_count": 10
+    },
+    {
+      "column": "부대명",
+      "usage_count": 38
+    },
+    {
+      "column": "제대",
+      "usage_count": 37
+    },
+    {
+      "column": "병종",
+      "usage_count": 39
+    },
+    {
+      "column": "전투력지수",
+      "usage_count": 22
+    },
+    {
+      "column": "배치축선ID",
+      "usage_count": 16
+    },
+    {
+      "column": "배치지형셀ID",
+      "usage_count": 36
+    },
+    {
+      "column": "위협수준",
+      "usage_count": 60
+    },
+    {
+      "column": "좌표정보",
+      "usage_count": 54
+    },
+    {
+      "column": "SIDC",
+      "usage_count": 1
+    },
+    {
+      "column": "이동속도_kmh",
+      "usage_count": 9
+    },
+    {
+      "column": "감지범위_km",
+      "usage_count": 4
+    }
+  ],
+  "전장축선.xlsx": [
+    {
+      "column": "축선ID",
+      "usage_count": 32
+    },
+    {
+      "column": "축선명",
+      "usage_count": 13
+    },
+    {
+      "column": "축선유형",
+      "usage_count": 6
+    },
+    {
+      "column": "시작지형셀ID",
+      "usage_count": 10
+    },
+    {
+      "column": "종단지형셀ID",
+      "usage_count": 10
+    },
+    {
+      "column": "주요지형셀목록",
+      "usage_count": 6
+    },
+    {
+      "column": "축선설명",
+      "usage_count": 2
+    }
+  ],
+  "제약조건.xlsx": [
+    {
+      "column": "제약ID",
+      "usage_count": 5
+    },
+    {
+      "column": "적용대상유형",
+      "usage_count": 2
+    },
+    {
+      "column": "적용대상ID",
+      "usage_count": 2
+    },
+    {
+      "column": "제약유형",
+      "usage_count": 1
+    },
+    {
+      "column": "제약내용",
+      "usage_count": 0
+    },
+    {
+      "column": "우선순위",
+      "usage_count": 37
+    }
+  ],
+  "지형셀.xlsx": [
+    {
+      "column": "지형셀ID",
+      "usage_count": 41
+    },
+    {
+      "column": "지형명",
+      "usage_count": 5
+    },
+    {
+      "column": "지형유형",
+      "usage_count": 3
+    },
+    {
+      "column": "기동성등급",
+      "usage_count": 2
+    },
+    {
+      "column": "방어유리도",
+      "usage_count": 1
+    },
+    {
+      "column": "관측유리도",
+      "usage_count": 1
+    },
+    {
+      "column": "요충지여부",
+      "usage_count": 1
+    },
+    {
+      "column": "좌표정보",
+      "usage_count": 54
+    },
+    {
+      "column": "설명",
+      "usage_count": 59
+    }
+  ],
+  "평가기준_가중치.xlsx": [
+    {
+      "column": "기준ID",
+      "usage_count": 1
+    },
+    {
+      "column": "평가요소",
+      "usage_count": 11
+    },
+    {
+      "column": "가중치",
+      "usage_count": 18
+    },
+    {
+      "column": "설명",
+      "usage_count": 59
+    }
+  ]
+}

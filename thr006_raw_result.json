@@ -1,0 +1,9 @@
+{
+  "agent": "EnhancedDefenseCOAAgent",
+  "status": "completed",
+  "situation_id": "THR006",
+  "situation_analysis": {
+    "situation_info": {
+      "위협ID": "THR006",
+      "위협명": "고지245 공중위협",
+      "발생시각": 

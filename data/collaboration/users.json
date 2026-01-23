@@ -1,0 +1,132 @@
+[
+  {
+    "user_id": "USER001",
+    "username": "commander1",
+    "password_hash": "c9cfe348dbc4654fda051b12b81cd777ef98727802feb92b020799ca3e7a36b2",
+    "role": "commander",
+    "department": "작전부",
+    "is_super_user": false,
+    "created_at": "2025-11-20T22:59:42.218611",
+    "last_login": null
+  },
+  {
+    "user_id": "USER002",
+    "username": "planner1",
+    "password_hash": "099801e1172f063d6089af836c4391357c753f615ed140150529c15585cda4ff",
+    "role": "planner",
+    "department": "작전계획부",
+    "is_super_user": false,
+    "created_at": "2025-11-20T22:59:42.219617",
+    "last_login": null
+  },
+  {
+    "user_id": "USER003",
+    "username": "analyst1",
+    "password_hash": "20249749412d73a3f5799f6f1dcf910e7b4aa3ce4de133b1f8a63c044792a4e9",
+    "role": "analyst",
+    "department": "정보분석부",
+    "is_super_user": false,
+    "created_at": "2025-11-20T22:59:42.220645",
+    "last_login": null
+  },
+  {
+    "user_id": "USER004",
+    "username": "admin",
+    "password_hash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+    "role": "admin",
+    "department": "시스템관리부",
+    "is_super_user": false,
+    "created_at": "2025-11-20T22:59:42.221649",
+    "last_login": null
+  },
+  {
+    "user_id": "USER005",
+    "username": "pilot",
+    "password_hash": "fed8d70279c2a3f6e9afdb9f8eb379b0fdff4f04d076e76beec128dacaf487af",
+    "role": "pilot_tester",
+    "department": "파일럿테스트",
+    "is_super_user": true,
+    "created_at": "2025-11-20T22:59:42.221649",
+    "last_login": "2025-12-05T14:31:02.450887"
+  },
+  {
+    "user_id": "USER006",
+    "username": "test_user",
+    "password_hash": "10a6e6cc8311a3e2bcc09bf6c199adecd5dd59408c343e926b129c4914f3cb01",
+    "role": "analyst",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T00:01:48.515181",
+    "last_login": "2025-11-21T01:05:16.276414"
+  },
+  {
+    "user_id": "USER007",
+    "username": "test_planner",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "planner",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:48.881368",
+    "last_login": null
+  },
+  {
+    "user_id": "USER008",
+    "username": "test_analyst",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "analyst",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:48.882465",
+    "last_login": null
+  },
+  {
+    "user_id": "USER009",
+    "username": "test_commander",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "commander",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:48.882465",
+    "last_login": null
+  },
+  {
+    "user_id": "USER010",
+    "username": "test_pilot",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "pilot_tester",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:49.492004",
+    "last_login": null
+  },
+  {
+    "user_id": "USER011",
+    "username": "user1_planner",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "planner",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:50.673345",
+    "last_login": null
+  },
+  {
+    "user_id": "USER012",
+    "username": "user2_analyst",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "analyst",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:50.675677",
+    "last_login": null
+  },
+  {
+    "user_id": "USER013",
+    "username": "user3_commander",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "role": "commander",
+    "department": "",
+    "is_super_user": false,
+    "created_at": "2025-11-21T01:27:50.678005",
+    "last_login": null
+  }
+]

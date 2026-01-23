@@ -1,0 +1,12 @@
+Columns in c:\POC\COA_Agent_Platform\data_lake\COA_Library.xlsx:
+- COA_ID
+- 명칭
+- 방책유형
+- 설명
+- 적용조건
+- 키워드
+- 필요자원
+- 전장환경_제약
+- 워게임_모의_분석_승률
+- 환경호환성
+- 환경비호환성

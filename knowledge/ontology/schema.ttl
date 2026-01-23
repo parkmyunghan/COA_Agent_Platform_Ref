@@ -1,0 +1,1078 @@
+@prefix ns: <http://coa-agent-platform.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns:COA_Library a owl:Class .
+
+ns:COA_Library_COA_CNT_001 rdfs:label "충격 반격" .
+
+ns:COA_Library_COA_CNT_002 rdfs:label "역습" .
+
+ns:COA_Library_COA_CNT_003 rdfs:label "차단 반격" .
+
+ns:COA_Library_COA_CNT_004 rdfs:label "유인 반격" .
+
+ns:COA_Library_COA_CNT_005 rdfs:label "측면 반격" .
+
+ns:COA_Library_COA_CNT_006 rdfs:label "제한적 반격" .
+
+ns:COA_Library_COA_CNT_007 rdfs:label "공세 이전" .
+
+ns:COA_Library_COA_CNT_008 rdfs:label "화력 반격" .
+
+ns:COA_Library_COA_CNT_009 rdfs:label "예비대 투입 반격" .
+
+ns:COA_Library_COA_CNT_010 rdfs:label "연합 반격" .
+
+ns:COA_Library_COA_DEF_001 rdfs:label "주방어 진지 고수" .
+
+ns:COA_Library_COA_DEF_002 rdfs:label "지연 방어" .
+
+ns:COA_Library_COA_DEF_003 rdfs:label "거점 방어" .
+
+ns:COA_Library_COA_DEF_004 rdfs:label "기동 방어" .
+
+ns:COA_Library_COA_DEF_005 rdfs:label "사주 방어" .
+
+ns:COA_Library_COA_DEF_006 rdfs:label "역경사면 방어" .
+
+ns:COA_Library_COA_DEF_007 rdfs:label "도심지 방어" .
+
+ns:COA_Library_COA_DEF_008 rdfs:label "대공 방어 강화" .
+
+ns:COA_Library_COA_DEF_009 rdfs:label "해안 경계 강화" .
+
+ns:COA_Library_COA_DEF_010 rdfs:label "후방 지역 방호" .
+
+ns:COA_Library_COA_DEF_AIR_01 rdfs:label "통합 방공망 가동" .
+
+ns:COA_Library_COA_DEF_CBRN_01 rdfs:label "화생방 정찰 및 제독 작전" .
+
+ns:COA_Library_COA_DEF_DISP_01 rdfs:label "주요 자산 분산 및 기만" .
+
+ns:COA_Library_COA_DEF_TW01 rdfs:label "군단급 대규모 통합 방어" .
+
+ns:COA_Library_COA_DET_001 rdfs:label "무력 시위" .
+
+ns:COA_Library_COA_DET_002 rdfs:label "전력 증강 배치" .
+
+ns:COA_Library_COA_DET_003 rdfs:label "경고 사격" .
+
+ns:COA_Library_COA_DET_004 rdfs:label "전략 자산 전개" .
+
+ns:COA_Library_COA_DET_005 rdfs:label "심리전 활동" .
+
+ns:COA_Library_COA_DET_006 rdfs:label "외교적 압박" .
+
+ns:COA_Library_COA_DET_007 rdfs:label "경제 제재 위협" .
+
+ns:COA_Library_COA_DET_008 rdfs:label "사이버 억제" .
+
+ns:COA_Library_COA_DET_009 rdfs:label "비례적 대응 경고" .
+
+ns:COA_Library_COA_DET_010 rdfs:label "핵 억제 과시" .
+
+ns:COA_Library_COA_INF_001 rdfs:label "전자전 공격" .
+
+ns:COA_Library_COA_INF_002 rdfs:label "사이버 공격" .
+
+ns:COA_Library_COA_INF_003 rdfs:label "기만 작전" .
+
+ns:COA_Library_COA_INF_004 rdfs:label "심리전" .
+
+ns:COA_Library_COA_INF_005 rdfs:label "보안 작전" .
+
+ns:COA_Library_COA_INF_006 rdfs:label "첩보 수집" .
+
+ns:COA_Library_COA_INF_007 rdfs:label "표적 획득" .
+
+ns:COA_Library_COA_INF_008 rdfs:label "전투 피해 평가" .
+
+ns:COA_Library_COA_INF_009 rdfs:label "통신 감청" .
+
+ns:COA_Library_COA_INF_010 rdfs:label "여론전" .
+
+ns:COA_Library_COA_MAN_001 rdfs:label "신속 전개" .
+
+ns:COA_Library_COA_MAN_002 rdfs:label "전략적 재배치" .
+
+ns:COA_Library_COA_MAN_003 rdfs:label "우회 기동" .
+
+ns:COA_Library_COA_MAN_004 rdfs:label "입체 기동" .
+
+ns:COA_Library_COA_MAN_005 rdfs:label "야간 기동" .
+
+ns:COA_Library_COA_MAN_006 rdfs:label "철수 작전" .
+
+ns:COA_Library_COA_MAN_007 rdfs:label "도하 작전" .
+
+ns:COA_Library_COA_MAN_008 rdfs:label "공중 이동" .
+
+ns:COA_Library_COA_MAN_009 rdfs:label "해상 수송" .
+
+ns:COA_Library_COA_MAN_010 rdfs:label "기만 기동" .
+
+ns:COA_Library_COA_OFF_001 rdfs:label "정면 공격" .
+
+ns:COA_Library_COA_OFF_002 rdfs:label "포위 공격" .
+
+ns:COA_Library_COA_OFF_003 rdfs:label "우회 기동" .
+
+ns:COA_Library_COA_OFF_004 rdfs:label "돌파 공격" .
+
+ns:COA_Library_COA_OFF_005 rdfs:label "침투 공격" .
+
+ns:COA_Library_COA_OFF_006 rdfs:label "강습 도하" .
+
+ns:COA_Library_COA_OFF_007 rdfs:label "공중 강습" .
+
+ns:COA_Library_COA_OFF_008 rdfs:label "화력 타격" .
+
+ns:COA_Library_COA_OFF_009 rdfs:label "추격 작전" .
+
+ns:COA_Library_COA_OFF_010 rdfs:label "수색 정찰 공격" .
+
+ns:COA_Library_COA_PRE_001 rdfs:label "선제 포격 및 감시 강화" .
+
+ns:COA_Library_COA_PRE_002 rdfs:label "예방 타격" .
+
+ns:COA_Library_COA_PRE_003 rdfs:label "지휘부 정밀 타격" .
+
+ns:COA_Library_COA_PRE_004 rdfs:label "미사일 발사대 타격" .
+
+ns:COA_Library_COA_PRE_005 rdfs:label "사이버 선제 공격" .
+
+ns:COA_Library_COA_PRE_006 rdfs:label "특수전 선제 타격" .
+
+ns:COA_Library_COA_PRE_007 rdfs:label "전자전 선제 공격" .
+
+ns:COA_Library_COA_PRE_008 rdfs:label "봉쇄 작전" .
+
+ns:COA_Library_COA_PRE_009 rdfs:label "기만적 선제 행동" .
+
+ns:COA_Library_COA_PRE_010 rdfs:label "정보 우위 선점" .
+
+ns:CounterAttackCOA a owl:Class ;
+    rdfs:label "CounterAttackCOA"@en,
+        "반격방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:DeterrenceCOA a owl:Class ;
+    rdfs:label "DeterrenceCOA"@en,
+        "억제방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:InformationOpsCOA a owl:Class ;
+    rdfs:label "InformationOpsCOA"@en,
+        "정보방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:ManeuverCOA a owl:Class ;
+    rdfs:label "ManeuverCOA"@en,
+        "기동방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:OntologyCOAType_CounterAttack rdfs:label "CounterAttack" .
+
+ns:OntologyCOAType_Defense rdfs:label "Defense" .
+
+ns:OntologyCOAType_Deterrence rdfs:label "Deterrence" .
+
+ns:OntologyCOAType_InformationOps rdfs:label "InformationOps" .
+
+ns:OntologyCOAType_Maneuver rdfs:label "Maneuver" .
+
+ns:OntologyCOAType_Offensive rdfs:label "Offensive" .
+
+ns:OntologyCOAType_Preemptive rdfs:label "Preemptive" .
+
+ns:PreemptiveCOA a owl:Class ;
+    rdfs:label "PreemptiveCOA"@en,
+        "선제방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:appliesTo a owl:ObjectProperty ;
+    rdfs:domain ns:제약조건 ;
+    rdfs:range ns:아군부대현황,
+        ns:임무정보,
+        ns:적군부대현황,
+        ns:전장축선,
+        ns:지형셀 .
+
+ns:assignedToMission a owl:ObjectProperty ;
+    rdfs:domain ns:임무별_자원할당 ;
+    rdfs:range ns:임무정보 .
+
+ns:attackPower a owl:DatatypeProperty ;
+    rdfs:label "공격력"@ko ;
+    rdfs:domain ns:OffensiveCOA ;
+    rdfs:range xsd:float .
+
+ns:breakthroughCapability a owl:DatatypeProperty ;
+    rdfs:label "돌파능력"@ko ;
+    rdfs:domain ns:OffensiveCOA ;
+    rdfs:range xsd:float .
+
+ns:defenseCoverage a owl:DatatypeProperty ;
+    rdfs:label "방어범위"@ko ;
+    rdfs:domain ns:DefenseCOA ;
+    rdfs:range xsd:string .
+
+ns:defenseStrength a owl:DatatypeProperty ;
+    rdfs:label "방어강도"@ko ;
+    rdfs:domain ns:DefenseCOA ;
+    rdfs:range xsd:float .
+
+ns:effectiveness a owl:DatatypeProperty ;
+    rdfs:label "효과성"@ko ;
+    rdfs:domain ns:COA ;
+    rdfs:range xsd:float .
+
+ns:hasMission a owl:ObjectProperty ;
+    rdfs:domain ns:아군부대현황 ;
+    rdfs:range ns:임무정보 .
+
+ns:has위협상황 a owl:ObjectProperty ;
+    rdfs:domain ns:시나리오모음 ;
+    rdfs:range ns:위협상황 .
+
+ns:has임무정보 a owl:ObjectProperty ;
+    rdfs:domain ns:시나리오모음,
+        ns:위협상황 ;
+    rdfs:range ns:임무정보 .
+
+ns:has적군부대현황 a owl:ObjectProperty ;
+    rdfs:domain ns:위협상황 ;
+    rdfs:range ns:적군부대현황 .
+
+ns:has전장축선 a owl:ObjectProperty ;
+    rdfs:domain ns:아군부대현황,
+        ns:위협상황,
+        ns:임무정보,
+        ns:적군부대현황 ;
+    rdfs:range ns:전장축선 .
+
+ns:has지형셀 a owl:ObjectProperty ;
+    rdfs:domain ns:위협상황,
+        ns:전장축선 ;
+    rdfs:range ns:지형셀 .
+
+ns:locatedIn a owl:ObjectProperty ;
+    rdfs:domain ns:기상상황,
+        ns:민간인지역,
+        ns:아군가용자산,
+        ns:아군부대현황,
+        ns:적군부대현황 ;
+    rdfs:range ns:지형셀 .
+
+ns:referencesAsset a owl:ObjectProperty ;
+    rdfs:domain ns:임무별_자원할당 ;
+    rdfs:range ns:아군가용자산 .
+
+ns:relatedTo a owl:ObjectProperty ;
+    rdfs:domain ns:적군부대현황 ;
+    rdfs:range ns:위협상황 .
+
+ns:resourceRequirement a owl:DatatypeProperty ;
+    rdfs:label "자원요구"@ko ;
+    rdfs:domain ns:COA ;
+    rdfs:range xsd:string .
+
+ns:기상상황_WTH001 rdfs:label "맑음" .
+
+ns:기상상황_WTH002 rdfs:label "맑음" .
+
+ns:기상상황_WTH003 rdfs:label "야간" .
+
+ns:기상상황_WTH004 rdfs:label "맑음" .
+
+ns:기상상황_WTH005 rdfs:label "야간" .
+
+ns:기상상황_WTH006 rdfs:label "악천후" .
+
+ns:기상상황_WTH007 rdfs:label "맑음" .
+
+ns:기상상황_WTH008 rdfs:label "안개" .
+
+ns:기상상황_WTH009 rdfs:label "맑음" .
+
+ns:기상상황_WTH010 rdfs:label "맑음" .
+
+ns:민간인지역_CIV001 rdfs:label "철원읍 중심가" .
+
+ns:민간인지역_CIV002 rdfs:label "문산면 주거지" .
+
+ns:민간인지역_CIV003 rdfs:label "연천군청 인근" .
+
+ns:민간인지역_CIV004 rdfs:label "화천읍 시가지" .
+
+ns:민간인지역_CIV005 rdfs:label "양구군청 인근" .
+
+ns:방책유형_위협유형_관련성 a owl:Class .
+
+ns:방책유형_위협유형_관련성_CounterAttack rdfs:label "반격 방책은 공중위협에 보통 효과",
+        "반격 방책은 기만징후 대응에 보통",
+        "반격 방책은 도하 격퇴에 효과적",
+        "반격 방책은 집결징후 대응에 중간 효과",
+        "반격 방책은 포병준비 대응에 효과적",
+        "반격은 국지도발 응징에 효과적",
+        "반격은 기습 대응에 매우 효과적",
+        "반격은 사이버 위협에 제한적",
+        "반격은 전면공격 전환에 핵심",
+        "반격은 침투 저지에 효과적",
+        "반격은 포격원에 타격 가능" .
+
+ns:방책유형_위협유형_관련성_Defense rdfs:label "방어 방책은 공중위협에 효과적 (방공망 구축)",
+        "방어 방책은 국지도발에 적용 가능",
+        "방어 방책은 기만징후 식별에 중간 효과",
+        "방어 방책은 기습공격 대응에 효과적",
+        "방어 방책은 도하 저지에 매우 효과적",
+        "방어 방책은 사이버 위협에 제한적",
+        "방어 방책은 전면공격에 효과적",
+        "방어 방책은 집결징후 대비에 효과적",
+        "방어 방책은 침투 위협에 매우 효과적",
+        "방어 방책은 포격에 중간 정도 효과",
+        "방어 방책은 포병준비 대비에 효과적" .
+
+ns:방책유형_위협유형_관련성_Deterrence rdfs:label "억제 방책은 공중위협 예방에 매우 효과적",
+        "억제 방책은 기만징후 예방에 효과적",
+        "억제 방책은 도하 예방에 효과적",
+        "억제 방책은 집결 예방에 효과적",
+        "억제 방책은 포병준비 예방에 효과적",
+        "억제는 국지도발 사전 차단",
+        "억제는 기습공격 예방에 효과적",
+        "억제는 사이버 공격 억지 가능",
+        "억제는 전면공격 예방에 핵심",
+        "억제는 침투 사전 차단에 기여",
+        "억제는 포격 억지에 효과" .
+
+ns:방책유형_위협유형_관련성_InformationOps rdfs:label "정보작전은 공중위협 탐지에 보조적 효과",
+        "정보작전은 국지도발 대응에 활용",
+        "정보작전은 기만징후 탐지에 매우 효과적",
+        "정보작전은 기습 의도 혼란 유발",
+        "정보작전은 도하 징후 탐지에 유용",
+        "정보작전은 사이버 위협에 매우 효과적",
+        "정보작전은 전면공격 시 보조 역할",
+        "정보작전은 집결징후 탐지에 매우 효과적",
+        "정보작전은 침투 교란에 제한적 기여",
+        "정보작전은 포격에 간접 효과",
+        "정보작전은 포병준비 탐지에 효과적" .
+
+ns:방책유형_위협유형_관련성_Maneuver rdfs:label "기동 방책은 공중위협 회피에 유용",
+        "기동 방책은 기만징후 회피에 유용",
+        "기동 방책은 도하 대응에 보통",
+        "기동 방책은 집결징후 대응에 효과적",
+        "기동 방책은 포병준비 회피에 유용",
+        "기동은 국지도발 대응에 활용",
+        "기동은 기습 대응 유연성 제공",
+        "기동은 사이버 위협에 무관",
+        "기동은 전면공격 시 핵심",
+        "기동은 침투 회피 및 재배치에 유리",
+        "기동은 포격 회피에 효과적" .
+
+ns:방책유형_위협유형_관련성_Offensive rdfs:label "공격 방책은 공중위협에 제한적",
+        "공격 방책은 국지도발에 강력한 대응",
+        "공격 방책은 기만징후에 제한적",
+        "공격 방책은 기습 전환에 활용 가능",
+        "공격 방책은 도하 대응에 제한적",
+        "공격 방책은 사이버 위협에 제한적",
+        "공격 방책은 전면공격 상황에 효과적",
+        "공격 방책은 집결징후 대응에 보통",
+        "공격 방책은 침투 대응에 제한적",
+        "공격 방책은 포격 대응에 제한적",
+        "공격 방책은 포병준비 대응에 제한적" .
+
+ns:방책유형_위협유형_관련성_Preemptive rdfs:label "선제 방책은 공중위협 무력화에 매우 효과적",
+        "선제 방책은 기만징후 무력화에 효과적",
+        "선제 방책은 도하 준비 무력화에 매우 효과적",
+        "선제 방책은 집결 무력화에 매우 효과적",
+        "선제 방책은 포병 무력화에 매우 효과적",
+        "선제타격은 국지도발 원천 봉쇄",
+        "선제타격은 기습 준비 파괴에 매우 효과적",
+        "선제타격은 사이버 인프라 타격 가능",
+        "선제타격은 전면공격 준비 파괴에 최적",
+        "선제타격은 침투 준비 파괴에 효과적",
+        "선제타격은 포병 진지 제압에 최적" .
+
+ns:시나리오모음_SIT_001 rdfs:label "적 대규모 기계화부대 남하" .
+
+ns:시나리오모음_SIT_002 rdfs:label "국지적 도발 및 침투" .
+
+ns:시나리오모음_SIT_003 rdfs:label "해안 상륙 징후 포착" .
+
+ns:시나리오모음_SIT_004 rdfs:label "적 미사일 발사 징후" .
+
+ns:시나리오모음_SIT_005 rdfs:label "사이버 공격 및 통신 마비" .
+
+ns:시나리오모음_SIT_006 rdfs:label "적 보급선 노출" .
+
+ns:시나리오모음_SIT_007 rdfs:label "도심지 시가전 상황" .
+
+ns:시나리오모음_SIT_008 rdfs:label "적 공중 강습 위협" .
+
+ns:시나리오모음_SIT_009 rdfs:label "화생방 공격 징후" .
+
+ns:시나리오모음_SIT_010 rdfs:label "평화 유지 활동 중 소요 사태" .
+
+ns:아군가용자산_AST001 rdfs:label "K-9 자주포" .
+
+ns:아군가용자산_AST002 rdfs:label "K-2 전차" .
+
+ns:아군가용자산_AST003 rdfs:label "K-21 보병전투차" .
+
+ns:아군가용자산_AST004 rdfs:label "AH-64 아파치" .
+
+ns:아군가용자산_AST005 rdfs:label "보병여단" .
+
+ns:아군가용자산_AST006 rdfs:label "K-55 자주포" .
+
+ns:아군가용자산_AST007 rdfs:label "K-1 전차" .
+
+ns:아군가용자산_AST008 rdfs:label "수색대대" .
+
+ns:아군가용자산_AST009 rdfs:label "공병대대" .
+
+ns:아군가용자산_AST010 rdfs:label "UH-60 블랙호크" .
+
+ns:아군가용자산_AST011 rdfs:label "다연장로켓" .
+
+ns:아군가용자산_AST012 rdfs:label "기갑여단" .
+
+ns:아군가용자산_AST013 rdfs:label "K-200 장갑차" .
+
+ns:아군가용자산_AST014 rdfs:label "F-16 전투기" .
+
+ns:아군가용자산_AST015 rdfs:label "포병여단" .
+
+ns:아군가용자산_AST016 rdfs:label "K-9 자주포대대" .
+
+ns:아군가용자산_AST017 rdfs:label "AH-1 코브라" .
+
+ns:아군가용자산_AST018 rdfs:label "수색대대" .
+
+ns:아군가용자산_AST019 rdfs:label "정보작전대대" .
+
+ns:아군가용자산_AST020 rdfs:label "K-55 자주포대대" .
+
+ns:아군가용자산_AST021 rdfs:label "F-16 전투기" .
+
+ns:아군가용자산_AST022 rdfs:label "공격헬기" .
+
+ns:아군가용자산_AST023 rdfs:label "특수전팀" .
+
+ns:아군가용자산_FRU013 rdfs:label "FRU013" .
+
+ns:아군부대현황_FRU001 rdfs:label "기계화여단" .
+
+ns:아군부대현황_FRU002 rdfs:label "보병여단" .
+
+ns:아군부대현황_FRU003 rdfs:label "기갑여단" .
+
+ns:아군부대현황_FRU004 rdfs:label "포병여단" .
+
+ns:아군부대현황_FRU005 rdfs:label "수색대대" .
+
+ns:아군부대현황_FRU006 rdfs:label "전차대대" .
+
+ns:아군부대현황_FRU007 rdfs:label "공병대대" .
+
+ns:아군부대현황_FRU008 rdfs:label "통신대대" .
+
+ns:아군부대현황_FRU009 rdfs:label "의무중대" .
+
+ns:아군부대현황_FRU010 rdfs:label "보급대대" .
+
+ns:아군부대현황_FRU011 rdfs:label "1항공여단" .
+
+ns:아군부대현황_FRU012 rdfs:label "특수작전팀" .
+
+ns:아군부대현황_FRU013 rdfs:label "제1공격헬기대대" .
+
+ns:위협상황_THR001 rdfs:label "능선503 침투" .
+
+ns:위협상황_THR002 rdfs:label "212고지 포병준비" .
+
+ns:위협상황_THR003 rdfs:label "임도교차로 집결징후" .
+
+ns:위협상황_THR004 rdfs:label "321고지 기습공격" .
+
+ns:위협상황_THR005 rdfs:label "하천둔치 상륙" .
+
+ns:위협상황_THR006 rdfs:label "고지245 공중위협" .
+
+ns:위협상황_THR007 rdfs:label "개활지1 기만징후" .
+
+ns:위협상황_THR008 rdfs:label "계곡지대 침투" .
+
+ns:위협상황_THR009 rdfs:label "도로전개지 포병준비" .
+
+ns:위협상황_THR010 rdfs:label "마을A 집결징후" .
+
+ns:위협유형_마스터 a owl:Class .
+
+ns:위협유형_마스터_THR_TYPE_001 rdfs:label "침투" .
+
+ns:위협유형_마스터_THR_TYPE_002 rdfs:label "포병준비" .
+
+ns:위협유형_마스터_THR_TYPE_003 rdfs:label "집결징후" .
+
+ns:위협유형_마스터_THR_TYPE_004 rdfs:label "기습공격" .
+
+ns:위협유형_마스터_THR_TYPE_005 rdfs:label "도하" .
+
+ns:위협유형_마스터_THR_TYPE_006 rdfs:label "공중위협" .
+
+ns:위협유형_마스터_THR_TYPE_007 rdfs:label "기만징후" .
+
+ns:위협유형_마스터_THR_TYPE_008 rdfs:label "사이버" .
+
+ns:위협유형_마스터_THR_TYPE_009 rdfs:label "국지도발" .
+
+ns:위협유형_마스터_THR_TYPE_010 rdfs:label "전면공격" .
+
+ns:위협유형_마스터_THR_TYPE_011 rdfs:label "포격" .
+
+ns:임무별_자원할당_RA_001 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_002 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_003 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_004 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_005 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_006 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_007 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_008 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_009 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_010 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_011 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_012 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_013 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_014 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_015 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_016 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_017 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_018 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_019 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_020 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_021 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_022 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_023 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_024 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_025 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_026 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_027 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_028 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_029 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_030 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_031 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_032 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_033 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_034 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_035 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_036 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_037 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_038 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_039 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_040 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_041 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_042 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_043 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_044 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_045 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_046 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_047 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_048 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_049 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_050 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_051 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_052 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_053 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_054 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_055 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_056 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_057 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_058 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_059 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_060 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_061 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_062 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_063 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_064 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_065 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_066 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_067 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_068 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_069 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_070 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_071 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_072 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_073 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_074 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_075 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_076 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_077 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_078 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_079 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_080 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_081 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_082 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_083 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_084 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_085 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_086 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_087 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_088 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_089 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_090 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_091 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_092 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_093 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_094 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_095 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_096 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_097 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_098 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_099 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_100 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_101 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_102 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_103 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_104 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_105 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_106 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_107 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_108 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_109 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_110 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_111 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_112 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_113 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_114 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_115 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_116 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_117 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_118 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_119 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_120 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_121 rdfs:label "충격군(Shock Force)" .
+
+ns:임무별_자원할당_RA_122 rdfs:label "기동차단(Fixing Force)" .
+
+ns:임무별_자원할당_RA_123 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_124 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_125 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_126 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_127 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_128 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_129 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_130 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_131 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_132 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_133 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_134 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_135 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_136 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_137 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_138 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_139 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_140 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_141 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_142 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_143 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_144 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_145 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_146 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_147 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_148 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_149 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_150 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_151 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_152 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_153 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_154 rdfs:label "화력지원(Fire Support)" .
+
+ns:임무별_자원할당_RA_155 rdfs:label "장애물제거(Engineer)" .
+
+ns:임무별_자원할당_RA_156 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_157 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_158 rdfs:label "예비대(Reserve)" .
+
+ns:임무별_자원할당_RA_258 rdfs:label "Main Attack" .
+
+ns:임무정보_MSN001 rdfs:label "동부전선 방어작전" .
+
+ns:임무정보_MSN002 rdfs:label "서부 기계화차단" .
+
+ns:임무정보_MSN003 rdfs:label "북부 지연작전" .
+
+ns:임무정보_MSN004 rdfs:label "기만작전 실시" .
+
+ns:임무정보_MSN005 rdfs:label "후방지역 방호" .
+
+ns:임무정보_MSN006 rdfs:label "포병 제압" .
+
+ns:임무정보_MSN007 rdfs:label "기갑돌파저지" .
+
+ns:임무정보_MSN008 rdfs:label "도시지역 확보" .
+
+ns:임무정보_MSN009 rdfs:label "강안방어" .
+
+ns:임무정보_MSN010 rdfs:label "후속부대 전개지원" .
+
+ns:적군부대현황_ENU001 rdfs:label "적 기계화보병여단1" .
+
+ns:적군부대현황_ENU002 rdfs:label "적 기계화보병여단2" .
+
+ns:적군부대현황_ENU003 rdfs:label "적 전차대대1" .
+
+ns:적군부대현황_ENU004 rdfs:label "적 포병여단" .
+
+ns:적군부대현황_ENU005 rdfs:label "적 정찰중대" .
+
+ns:적군부대현황_ENU006 rdfs:label "적 저격중대" .
+
+ns:적군부대현황_ENU007 rdfs:label "적 공병중대" .
+
+ns:적군부대현황_ENU008 rdfs:label "적 방사포대" .
+
+ns:적군부대현황_ENU009 rdfs:label "적 보병대대" .
+
+ns:적군부대현황_ENU010 rdfs:label "적 유격부대" .
+
+ns:전장축선_AXIS01 rdfs:label "동부 주공축선" .
+
+ns:전장축선_AXIS02 rdfs:label "동부 조공축선" .
+
+ns:전장축선_AXIS03 rdfs:label "서부 차단축선" .
+
+ns:전장축선_AXIS04 rdfs:label "서부 조공" .
+
+ns:전장축선_AXIS05 rdfs:label "동부 예비축선" .
+
+ns:전장축선_AXIS06 rdfs:label "남부 예비축선" .
+
+ns:전장축선_AXIS07 rdfs:label "북부 방어축선" .
+
+ns:전장축선_AXIS08 rdfs:label "북부 보조축선" .
+
+ns:전장축선_AXIS09 rdfs:label "북부 예비축선" .
+
+ns:전장축선_AXIS10 rdfs:label "기만축선" .
+
+ns:제약조건_CST001 rdfs:label "H+2까지 공격 금지" .
+
+ns:제약조건_CST002 rdfs:label "특정 축선 벗어나면 안됨" .
+
+ns:제약조건_CST003 rdfs:label "포병 화력 절반만 사용" .
+
+ns:제약조건_CST004 rdfs:label "지형확보 전 사격금지" .
+
+ns:제약조건_CST005 rdfs:label "민간인 밀집지역 사격 제한" .
+
+ns:제약조건_CST006 rdfs:label "연막 지역 표적 식별 제한" .
+
+ns:제약조건_CST007 rdfs:label "H+4 이전 차단선 형성" .
+
+ns:제약조건_CST008 rdfs:label "통신중계 유지" .
+
+ns:제약조건_CST009 rdfs:label "지뢰지대 우회" .
+
+ns:제약조건_CST010 rdfs:label "악천후로 항공지원 제한" .
+
+ns:지형셀_TERR001 rdfs:label "321고지" .
+
+ns:지형셀_TERR002 rdfs:label "계곡지대" .
+
+ns:지형셀_TERR003 rdfs:label "능선503" .
+
+ns:지형셀_TERR004 rdfs:label "마을A" .
+
+ns:지형셀_TERR005 rdfs:label "임도교차로" .
+
+ns:지형셀_TERR006 rdfs:label "212고지" .
+
+ns:지형셀_TERR007 rdfs:label "개활지1" .
+
+ns:지형셀_TERR008 rdfs:label "하천둔치" .
+
+ns:지형셀_TERR009 rdfs:label "도로전개지" .
+
+ns:지형셀_TERR010 rdfs:label "고지245" .
+
+ns:지형셀_TERR011 rdfs:label "평양" .
+
+ns:지형셀_TERR012 rdfs:label "개성" .
+
+ns:지형셀_TERR013 rdfs:label "사리원" .
+
+ns:지형셀_TERR014 rdfs:label "원산" .
+
+ns:지형셀_TERR015 rdfs:label "함흥" .
+
+ns:지형셀_TERR016 rdfs:label "해주" .
+
+ns:지형셀_TERR017 rdfs:label "철원(북)" .
+
+ns:지형셀_TERR018 rdfs:label "강원(북)" .
+
+ns:지형셀_TERR019 rdfs:label "평안남도" .
+
+ns:지형셀_TERR020 rdfs:label "황해북도" .
+
+ns:지형셀_TERR021 rdfs:label "파주(문산)" .
+
+ns:지형셀_TERR022 rdfs:label "파주(법원)" .
+
+ns:지형셀_TERR023 rdfs:label "연천(전곡)" .
+
+ns:지형셀_TERR024 rdfs:label "양주(광적)" .
+
+ns:지형셀_TERR025 rdfs:label "동두천" .
+
+ns:지형셀_TERR026 rdfs:label "포천" .
+
+ns:지형셀_TERR027 rdfs:label "고양(일산)" .
+
+ns:지형셀_TERR028 rdfs:label "의정부" .
+
+ns:지형셀_TERR029 rdfs:label "김포" .
+
+ns:지형셀_TERR030 rdfs:label "철원(남)" .
+
+ns:지형셀_TERR031 rdfs:label "동해안 휴전선" .
+
+ns:평가기준_가중치 a owl:Class .
+
+ns:평가기준_가중치_C001 rdfs:label "threat" .
+
+ns:평가기준_가중치_C002 rdfs:label "resources" .
+
+ns:평가기준_가중치_C003 rdfs:label "assets" .
+
+ns:평가기준_가중치_C004 rdfs:label "environment" .
+
+ns:평가기준_가중치_C005 rdfs:label "historical" .
+
+ns:평가기준_가중치_C006 rdfs:label "chain" .
+
+ns:평가기준_가중치_C007 rdfs:label "mission_alignment" .
+
+ns:기상상황 a owl:Class .
+
+ns:민간인지역 a owl:Class .
+
+ns:제약조건 a owl:Class .
+
+ns:DefenseCOA a owl:Class ;
+    rdfs:label "DefenseCOA"@en,
+        "방어방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:OffensiveCOA a owl:Class ;
+    rdfs:label "OffensiveCOA"@en,
+        "공격방책"@ko ;
+    rdfs:subClassOf ns:COA .
+
+ns:시나리오모음 a owl:Class .
+
+ns:아군가용자산 a owl:Class .
+
+ns:임무별_자원할당 a owl:Class .
+
+ns:전장축선 a owl:Class .
+
+ns:지형셀 a owl:Class .
+
+ns:아군부대현황 a owl:Class .
+
+ns:임무정보 a owl:Class .
+
+ns:적군부대현황 a owl:Class .
+
+ns:위협상황 a owl:Class .
+
+ns:COA a owl:Class ;
+    rdfs:label "Course of Action"@en,
+        "방책"@ko .
+
+# ==========================================
+# OWL-RL 추론을 위한 공리 정의
+# ==========================================
+
+# 전이적 속성 (TransitiveProperty)
+# A→B, B→C이면 A→C 자동 추론
+ns:locatedIn a owl:TransitiveProperty .
+ns:has지형셀 a owl:TransitiveProperty .
+
+# 역관계 (InverseOf)
+# A →locatedIn→ B이면 B →포함됨In→ A 자동 추론
+ns:포함됨In owl:inverseOf ns:locatedIn .
+ns:배치된부대 owl:inverseOf ns:has전장축선 .
+ns:소속축선 owl:inverseOf ns:has지형셀 .
+ns:할당부대 owl:inverseOf ns:hasMission .
+
+# 대칭 관계 (SymmetricProperty)
+# A →인접함→ B이면 B →인접함→ A 자동 추론
+ns:인접함 a owl:SymmetricProperty .
+ns:협력관계 a owl:SymmetricProperty .
+ns:축선연결 a owl:SymmetricProperty .
+
+# 속성 체인 (PropertyChainAxiom)
+# 부대 →has전장축선→ 축선 →has지형셀→ 지형셀
+# => 부대 →작전가능지역→ 지형셀 자동 추론
+ns:작전가능지역 owl:propertyChainAxiom (ns:has전장축선 ns:has지형셀) .
+ns:위협영향지역 owl:propertyChainAxiom (ns:has전장축선 ns:has지형셀) .
+ns:임무축선 owl:propertyChainAxiom (ns:hasMission ns:has전장축선) .
+ns:시나리오적군 owl:propertyChainAxiom (ns:has위협상황 ns:has적군부대현황) .

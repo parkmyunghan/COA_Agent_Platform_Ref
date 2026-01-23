@@ -1,0 +1,62 @@
+{
+  "test_session_001": {
+    "user_id": "TEST_USER_001",
+    "username": "test_user",
+    "role": "commander",
+    "last_activity": "2025-11-20T23:01:08.690253",
+    "session_id": "test_session_001"
+  },
+  "session_001": {
+    "user_id": "INTEGRATION_USER_001",
+    "username": "planner1",
+    "role": "planner",
+    "last_activity": "2025-11-20T23:01:09.029697",
+    "session_id": "session_001"
+  },
+  "session_002": {
+    "user_id": "INTEGRATION_USER_002",
+    "username": "commander1",
+    "role": "commander",
+    "last_activity": "2025-11-20T23:01:09.030894",
+    "session_id": "session_002"
+  },
+  "session_USER005": {
+    "user_id": "USER005",
+    "username": "pilot",
+    "role": "pilot_tester",
+    "department": "파일럿테스트",
+    "is_super_user": true,
+    "created_at": "2025-11-20T22:59:42.221649",
+    "last_login": "2025-12-05T14:15:23.957027",
+    "last_activity": "2025-12-05T14:15:36.658576",
+    "session_id": "session_USER005"
+  },
+  "session_user1_planner": {
+    "user_id": "user1_planner",
+    "username": "user1_planner",
+    "role": "planner",
+    "last_activity": "2025-11-21T01:27:50.674487",
+    "session_id": "session_user1_planner"
+  },
+  "session_user2_analyst": {
+    "user_id": "user2_analyst",
+    "username": "user2_analyst",
+    "role": "analyst",
+    "last_activity": "2025-11-21T01:27:50.676334",
+    "session_id": "session_user2_analyst"
+  },
+  "session_user3_commander": {
+    "user_id": "user3_commander",
+    "username": "user3_commander",
+    "role": "commander",
+    "last_activity": "2025-11-21T01:27:50.678005",
+    "session_id": "session_user3_commander"
+  },
+  "session_admin": {
+    "username": "Commander",
+    "role": "admin",
+    "user_id": "admin",
+    "last_activity": "2025-12-25T16:19:50.699195",
+    "session_id": "session_admin"
+  }
+}

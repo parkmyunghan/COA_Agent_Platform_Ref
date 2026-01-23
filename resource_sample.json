@@ -1,0 +1,182 @@
+[
+  {
+    "allocation_id": "RA_001",
+    "mission_id": "MSN008",
+    "asset_id": "AST002",
+    "note": "적 방어선 돌파를 위해 K-2 전차 주공 축선에 집중 운용",
+    "tactical_role": "충격군(Shock Force)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_002",
+    "mission_id": "MSN008",
+    "asset_id": "AST006",
+    "note": "공격 개시 전 준비사격 및 공격 간 K-55 자주포 화력 지원 지속 제공",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_003",
+    "mission_id": "MSN008",
+    "asset_id": "AST016",
+    "note": "공격 개시 전 준비사격 및 공격 간 K-9 자주포대대 화력 지원 지속 제공",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_004",
+    "mission_id": "MSN008",
+    "asset_id": "AST005",
+    "note": "공격 작전의 성공을 위해 보병여단 기동차단(Fixing Force) 임무 투입",
+    "tactical_role": "기동차단(Fixing Force)",
+    "allocated_quantity": 2,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_005",
+    "mission_id": "MSN008",
+    "asset_id": "AST018",
+    "note": "공격 기세 유지 및 전과 확대를 위해 수색대대 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_006",
+    "mission_id": "MSN008",
+    "asset_id": "AST004",
+    "note": "공격 기세 유지 및 전과 확대를 위해 AH-64 아파치 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_007",
+    "mission_id": "MSN008",
+    "asset_id": "AST004",
+    "note": "공격 기세 유지 및 전과 확대를 위해 AH-64 아파치 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_008",
+    "mission_id": "MSN008",
+    "asset_id": "AST009",
+    "note": "공격 작전의 성공을 위해 공병대대 장애물제거(Engineer) 임무 투입",
+    "tactical_role": "장애물제거(Engineer)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_009",
+    "mission_id": "MSN008",
+    "asset_id": "AST015",
+    "note": "공격 개시 전 준비사격 및 공격 간 포병여단 화력 지원 지속 제공",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_010",
+    "mission_id": "MSN008",
+    "asset_id": "AST002",
+    "note": "적 방어선 돌파를 위해 K-2 전차 주공 축선에 집중 운용",
+    "tactical_role": "충격군(Shock Force)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_011",
+    "mission_id": "MSN008",
+    "asset_id": "AST002",
+    "note": "적 방어선 돌파를 위해 K-2 전차 주공 축선에 집중 운용",
+    "tactical_role": "충격군(Shock Force)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_012",
+    "mission_id": "MSN008",
+    "asset_id": "AST019",
+    "note": "공격 기세 유지 및 전과 확대를 위해 정보작전대대 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_013",
+    "mission_id": "MSN008",
+    "asset_id": "AST009",
+    "note": "공격 작전의 성공을 위해 공병대대 장애물제거(Engineer) 임무 투입",
+    "tactical_role": "장애물제거(Engineer)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_014",
+    "mission_id": "MSN008",
+    "asset_id": "AST016",
+    "note": "공격 개시 전 준비사격 및 공격 간 K-9 자주포대대 화력 지원 지속 제공",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_015",
+    "mission_id": "MSN008",
+    "asset_id": "AST004",
+    "note": "공격 기세 유지 및 전과 확대를 위해 AH-64 아파치 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_016",
+    "mission_id": "MSN008",
+    "asset_id": "AST010",
+    "note": "공격 기세 유지 및 전과 확대를 위해 UH-60 블랙호크 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_017",
+    "mission_id": "MSN008",
+    "asset_id": "AST008",
+    "note": "공격 기세 유지 및 전과 확대를 위해 수색대대 후방 대기",
+    "tactical_role": "예비대(Reserve)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_018",
+    "mission_id": "MSN008",
+    "asset_id": "AST002",
+    "note": "적 방어선 돌파를 위해 K-2 전차 주공 축선에 집중 운용",
+    "tactical_role": "충격군(Shock Force)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_019",
+    "mission_id": "MSN008",
+    "asset_id": "AST020",
+    "note": "공격 개시 전 준비사격 및 공격 간 K-55 자주포대대 화력 지원 지속 제공",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  },
+  {
+    "allocation_id": "RA_020",
+    "mission_id": "MSN001",
+    "asset_id": "AST001",
+    "note": "국지 포격 대응 투입 가능",
+    "tactical_role": "화력지원(Fire Support)",
+    "allocated_quantity": 1,
+    "plan_status": "가용"
+  }
+]

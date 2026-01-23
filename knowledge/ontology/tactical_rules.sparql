@@ -1,0 +1,106 @@
+PREFIX ns: <http://coa-agent-platform.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+# 1. 산악지형 보병 유리 추론
+CONSTRUCT {
+    ?unit ns:hasAdvantage "Mountain_Infantry_Advantage" .
+} WHERE {
+    ?unit ns:locatedIn ?cell .
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "산악", "i"))
+    { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
+    FILTER(REGEX(?type, "보병", "i"))
+}
+
+# 2. 산악지형 기갑/기계화 불리 추론
+CONSTRUCT {
+    ?unit ns:hasDisadvantage "Mountain_Heavy_Vulnerability" .
+} WHERE {
+    ?unit ns:locatedIn ?cell .
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "산악", "i"))
+    { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
+    FILTER(REGEX(?type, "기갑|기계화", "i"))
+}
+
+# 3. 평지지형 기갑/기계화 유리 추론
+CONSTRUCT {
+    ?unit ns:hasAdvantage "Plains_Heavy_Advantage" .
+} WHERE {
+    ?unit ns:locatedIn ?cell .
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "평지", "i"))
+    { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
+    FILTER(REGEX(?type, "기갑|기계화", "i"))
+}
+
+# 4. 시가전지역 보병 유리 추론
+CONSTRUCT {
+    ?unit ns:hasAdvantage "Urban_Infantry_Advantage" .
+} WHERE {
+    ?unit ns:locatedIn ?cell .
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "시가전|도시", "i"))
+    { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
+    FILTER(REGEX(?type, "보병", "i"))
+}
+
+# 5. 하천지형 공병 유리 추론
+CONSTRUCT {
+    ?unit ns:hasAdvantage "River_Engineer_Advantage" .
+} WHERE {
+    ?unit ns:locatedIn ?cell .
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "하천|강|수로", "i"))
+    { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
+    FILTER(REGEX(?type, "공병", "i"))
+}
+
+# 6. 위협-방책 대응 관계 추론 (Mapping Completeness)
+CONSTRUCT {
+    ?threat ns:respondsTo ?coa .
+} WHERE {
+    ?threat a ns:위협상황 .
+    ?threat ns:위협유형코드 ?type .
+    ?coa a ns:COA .
+    ?coa ns:countersThreat ?type .
+}
+
+# 7. COA 적용가능지역 추론 (산악 -> 방어)
+CONSTRUCT {
+    ?coa ns:적용가능지역 ?cell .
+} WHERE {
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "산악", "i"))
+    ?coa a ns:DefenseCOA .
+}
+
+# 8. COA 적용가능지역 추론 (평지 -> 기동/공격)
+CONSTRUCT {
+    ?coa ns:적용가능지역 ?cell .
+} WHERE {
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "평지", "i"))
+    { ?coa a ns:ManeuverCOA } UNION { ?coa a ns:OffensiveCOA }
+}
+
+# 9. COA 적용가능지역 추론 (하천 -> 도하)
+CONSTRUCT {
+    ?coa ns:적용가능지역 ?cell .
+} WHERE {
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "하천|강", "i"))
+    ?coa a ns:ManeuverCOA .
+    ?coa rdfs:label ?label .
+    FILTER(REGEX(?label, "도하", "i"))
+}
+
+# 10. COA 적용가능지역 추론 (도시 -> 시가전/방어)
+CONSTRUCT {
+    ?coa ns:적용가능지역 ?cell .
+} WHERE {
+    ?cell ns:지형유형 ?terrain .
+    FILTER(REGEX(?terrain, "도시|시가", "i"))
+    { ?coa a ns:DefenseCOA } UNION { ?coa a ns:OffensiveCOA }
+}

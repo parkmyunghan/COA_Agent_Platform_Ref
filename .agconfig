@@ -1,0 +1,3 @@
+agent:
+  language: "ko"
+  response_style: "document-centric"

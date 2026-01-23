@@ -1,0 +1,21 @@
+2026-01-23 17:08:18,530 - root - INFO - Logging initialized. File: logs\platform_20260123.log
+2026-01-23 17:08:18,530 - root - INFO - [시스템] 디버깅 모드 활성화됨 - 상세 로그가 기록됩니다.
+2026-01-23 17:08:18,534 - api.dependencies - INFO - Initializing Orchestrator...
+2026-01-23 17:08:18,584 - OntologyManager - INFO - 기존 온톨로지 파일 발견: instances.ttl. 자동 로드를 시도합니다.
+2026-01-23 17:08:18,585 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\schema.ttl)
+2026-01-23 17:08:18,629 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 624
+2026-01-23 17:08:18,631 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\instances.ttl)
+2026-01-23 17:08:19,054 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 6613
+2026-01-23 17:08:19,071 - OntologyManager - INFO - 'instances.ttl' 기반으로 그래프 초기화 완료. 원본 크기: 6613 triples
+2026-01-23 17:08:19,087 - OntologyManager - INFO - 추론 여부 판단 - 원본: 6613 triples, 현재: 6613 triples, 비율: 1.00x
+2026-01-23 17:08:19,106 - OntologyManager - INFO - instances_reasoned.ttl이 없어 OWL-RL 추론을 자동 실행합니다...
+2026-01-23 17:08:19,123 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 시작: 원본 트리플 수 = 6613
+2026-01-23 17:08:19,237 - core_pipeline.owl_reasoner - INFO - RDFS 추론 실행 중...
+2026-01-23 17:08:23,760 - core_pipeline.owl_reasoner - INFO - RDFS 추론 후: 9359 triples (+2746)
+2026-01-23 17:08:23,761 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 실행 중...
+2026-01-23 17:08:33,279 - core_pipeline.owl_reasoner - INFO - OWL-RL 추론 완료: 6221개 새로운 트리플 생성 (14.17초)
+2026-01-23 17:08:33,279 - core_pipeline.owl_reasoner - INFO -   원본: 6613 → 추론: 12834 triples
+2026-01-23 17:08:33,281 - OntologyManager - INFO - OWL-RL 추론 완료: 6221개 새로운 트리플 생성
+2026-01-23 17:08:36,407 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-23 17:08:36,415 - LLMManager - INFO - OpenAI API 초기화 및 검증(생성 테스트) 완료 (모델: gpt-4o)
+2026-01-23 17:08:48,437 - LLMManager - INFO - 사내망 모델 4개 중 0개 사용 가능

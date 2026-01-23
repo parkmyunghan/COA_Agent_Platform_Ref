@@ -1,0 +1,26 @@
+# knowledge/ontology/query_intel_reliability.sparql
+# 첩보 신뢰도 기반 필터링
+
+PREFIX def: <http://defense-ai.kr/ontology#>
+
+SELECT ?intel ?source ?reliability ?report WHERE {
+  ?intel def:Source ?source .
+  ?intel def:Reliability ?reliability .
+  ?intel def:Report ?report .
+  FILTER (?reliability > 0.8)
+}
+ORDER BY DESC(?reliability)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

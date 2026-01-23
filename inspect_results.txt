@@ -1,0 +1,56 @@
+Data keys: []
+
+--- Searching for COA-like instances ---
+
+Instance: http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#label : 방책
+  http://www.w3.org/2000/01/rdf-schema#label : Course of Action
+
+Instance: http://coa-agent-platform.org/ontology#CounterAttackCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 반격방책
+  http://www.w3.org/2000/01/rdf-schema#label : CounterAttackCOA
+
+Instance: http://coa-agent-platform.org/ontology#OffensiveCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 공격방책
+  http://www.w3.org/2000/01/rdf-schema#label : OffensiveCOA
+
+Instance: http://coa-agent-platform.org/ontology#InformationOpsCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 정보방책
+  http://www.w3.org/2000/01/rdf-schema#label : InformationOpsCOA
+
+Instance: http://coa-agent-platform.org/ontology#PreemptiveCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 선제방책
+  http://www.w3.org/2000/01/rdf-schema#label : PreemptiveCOA
+
+Instance: http://coa-agent-platform.org/ontology#DeterrenceCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 억제방책
+  http://www.w3.org/2000/01/rdf-schema#label : DeterrenceCOA
+
+Instance: http://coa-agent-platform.org/ontology#ManeuverCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 기동방책
+  http://www.w3.org/2000/01/rdf-schema#label : ManeuverCOA
+
+Instance: http://coa-agent-platform.org/ontology#DefenseCOA
+  http://www.w3.org/1999/02/22-rdf-syntax-ns#type : http://www.w3.org/2002/07/owl#Class
+  http://www.w3.org/2000/01/rdf-schema#subClassOf : http://coa-agent-platform.org/ontology#COA
+  http://www.w3.org/2000/01/rdf-schema#label : 방어방책
+  http://www.w3.org/2000/01/rdf-schema#label : DefenseCOA
+
+--- Specific check for '도하' string in literals ---
+
+--- Summary of RDF types in graph ---
+Type: http://www.w3.org/2002/07/owl#Class
+Type: http://www.w3.org/2002/07/owl#DatatypeProperty

@@ -1,0 +1,25 @@
+# knowledge/ontology/query_friendly_units.sparql
+# 아군 부대 전투력 조회
+
+PREFIX def: <http://defense-ai.kr/ontology#>
+
+SELECT ?unit ?firepower ?morale ?location WHERE {
+  ?unit def:Firepower ?firepower .
+  ?unit def:Morale ?morale .
+  ?unit def:Location ?location .
+}
+ORDER BY DESC(?firepower)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

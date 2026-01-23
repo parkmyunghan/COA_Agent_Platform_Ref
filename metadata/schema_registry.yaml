@@ -1,0 +1,359 @@
+# metadata/schema_registry.yaml
+# Defense Intelligent Agent Platform - 통합 데이터 스키마 정의
+version: "1.1"
+last_updated: "2025-12-15"
+
+tables:
+  # ==========================================
+  # 1. 기본 엔티티 (Base Entities)
+  # ==========================================
+  아군부대현황:
+    description: "아군 부대의 위치, 상태, 임무 정보"
+    file_name: "아군부대현황.xlsx"
+    columns:
+      아군부대ID: { type: "string", pk: true }
+      부대명: { type: "string", label: true }
+      제대: { type: "string" }
+      병종: { type: "string" }
+      전투력지수: { type: "number" }
+      배치축선ID: { type: "string", fk: "전장축선.축선ID" }
+      배치지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      가용상태: { type: "string" }
+      임무역할: { type: "string" }
+      좌표정보: { type: "string" }
+      고유명칭: { type: "string" }
+      상급부대: { type: "string" }
+      이동방향: { type: "number" }
+      이동속도_kmh: { type: "number" }
+      상태: { type: "string" }
+      전투력: { type: "number" }
+    relations:
+      - name: "locatedIn"
+        source_col: "배치지형셀ID"
+        target_table: "지형셀"
+      - name: "has전장축선"
+        source_col: "배치축선ID"
+        target_table: "전장축선"
+      - name: "hasMission"
+        source_col: "할당임무ID"
+        target_table: "임무정보"
+
+  적군부대현황:
+    description: "적군 부대의 위치, 상태, 식별 정보"
+    file_name: "적군부대현황.xlsx"
+    columns:
+      적군부대ID: { type: "string", pk: true }
+      부대명: { type: "string", label: true }
+      제대: { type: "string" }
+      병종: { type: "string" }
+      전투력지수: { type: "number" }
+      배치축선ID: { type: "string", fk: "전장축선.축선ID" }
+      배치지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      위협수준: { type: "string" }
+      좌표정보: { type: "string" }
+      SIDC: { type: "string" }
+      이동속도_kmh: { type: "number" }
+      감지범위_km: { type: "number" }
+    relations:
+      - name: "locatedIn"
+        source_col: "배치지형셀ID"
+        target_table: "지형셀"
+      - name: "has전장축선"
+        source_col: "배치축선ID"
+        target_table: "전장축선"
+      - name: "relatedTo"
+        source_col: "부대유형"
+        target_table: "위협상황"
+        type: "inference" # 추론 관계 (직접 FK 아님)
+        confidence: 0.8
+
+  지형셀:
+    description: "작전 지역의 지형 정보 (Hex/Grid)"
+    file_name: "지형셀.xlsx"
+    columns:
+      지형셀ID: { type: "string", pk: true }
+      지형명: { type: "string", label: true }
+      지형유형: { type: "string" }
+      # X좌표: { type: "number" } # Deprecated in Excel
+      # Y좌표: { type: "number" } # Deprecated in Excel
+      # 통행가능성: 제거됨
+      기동성등급: { type: "string" }
+      방어유리도: { type: "string" }
+      관측유리도: { type: "string" }
+      요충지여부: { type: "string" }
+      좌표정보: { type: "string" }
+      설명: { type: "string" }
+
+  전장축선:
+    description: "주요 기동로 및 접근로"
+    file_name: "전장축선.xlsx"
+    columns:
+      축선ID: { type: "string", pk: true }
+      축선명: { type: "string", label: true }
+      시작지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      종단지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      주요지형셀목록: { type: "string" }
+      축선유형: { type: "string" }
+      축선설명: { type: "string" }
+      거리_km: { type: "number" }
+    relations:
+      - name: "has지형셀"
+        source_col: "시작지형셀ID"
+        target_table: "지형셀"
+      - name: "has지형셀"
+        source_col: "종단지형셀ID"
+        target_table: "지형셀"
+
+  # ==========================================
+  # 2. 작전 정보 (Operational Info)
+  # ==========================================
+  임무정보:
+    description: "아군에게 부여된 임무"
+    file_name: "임무정보.xlsx"
+    columns:
+      임무ID: { type: "string", pk: true }
+      임무명: { type: "string", label: true }
+      임무종류: { type: "string" }
+      작전지역: { type: "string" }
+      지휘관의도: { type: "string" }
+      상급부대지침: { type: "string" }
+      주공축선ID: { type: "string", fk: "전장축선.축선ID" }
+      조공축선ID: { type: "string", fk: "전장축선.축선ID" }
+      예비축선ID: { type: "string", fk: "전장축선.축선ID" }
+      작전개시시각: { type: "datetime" }
+      작전종료예상: { type: "datetime" }
+    relations:
+      - name: "has전장축선"
+        source_col: "주공축선ID"
+        target_table: "전장축선"
+      - name: "has전장축선"
+        source_col: "조공축선ID"
+        target_table: "전장축선"
+      - name: "has전장축선"
+        source_col: "예비축선ID"
+        target_table: "전장축선"
+
+  위협상황:
+    description: "식별된 적 위협 및 상황"
+    file_name: "위협상황.xlsx"
+    columns:
+      위협ID: { type: "string", pk: true }
+      위협명: { type: "string", label: true }
+      발생시각: { type: "datetime" }
+      위협유형코드: { type: "string" }
+      관련축선ID: { type: "string", fk: "전장축선.축선ID" }
+      발생위치셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      관련_적부대ID: { type: "string", fk: "적군부대현황.적군부대ID" }
+      위협수준: { type: "string" }
+      관련임무ID: { type: "string", fk: "임무정보.임무ID" }
+      원시보고텍스트: { type: "string" }
+      좌표정보: { type: "string" }
+      고유명칭: { type: "string" }
+      상급부대: { type: "string" }
+      이동방향: { type: "number" }
+      상태: { type: "string" }
+      임무유형: { type: "string" }
+      자원가용성: { type: "number" }
+      기상: { type: "string" }
+      지형: { type: "string" }
+      이동속도: { type: "number" }
+      전투력: { type: "number" }
+      위협유형: { type: "string" }
+      시간: { type: "string" }
+    relations:
+      - name: "has지형셀"
+        source_col: "발생위치셀ID"
+        target_table: "지형셀"
+      - name: "has전장축선"
+        source_col: "관련축선ID"
+        target_table: "전장축선"
+      - name: "has적군부대현황"
+        source_col: "관련_적부대ID"
+        target_table: "적군부대현황"
+      - name: "has임무정보"
+        source_col: "관련임무ID"
+        target_table: "임무정보"
+
+  제약조건:
+    description: "작전 수행 간 제약사항 (ROE 등)"
+    file_name: "제약조건.xlsx"
+    columns:
+      제약ID: { type: "string", pk: true }
+      제약내용: { type: "string", label: true }
+      적용대상ID: { type: "string", dynamic_fk: true } # 동적 FK
+      적용대상유형: { type: "string" }
+      제약유형: { type: "string" }
+      우선순위: { type: "string" }
+    relations:
+      - name: "appliesTo"
+        source_col: "적용대상ID"
+        target_table: "dynamic" # 동적 타겟
+        type_col: "적용대상유형"
+        type_mapping:
+          임무: "임무정보"
+          아군부대: "아군부대현황"
+          적부대: "적군부대현황"
+          축선: "전장축선"
+          지형: "지형셀"
+
+  # ==========================================
+  # 3. 신규 데이터 (New Data)
+  # ==========================================
+  COA_Library:
+    description: "확장된 방책 라이브러리 (70개)"
+    file_name: "COA_Library.xlsx"
+    columns:
+      COA_ID: { type: "string", pk: true }
+      명칭: { type: "string", label: true }
+      방책유형: { type: "string" }
+      설명: { type: "string" }
+      적용조건: { type: "list" }  # 키워드 리스트 (예: ["고위협", "자원부족"])
+      키워드: { type: "string" }
+      필요자원: { type: "string" }
+      전장환경_제약: { type: "string" }
+      워게임_모의_분석_승률: { type: "number" }
+      환경호환성: { type: "list" }
+      환경비호환성: { type: "list" }
+      단계정보: { type: "string" }
+      주노력여부: { type: "string" }
+      시각화스타일: { type: "string" }
+      적합위협유형: { type: "list" }
+      자원우선순위: { type: "list" }
+      전장환경_최적조건: { type: "list" }
+      전장환경_최적조건: { type: "list" }
+      연계방책: { type: "list" }
+      적대응전술: { type: "string" }
+    relations:
+      - name: "hasType"
+        source_col: "방책유형"
+        target_table: "Ontology.COAType" # 가상 타겟 (온톨로지 클래스)
+
+  시나리오모음:
+    description: "전술 상황 시나리오 (10개)"
+    file_name: "시나리오모음.xlsx"
+    columns:
+      ID: { type: "string", pk: true }
+      상황명: { type: "string", label: true }
+      위협유형: { type: "string" }
+      설명: { type: "string" }
+      심각도: { type: "number" }
+      threat_level: { type: "number" }
+      enemy_type: { type: "string" }
+      terrain: { type: "string" }
+    relations:
+      - name: "has임무정보"
+        source_col: "임무ID"
+        target_table: "임무정보"
+      - name: "has위협상황"
+        source_col: "위협ID"
+        target_table: "위협상황"
+
+  # ==========================================
+  # 4. 자원 및 환경 정보 (Resource & Environment)
+  # ==========================================
+  아군가용자산:
+    description: "아군의 가용 자산 정보 (정규화된 설계)"
+    file_name: "아군가용자산.xlsx"
+    columns:
+      자산ID: { type: "string", pk: true }
+      자산명: { type: "string", label: true }
+      자산종류: { type: "string" }
+      수량: { type: "number" }
+      배치지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      가용상태: { type: "string" }  # "가용", "손실", "이동중"
+      비고: { type: "string" }
+      SIDC: { type: "string" }
+      전투력지수: { type: "number" }
+      이동속도_kmh: { type: "number" }
+      감지범위_km: { type: "number" }
+    relations:
+      - name: "locatedIn"
+        source_col: "배치지형셀ID"
+        target_table: "지형셀"
+
+  기상상황:
+    description: "기상 정보 (정규화된 설계)"
+    file_name: "기상상황.xlsx"
+    columns:
+      기상ID: { type: "string", pk: true }
+      지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      기상유형: { type: "string", label: true }  # "맑음", "비", "강풍", "폭설", "야간" 등
+      시각: { type: "datetime" }
+      비고: { type: "string" }
+    relations:
+      - name: "locatedIn"
+        source_col: "지형셀ID"
+        target_table: "지형셀"
+
+  # ==========================================
+  # 5. 추가 테이블 (Additional Tables)
+  # ==========================================
+  임무별_자원할당:
+    description: "임무별 할당된 자원 정보 (교리적 보완 스키마)"
+    file_name: "임무별_자원할당.xlsx"
+    columns:
+      allocation_id: { type: "string", pk: true }
+      mission_id: { type: "string", fk: "임무정보.임무ID" }
+      asset_id: { type: "string", fk: "아군가용자산.자산ID" }
+      tactical_role: { type: "string", label: true }
+      allocated_quantity: { type: "number" }
+      plan_status: { type: "string" }
+      note: { type: "string" }
+    relations:
+      - name: "assignedToMission"
+        source_col: "mission_id"
+        target_table: "임무정보"
+      - name: "referencesAsset"
+        source_col: "asset_id"
+        target_table: "아군가용자산"
+
+  방책유형_위협유형_관련성:
+    description: "방책 유형과 위협 유형 간의 효과성 매핑 테이블"
+    file_name: "방책유형_위협유형_관련성.xlsx"
+    columns:
+      coa_type: { type: "string", pk: true }
+      threat_type: { type: "string", pk: true }
+      base_relevance: { type: "number" }
+      description: { type: "string" }
+
+  위협유형_마스터:
+    description: "위협 유형 참조 테이블 (마스터 데이터)"
+    file_name: "위협유형_마스터.xlsx"
+    columns:
+      위협유형코드: { type: "string", pk: true }
+      위협유형명: { type: "string", label: true }
+      위협카테고리: { type: "string" }
+      위협심도: { type: "string" }
+      대표키워드: { type: "string" }
+      설명: { type: "string" }
+      사용여부: { type: "string" }
+
+  평가기준_가중치:
+    description: "COA 평가 기준 및 가중치 정의"
+    file_name: "평가기준_가중치.xlsx"
+    columns:
+      기준ID: { type: "string", pk: true }
+      평가요소: { type: "string", label: true }
+      가중치: { type: "number" }  # 0.0 ~ 1.0
+      설명: { type: "string" }
+
+  # ==========================================
+  # 6. METT-C 요소 확장 (METT-C Framework Extension)
+  # ==========================================
+  민간인지역:
+    description: "민간인 밀집 지역 정보 (METT-C의 C 요소)"
+    file_name: "민간인지역.xlsx"
+    columns:
+      민간인지역ID: { type: "string", pk: true }
+      지역명: { type: "string", label: true }
+      위치지형셀ID: { type: "string", fk: "지형셀.지형셀ID" }
+      인구밀도: { type: "number" }  # 명/km²
+      보호우선순위: { type: "string" }  # High, Medium, Low
+      대피경로: { type: "string" }  # 쉼표 구분
+      중요시설: { type: "string" }  # 병원, 학교 등 (쉼표 구분)
+      좌표정보: { type: "string" }
+      비고: { type: "string" }
+    relations:
+      - name: "locatedIn"
+        source_col: "위치지형셀ID"
+        target_table: "지형셀"

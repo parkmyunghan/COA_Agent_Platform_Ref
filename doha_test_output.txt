@@ -1,0 +1,32 @@
+[TEST] Searching for '도하' - coa_type='defense'
+Results: 14
+  - 주방어 진지 고수 (Type: defense) Keywords: 침투, 기습공격, 기습공격, 작전, 방어, 위협수준, Defense, 침투
+  - 거점 방어 (Type: defense) Keywords: 포격, assets, 전면공격, 작전, 포격, 전면공격, 방어, Defense
+  - 역경사면 방어 (Type: defense) Keywords: terrain, 'mountain', 작전, 방어, Defense
+  - 대공 방어 강화 (Type: defense) Keywords: 작전, 방어, Defense, air_threat
+  - 군단급 대규모 통합 방어 (Type: defense) Keywords: 전면전, 통합방어, 정면공격, 고위협, 대규모, 전면전, 기계화부대 공격, 정면공격, 기계화부대 공격
+  - 사주 방어 (Type: defense) Keywords: 'all', 작전, 방어, Defense, threat_direction
+  - 화생방 정찰 및 제독 작전 (Type: defense) Keywords: 화생방공격, 화학탄, 생물학무기, 화학탄, 생물학무기, 화생방공격
+  - 주요 자산 분산 및 기만 (Type: defense) Keywords: 정밀타격, 정밀타격, 미사일 공격, 미사일 공격
+  - 기동 방어 (Type: defense) Keywords: 속도, 작전, 기동, 방어, Defense, mobility, 타격
+  - 통합 방공망 가동 (Type: defense) Keywords: 공중위협, 공중위협, 항공기 공격, 항공기 공격
+  - 도심지 방어 (Type: defense) Keywords: terrain, 작전, 방어, 'urban', Defense
+  - 해안 경계 강화 (Type: defense) Keywords: location, 작전, 방어, 'coastal', Defense
+  - 지연 방어 (Type: defense) Keywords: 포격, 자원, 작전, 침투, 포격, 방어, 위협수준, Defense, 침투
+  - 후방 지역 방호 (Type: defense) Keywords: 작전, 방어, Defense, rear_threat
+
+[TEST] Searching for '도하' - coa_type='offensive'
+Results: 10
+  - 화력 타격 (Type: offensive) Keywords: Offensive, 방어, 화력, 작전
+  - 침투 공격 (Type: offensive) Keywords: Offensive, 방어, 작전, infiltration
+  - 돌파 공격 (Type: offensive) Keywords: Offensive, 방어, 작전, breakthrough_capability
+  - 포위 공격 (Type: offensive) Keywords: Offensive, 기습공격, 작전, 방어, mobility, 침투, 기습공격, 침투
+  - 공중 강습 (Type: offensive) Keywords: Offensive, 방어, 작전, air_assault
+  - 강습 도하 (Type: offensive) Keywords: Offensive, 방어, river_crossing, 작전
+  - 수색 정찰 공격 (Type: offensive) Keywords: Offensive, 방어, intelligence_need, 작전
+  - 우회 기동 (Type: offensive) Keywords: terrain_adaptability, Offensive, 속도, 기동, 작전, 방어, 타격
+  - 정면 공격 (Type: offensive) Keywords: Offensive, 기습공격, 국지도발, 작전, 방어, 국지도발, 기습공격, attack_power
+  - 추격 작전 (Type: offensive) Keywords: Offensive, 작전, 방어, True, enemy_retreat
+
+[TEST] Searching for '도하' - coa_type=None
+Results: 74

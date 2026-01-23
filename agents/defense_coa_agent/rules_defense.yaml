@@ -1,0 +1,43 @@
+# agents/defense_coa_agent/rules_defense.yaml
+# 방어 COA 규칙 정의
+
+rules:
+  - name: "High Threat Defense"
+    condition:
+      threat_level: "> 0.7"
+    action:
+      coa: "Main_Defense"
+      priority: 1
+  
+  - name: "Moderate Threat Defense"
+    condition:
+      threat_level: "> 0.4 and <= 0.7"
+    action:
+      coa: "Moderate_Defense"
+      priority: 2
+  
+  - name: "Low Threat Defense"
+    condition:
+      threat_level: "<= 0.4"
+    action:
+      coa: "Minimal_Defense"
+      priority: 3
+
+weights:
+  threat_level: 1.0
+  defense_assets: 0.8
+  situation_urgency: 0.6
+
+
+
+
+
+
+
+
+
+
+
+
+
+

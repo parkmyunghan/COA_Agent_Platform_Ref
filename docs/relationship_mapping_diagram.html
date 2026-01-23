@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관계 매핑 규칙 상세 도식</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #1976D2;
+            border-bottom: 2px solid #1976D2;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #424242;
+            margin-top: 30px;
+        }
+
+        .diagram-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow-x: auto;
+            background-color: #fafafa;
+        }
+
+        .legend {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .legend h3 {
+            margin-top: 0;
+            color: #1565C0;
+        }
+
+        .legend-item {
+            margin: 8px 0;
+        }
+
+        .legend-symbol {
+            display: inline-block;
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .relation-type {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border-left: 4px solid #ff9800;
+        }
+
+        .mapping-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .mapping-table th,
+        .mapping-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .mapping-table th {
+            background-color: #1976D2;
+            color: white;
+        }
+
+        .mapping-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📊 데이터 테이블 관계 매핑 규칙 상세 도식</h1>
+
+        <div class="legend">
+            <h3>범례 (Legend)</h3>
+            <div class="legend-item">
+                <span class="legend-symbol" style="color: #000; font-weight: bold;">──▶</span> 명시적 FK (Explicit Foreign
+                Key) - 검은색 실선
+            </div>
+            <div class="legend-item">
+                <span class="legend-symbol" style="color: #666;">┄┄▶</span> 동적 FK (Dynamic Foreign Key) - 회색 점선
+            </div>
+            <div class="legend-item">
+                <span class="legend-symbol" style="color: #E53935; font-weight: bold;">┄┄▶</span> 추론 관계 (Inference
+                Relationship) - 빨간색 점선, 두꺼움
+            </div>
+        </div>
+
+        <h2>전체 테이블 관계도</h2>
+        <div class="diagram-box">
+            <div class="mermaid">
+                graph TB
+                %% 중심 테이블
+                지형셀["🗺️ 지형셀"]
+                임무정보["📋 임무정보"]
+
+                %% 부대
+                아군부대["🟦 아군부대현황"]
+                적군부대["🟥 적군부대현황"]
+
+                %% 축선 및 위협
+                전장축선["➡️ 전장축선"]
+                위협상황["⚠️ 위협상황"]
+
+                %% 자원
+                아군자산["🔧 아군가용자산"]
+                기상상황["🌦️ 기상상황"]
+                가용자원["📦 가용자원"]
+
+                %% 방책 관련
+                COA["⭐ COA_Library"]
+                방책관련성["🔗 방책유형_위협유형_관련성"]
+
+                %% 마스터 데이터
+                위협마스터["📚 위협유형_마스터"]
+                평가가중치["⚖️ 평가기준_가중치"]
+
+                %% 기타
+                제약조건["⛔ 제약조건"]
+                시나리오["📝 시나리오모음"]
+
+                %% 명시적 FK (실선)
+                지형셀 -->|locatedIn| 아군부대
+                지형셀 -->|locatedIn| 적군부대
+                지형셀 -->|locatedIn| 아군자산
+                지형셀 -->|locatedIn| 기상상황
+                지형셀 --> 전장축선
+                지형셀 --> 위협상황
+
+                임무정보 -->|hasMission| 아군부대
+                임무정보 --> 전장축선
+                임무정보 --> 시나리오
+
+                전장축선 --> 아군부대
+                전장축선 --> 적군부대
+                전장축선 --> 위협상황
+
+                위협상황 --> 시나리오
+                위협상황 -.-> 위협마스터
+
+                %% 추론 관계 (점선, 더 두껍게)
+                적군부대 -.->|"추론 관계<br />(신뢰도: 0.8)"| 위협상황
+
+                %% 방책 관련
+                COA -.->|countersThreat| 위협상황
+                방책관련성 -.-> COA
+                방책관련성 -.-> 위협마스터
+
+                %% 동적 FK (점선)
+                제약조건 -.->|"동적 FK"| 임무정보
+                제약조건 -.->|"동적 FK"| 아군부대
+                제약조건 -.->|"동적 FK"| 적군부대
+                제약조건 -.->|"동적 FK"| 전장축선
+                제약조건 -.->|"동적 FK"| 지형셀
+
+                %% 스타일
+                classDef coreTable fill:#1976D2,stroke:#0D47A1,color:#fff,stroke-width:3px
+                classDef entityTable fill:#43A047,stroke:#2E7D32,color:#fff,stroke-width:2px
+                classDef envTable fill:#FB8C00,stroke:#E65100,color:#fff,stroke-width:2px
+                classDef constraintTable fill:#E53935,stroke:#C62828,color:#fff,stroke-width:2px
+                classDef coaTable fill:#9C27B0,stroke:#6A1B9A,color:#fff,stroke-width:3px
+                classDef masterTable fill:#607D8B,stroke:#455A64,color:#fff,stroke-width:2px
+
+                class 지형셀,임무정보 coreTable
+                class 아군부대,적군부대,전장축선,위협상황,시나리오 entityTable
+                class 아군자산,기상상황,가용자원 envTable
+                class 제약조건 constraintTable
+                class COA,방책관련성 coaTable
+                class 위협마스터,평가가중치 masterTable
+
+                %% 추론 관계 링크 스타일 (빨간색, 두껍게)
+                linkStyle 15 stroke:#E53935,stroke-width:3px,stroke-dasharray:5
+            </div>
+        </div>
+
+
+        <h2>관계 유형별 상세 설명</h2>
+
+        <div class="relation-type">
+            <h3>1. 명시적 FK 관계 (Explicit Foreign Key)</h3>
+            <p>직접적인 외래 키 참조 관계로, 참조 무결성이 보장됩니다.</p>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>소스 테이블</th>
+                        <th>소스 컬럼</th>
+                        <th>대상 테이블</th>
+                        <th>관계명</th>
+                        <th>의미</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>아군부대현황</td>
+                        <td>배치지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>locatedIn</td>
+                        <td>부대가 특정 지형셀에 배치됨</td>
+                    </tr>
+                    <tr>
+                        <td>아군부대현황</td>
+                        <td>할당임무ID</td>
+                        <td>임무정보</td>
+                        <td>hasMission</td>
+                        <td>부대에 임무가 할당됨</td>
+                    </tr>
+                    <tr>
+                        <td>적군부대현황</td>
+                        <td>배치지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>locatedIn</td>
+                        <td>적 부대가 특정 지형셀에 배치됨</td>
+                    </tr>
+                    <tr>
+                        <td>전장축선</td>
+                        <td>시작지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>has지형셀</td>
+                        <td>축선의 시작 지점</td>
+                    </tr>
+                    <tr>
+                        <td>전장축선</td>
+                        <td>종단지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>has지형셀</td>
+                        <td>축선의 종료 지점</td>
+                    </tr>
+                    <tr>
+                        <td>위협상황</td>
+                        <td>발생위치셀ID</td>
+                        <td>지형셀</td>
+                        <td>has지형셀</td>
+                        <td>위협이 발생한 위치</td>
+                    </tr>
+                    <tr>
+                        <td>아군가용자산</td>
+                        <td>배치지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>locatedIn</td>
+                        <td>자산이 배치된 위치</td>
+                    </tr>
+                    <tr>
+                        <td>기상상황</td>
+                        <td>지형셀ID</td>
+                        <td>지형셀</td>
+                        <td>locatedIn</td>
+                        <td>기상 정보의 적용 지역</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="relation-type">
+            <h3>2. 동적 FK 관계 (Dynamic Foreign Key)</h3>
+            <p>런타임에 타입 컬럼(적용대상유형)에 따라 대상 테이블이 결정되는 유연한 관계입니다.</p>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>소스 테이블</th>
+                        <th>FK 컬럼</th>
+                        <th>타입 컬럼</th>
+                        <th>타입 값</th>
+                        <th>대상 테이블</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="6">제약조건</td>
+                        <td rowspan="6">적용대상ID</td>
+                        <td rowspan="6">적용대상유형</td>
+                        <td>"임무"</td>
+                        <td>임무정보</td>
+                    </tr>
+                    <tr>
+                        <td>"아군부대"</td>
+                        <td>아군부대현황</td>
+                    </tr>
+                    <tr>
+                        <td>"적부대"</td>
+                        <td>적군부대현황</td>
+                    </tr>
+                    <tr>
+                        <td>"축선"</td>
+                        <td>전장축선</td>
+                    </tr>
+                    <tr>
+                        <td>"지형"</td>
+                        <td>지형셀</td>
+                    </tr>
+                    <tr>
+                        <td>"부대"</td>
+                        <td>아군부대현황</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>처리 로직</strong>: <code>적용대상유형</code> 값에 따라 <code>적용대상ID</code>가 어떤 테이블의 PK를 참조하는지 결정됩니다.</p>
+        </div>
+
+        <div class="relation-type">
+            <h3>3. 추론 관계 (Inference Relationship)</h3>
+            <p>엄격한 FK가 아닌, 의미적 연관성에 기반한 추론 관계입니다.</p>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>소스 테이블</th>
+                        <th>소스 컬럼</th>
+                        <th>대상 테이블</th>
+                        <th>신뢰도</th>
+                        <th>의미</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>적군부대현황</td>
+                        <td>부대유형</td>
+                        <td>위협상황</td>
+                        <td>0.8</td>
+                        <td>적 부대 유형이 특정 위협 상황과 연관될 가능성</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>특징</strong>: 신뢰도 점수(confidence)를 가지며, 온톨로지 추론 시 활용됩니다.</p>
+        </div>
+
+        <h2>온톨로지 구축 개선을 위한 관계 구조 분석</h2>
+
+        <div class="relation-type">
+            <h3>📊 관계 밀도 분석 (Hub Tables)</h3>
+            <p>다음 테이블들은 높은 연결도를 가진 허브 역할을 수행합니다:</p>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>테이블명</th>
+                        <th>연결 수</th>
+                        <th>역할</th>
+                        <th>온톨로지 중요도</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: #e3f2fd;">
+                        <td><strong>지형셀</strong></td>
+                        <td>6개 (Outbound)</td>
+                        <td>공간 참조의 중심 노드</td>
+                        <td>⭐⭐⭐ (높음)</td>
+                    </tr>
+                    <tr style="background-color: #e3f2fd;">
+                        <td><strong>위협상황</strong></td>
+                        <td>5개 (다방향)</td>
+                        <td>위협 분석의 핵심 엔티티</td>
+                        <td>⭐⭐⭐ (높음)</td>
+                    </tr>
+                    <tr style="background-color: #e3f2fd;">
+                        <td><strong>임무정보</strong></td>
+                        <td>3개 (Outbound)</td>
+                        <td>임무 중심 계층 구조</td>
+                        <td>⭐⭐⭐ (높음)</td>
+                    </tr>
+                    <tr>
+                        <td>제약조건</td>
+                        <td>5개 (동적 FK)</td>
+                        <td>범용 제약 적용 메커니즘</td>
+                        <td>⭐⭐ (중간)</td>
+                    </tr>
+                    <tr>
+                        <td>전장축선</td>
+                        <td>4개 (다방향)</td>
+                        <td>지형-부대 연결</td>
+                        <td>⭐⭐ (중간)</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><strong>개선 권장사항</strong>: 허브 테이블의 데이터 품질이 전체 온톨로지 품질을 결정합니다. <code>지형셀</code>, <code>위협상황</code>,
+                <code>임무정보</code>는 우선적으로 검증해야 합니다.</p>
+        </div>
+
+        <div class="relation-type">
+            <h3>🔍 데이터 품질 검증 포인트</h3>
+            <table class="mapping-table">
+                <thead>
+                    <tr>
+                        <th>검증 항목</th>
+                        <th>대상</th>
+                        <th>검증 방법</th>
+                        <th>위험도</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FK 무결성</td>
+                        <td>모든 FK 컬럼</td>
+                        <td>참조 대상 존재 여부 확인</td>
+                        <td>🔴 높음</td>
+                    </tr>
+                    <tr>
+                        <td>동적 FK 타입 매핑 완전성</td>
+                        <td>제약조건.적용대상유형</td>
+                        <td>실제 데이터의 모든 타입 값이 매핑에 존재하는지 확인</td>
+                        <td>🟡 중간</td>
+                    </tr>
+                    <tr>
+                        <td>고아 레코드</td>
+                        <td>지형셀, 임무정보, 위협상황</td>
+                        <td>어떤 관계에도 참조되지 않는 레코드 탐지</td>
+                        <td>🟢 낮음</td>
+                    </tr>
+                    <tr>
+                        <td>순환 참조</td>
+                        <td>전장축선 (시작→종단)</td>
+                        <td>그래프 순환 탐지</td>
+                        <td>🟢 낮음</td>
+                    </tr>
+                    <tr>
+                        <td>COA-위협 키워드 매핑</td>
+                        <td>COA_Library, 위협상황</td>
+                        <td>키워드 기반 매칭 정확도 검증</td>
+                        <td>🟡 중간</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="relation-type">
+            <h3>💡 온톨로지 개선 제안</h3>
+
+            <h4>1. 누락 가능성이 있는 관계</h4>
+            <ul>
+                <li><strong>임무정보 ↔ 위협상황</strong>: 임무와 위협 간 직접 연관성 (현재는 시나리오를 통해서만 연결)</li>
+                <li><strong>아군부대현황 ↔ 아군가용자산</strong>: 부대에 할당된 자산 관계</li>
+                <li><strong>COA_Library ↔ 아군부대현황</strong>: 특정 방책을 실행하는 부대</li>
+                <li><strong>평가기준_가중치 ↔ 임무정보</strong>: 임무별 평가 기준 가중치 차등 적용</li>
+            </ul>
+
+            <h4>2. 추가 추론 관계 후보</h4>
+            <ul>
+                <li><strong>지형셀 ↔ 위협상황</strong> (공간 근접성): 신뢰도 0.7 - 인접 지형셀의 위협 전파 가능성</li>
+                <li><strong>COA_Library ↔ 아군가용자산</strong> (자원 요구사항): 신뢰도 0.6 - 방책 실행에 필요한 자산 유형 매칭</li>
+                <li><strong>기상상황 ↔ COA_Library</strong> (기상 제약): 신뢰도 0.5 - 특정 기상 조건에서 효과가 제한되는 방책</li>
+            </ul>
+
+            <h4>3. Schema Registry 검증 필요 항목</h4>
+            <ul>
+                <li>✅ <code>가용자원</code> - 관계 정의 없음 (독립 테이블인지 확인 필요)</li>
+                <li>✅ <code>평가기준_가중치</code> - 어떤 테이블과도 연결되지 않음 (활용 방법 검토)</li>
+                <li>⚠️ <code>방책유형_위협유형_관련성</code> - 복합 PK 구조의 관계 명시 필요</li>
+            </ul>
+
+            <h4>4. 온톨로지 추론 규칙 추가 기회</h4>
+            <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto;">
+# SPARQL 추론 예시
+# 규칙: 부대가 위치한 지형셀에 위협이 있으면, 부대도 위협에 노출됨
+
+CONSTRUCT {
+    ?unit :exposedTo ?threat .
+}
+WHERE {
+    ?unit :locatedIn ?terrain .
+    ?threat :has지형셀 ?terrain .
+}</pre>
+        </div>
+
+        <h2>관계 매핑 소스 파일</h2>
+        <div class="relation-type">
+            <h3>1. schema_registry.yaml</h3>
+            <p>각 테이블의 <code>relations</code> 섹션에서 명시적 관계 정의</p>
+            <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto;">
+아군부대현황:
+  relations:
+    - name: "locatedIn"
+      source_col: "배치지형셀ID"
+      target_table: "지형셀"
+    - name: "hasMission"
+      source_col: "할당임무ID"
+      target_table: "임무정보"</pre>
+        </div>
+
+        <div class="relation-type">
+            <h3>2. relation_mappings.json</h3>
+            <p>동적 FK 및 추론 관계를 포함한 확장 매핑</p>
+            <pre style="background: #f5f5f5; padding: 10px; border-radius: 5px; overflow-x: auto;">
+"제약조건": {
+  "동적FK:적용대상ID": {
+    "target": "동적",
+    "relation": "appliesTo",
+    "type_column": "적용대상유형",
+    "type_mapping": {
+      "임무": "임무정보",
+      "아군부대": "아군부대현황",
+      ...
+    },
+    "dynamic": true
+  }
+}</pre>
+        </div>
+
+        <h2>온톨로지 그래프 생성 과정</h2>
+        <div class="relation-type">
+            <p>이러한 관계 매핑 규칙은 <strong>Phase 1 온톨로지 구축</strong> 과정에서 다음과 같이 처리됩니다:</p>
+            <ol>
+                <li><strong>명시적 FK</strong>: <code>OWL ObjectProperty</code>로 변환 (e.g., <code>ns:locatedIn</code>)</li>
+                <li><strong>동적 FK</strong>: 런타임에 타입 값을 읽어 적절한 대상으로 트리플 생성</li>
+                <li><strong>추론 관계</strong>: 신뢰도 점수와 함께 메타데이터로 저장, SPARQL 추론에 활용</li>
+            </ol>
+        </div>
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>
