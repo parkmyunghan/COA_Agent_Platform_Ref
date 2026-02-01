@@ -19,17 +19,16 @@ def _enrich_situation_info(situation_info: Dict[str, Any], service: COAService, 
     import logging
     logger = logging.getLogger(__name__)
     
-    # 1. 시각화/보고용 ID 추출 (기존 필드 중 우선순위 높은 것 선택)
+    # 1. 보고용 ID 추출
     loc_id = situation_info.get('location') or situation_info.get('발생장소')
     axis_id = situation_info.get('axis_id') or situation_info.get('관련축선ID')
     threat_type_code = situation_info.get('threat_type') or situation_info.get('위협유형')
     enemy = situation_info.get('적부대') or situation_info.get('enemy_units') or 'ENU_ESTIMATED'
     
-    # [FIX] stale names 무시 (IDs가 있다면 명칭은 새로 조회해야 함)
-    # SITREP이나 수동 텍스트에서 온 명칭이 있을 수 있으므로, ID가 없을 때만 기존 명칭 유지
-    real_loc_name = loc_id if loc_id else (situation_info.get('발생지형명') or situation_info.get('location_name'))
-    real_axis_name = axis_id if axis_id else (situation_info.get('관련축선명') or situation_info.get('axis_name'))
-    t_type_ko = threat_type_code if threat_type_code else (situation_info.get('위협유형') or "식별된 위협")
+    # [FIX] 매퍼를 통한 명칭 통합 조회
+    real_loc_name = loc_id
+    real_axis_name = axis_id
+    t_type_ko = threat_type_code or "식별된 위협"
 
     try:
         # 데모 시나리오 등에 대한 하드코딩 매핑 (Fallback)
@@ -51,51 +50,34 @@ def _enrich_situation_info(situation_info: Dict[str, Any], service: COAService, 
             enemy_ko = mapping['enemy']
             logger.info(f"[정황보고] 데모 시나리오 매핑 적용: {mapping}")
         
-        # DataManager를 통한 명칭 조회 (ID 기반) - 데모가 아니거나 매핑이 없는 경우
+        # 2. CodeLabelMapper를 통한 표준 명칭 변환
         else:
-            # 명칭 조회 시도 (성공할 경우에만 real_loc_name 교체)
-            try:
-                # 지형 정보 조회 (TERR...)
-                if loc_id and str(loc_id).startswith('TERR'):
-                    terrain_data = service.data_manager.load_table('지형셀')
-                    if terrain_data is not None and not terrain_data.empty:
-                        t_row = terrain_data[terrain_data['지형셀ID'] == loc_id]
-                        if not t_row.empty:
-                            terrain_name = t_row.iloc[0].get('지형명')
-                            if terrain_name and str(terrain_name).lower() not in ['nan', 'none', '']:
-                                real_loc_name = terrain_name
-                                logger.debug(f"[정황보고] 지형명 조회 성공: {loc_id} -> {real_loc_name}")
+            if mapper:
+                # 지형명 변환 (TERR...)
+                if loc_id:
+                    real_loc_name = mapper.get_terrain_label(loc_id)
                 
-                # 축선 정보 조회 (AXIS...)
-                if axis_id and str(axis_id).startswith('AXIS'):
-                    axis_data = service.data_manager.load_table('전장축선')
-                    if axis_data is not None and not axis_data.empty:
-                        a_row = axis_data[axis_data['축선ID'] == axis_id]
-                        if not a_row.empty:
-                            axis_name_val = a_row.iloc[0].get('축선명')
-                            if axis_name_val and str(axis_name_val).lower() not in ['nan', 'none', '']:
-                                real_axis_name = axis_name_val
-                                logger.debug(f"[정황보고] 축선명 조회 성공: {axis_id} -> {real_axis_name}")
-            except Exception as e:
-                logger.warning(f"[정황보고] 명칭 조회 실패: {e}")
+                # 축선명 변환 (AXIS...)
+                if axis_id:
+                    real_axis_name = mapper.get_axis_label(axis_id)
+                
+                # 위협 유형 변환 (THR_TYPE...)
+                if threat_type_code:
+                    t_type_ko = mapper.get_threat_type_label(threat_type_code)
+                    if t_type_ko == threat_type_code and str(threat_type_code).startswith("THR_TYPE_"):
+                         t_type_ko = "식별된 위협"
             
-            # 위협 유형 변환 (mapper 사용)
-            if mapper and threat_type_code:
-                t_type_ko = mapper.get_threat_type_label(threat_type_code)
-                if t_type_ko == threat_type_code and str(threat_type_code).startswith("THR_TYPE_"):
-                     t_type_ko = "식별된 위협"
+            # 적 부대 변환
+            codec_map = {
+                "INFANTRY": "보병", "ARMOR": "기갑", "ARTILLERY": "포병",
+                "AIR": "항공", "MISSILE": "미사일", "CBRN": "화생방",
+                "CYBER": "사이버", "INFILTRATION": "침투", "UNKNOWN": "미상",
+                "ENU_ESTIMATED": "식별된 적 부대",
+                "HIGH": "높음", "MEDIUM": "중간", "LOW": "낮음"
+            }
+            enemy_ko = codec_map.get(str(enemy).upper(), enemy)
         
-        # 적 부대 변환
-        codec_map = {
-            "INFANTRY": "보병", "ARMOR": "기갑", "ARTILLERY": "포병",
-            "AIR": "항공", "MISSILE": "미사일", "CBRN": "화생방",
-            "CYBER": "사이버", "INFILTRATION": "침투", "UNKNOWN": "미상",
-            "ENU_ESTIMATED": "식별된 적 부대",
-            "HIGH": "높음", "MEDIUM": "중간", "LOW": "낮음"
-        }
-        enemy_ko = codec_map.get(str(enemy).upper(), enemy)
-        
-        # 상세 보고용 텍스트 구성 (ID와 명칭 병기)
+        # 상세 보고용 텍스트 구성 (ID와 명칭 병기 - 매퍼 포맷 사용)
         loc_display = mapper.format_with_code(real_loc_name, loc_id) if mapper else (f"{real_loc_name}({loc_id})" if loc_id else real_loc_name)
         axis_display = mapper.format_with_code(real_axis_name, axis_id) if mapper else (f"{real_axis_name}({axis_id})" if axis_id else real_axis_name)
         threat_display = mapper.format_with_code(t_type_ko, threat_type_code) if mapper else (f"{t_type_ko}({threat_type_code})" if threat_type_code else t_type_ko)
@@ -173,10 +155,11 @@ def generate_coas(
 
         debug_log(logger, f"[방책추천 API] COA 생성 시작 - approach_mode: {request.user_params.get('approach_mode', 'threat_centered') if request.user_params else 'threat_centered'}")
         
-        result = service.generate_coas_unified(
+        # [옵션 A] 에이전트 기반 생성 사용 (제대로 된 아키텍처)
+        result = service.generate_coas_with_agent(
             mission_id=request.mission_id,
             threat_id=request.threat_id,
-            threat_event=threat_event, # If valid object
+            threat_event=threat_event,
             user_params=request.user_params
         )
         
@@ -382,6 +365,14 @@ def generate_coas(
              # 아군 부대 위치 GeoJSON 생성
              unit_positions_geojson = viz_generator.generate_unit_positions_geojson(friendly_units)
              
+             # 에이전트 응답에서 matching recommendation 찾기 (doctrine_references, chain_info 추출용)
+             agent_recommendations = result.get("recommendations", [])
+             matching_rec = None
+             for rec in agent_recommendations:
+                 if rec.get("coa_id") == coa_eval.coa_id:
+                     matching_rec = rec
+                     break
+             
              # COASummary 생성 (시각화 데이터 포함)
              coa_summary_dict = {
                  "coa_id": coa_eval.coa_id,
@@ -398,7 +389,11 @@ def generate_coas(
                      coa_evaluation=coa_eval,
                      axis_states=result.get("axis_states", []),
                      use_llm=True
-                 )
+                 ),
+                 # NEW: RAG 참고자료 (DoctrineReferencePanel용)
+                 "doctrine_references": matching_rec.get("doctrine_references", []) if matching_rec else [],
+                 # NEW: 전략 체인 정보 (ChainVisualizer용)
+                 "chain_info": matching_rec.get("chain_info_details", {}) if matching_rec else {}
              }
              
              # 시각화 데이터 추가 (dict로 변환하여 추가)
@@ -549,15 +544,15 @@ def generate_coas(
 - 상세목표: {m_objective}
 
 ## 작문 지시사항:
-1. **가독성 최우선**: "AXIS02", "THR105" 같은 코드보다는 **"영동축선", "적 전차대대"** 같은 한글 명칭을 주어로 사용하세요.
-2. **코드 병기**: 코드는 필요할 경우에만 괄호 안에 표기하세요. 예: "영동축선(AXIS02)"
-3. **군사적 어조**: "~이 하달됨", "~로 판단됨" 등 명확하고 간결한 군사 보고체를 사용하세요.
+1. **명칭 중심(Human-readable)**: "AXIS02", "THR105", "TERR001" 같은 **코드를 문장의 주어로 사용하지 마세요.** 반드시 **"영동축선", "적 전차대대", "백암산"** 같은 자연어 명칭을 주어로 사용해야 합니다.
+2. **코드 병기 규정**: 코드는 최초 언급 시 이름 뒤 괄호 안에만 표기하세요. 예: "가칠봉(TERR007) 일대"
+3. **전문적 군사 보고체**: "~가 하달됨", "~로 분석됨", "~이 예상됨" 등 명확하고 간결한 군사 보고 형식을 준수하세요.
 4. **핵심 강조**: 중요한 명사(지명, 부대명, 축선명)는 **굵게** 표시하세요.
 5. **분량**: 핵심 내용만 담아 **두 문장 이내**로 작성하세요.
 
 ## 예시:
-- 나쁜 예: MISSION_001이 AXIS_01에서 수행됨. 목표는 TARGET_A 확보임.
-- 좋은 예: **제1보병사단**은 **서부 주공축선(AXIS_01)**을 따라 진격하여 **개성 북단 고지**를 확보하는 **공격 작전(MISSION_001)**을 수행함.
+- 나쁜 예: MISSION_001이 AXIS_01에서 수행됨. TERR007 확보가 목표임.
+- 좋은 예: **제1보병사단**은 **서부 주공축선(AXIS_01)**을 따라 진격하여 **가칠봉(TERR007)** 고지를 확보하는 **공격 작전(MISSION_001)**을 수행함.
 
 문장 생성:"""
                 else:
@@ -578,20 +573,18 @@ def generate_coas(
 - 위협수준: {t_level_ko} ({int(threat_level*100)}%)
 
 ## 작문 지시사항:
-1. **원시보고 우선**: 원시 상황보고에 명시된 **구체적인 정보**(병력 규모, 장비 수량, 행동 상세 등)를 **반드시 포함**하세요.
-2. **온톨로지 팩트 보완**: 원시보고에 없는 정보(코드명, 축선 등)는 온톨로지 팩트로 보완하세요.
-3. **자연어 중심 작성**: 코드는 괄호 안에만 표기하고, 자연어 명칭을 주어로 사용하세요.
-4. **군사적 어조**: "~이 식별됨", "~로 분석됨", "~가 예상됨" 등 전문적인 보고체를 사용하세요.
-5. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
-6. **분량**: **한 ~ 두 문장**으로 간결하게 작성하세요.
+1. **기계적 코드 노출 방지**: TERR007, THR_TYPE_001 등의 **코드를 문장의 주어로 절대 사용하지 마세요.** 반드시 **가칠봉**, **침투** 등의 이름이나 지명을 사용하여 보고 문장을 시작하세요.
+2. **전문적 보고체**: 지휘관에게 드리는 정식 상황 보고 체계를 갖추어 "~이 식별되었습니다", "~로 판단됩니다" 등의 표현을 사용하세요.
+3. **원시보고 중심**: 원시 상황보고에 포함된 구체적인 행동 묘사를 최대한 보존하세요.
+4. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
+5. **분량**: **두 문장 내외**로 간결하게 작성하세요.
 
 ## 예시:
-- 나쁜 예 (원시보고 무시): THR_TYPE_002가 TERR005에서 식별됨. AXIS003으로 이동 중.
-- 좋은 예 (원시보고 반영): **도시 지역(TERR005)**에서 **적 기갑부대 차량 10여 대**가 **집결 징후(THR_TYPE_002)** 보이며, **조공축선-북측(AXIS003)** 위협 가능성이 있는 것으로 분석됨.
+- 나쁜 예: TERR007 지역에서 THR_TYPE_001 위협이 식별됨.
+- 좋은 예: **가칠봉(TERR007) 일대**에서 **적 기동 징후(THR_TYPE_001)**가 포착되었으며, 현재 **양구-인제 축선**을 향해 이동 중인 것으로 분석됩니다.
 
 문장 생성:"""
-
-                
+               
                 # LLM으로 정황보고 생성 (위협 중심 및 임무 중심 모두)
                 situation_summary = service.llm_manager.generate(prompt, max_tokens=256).strip()
                 
@@ -627,12 +620,18 @@ def generate_coas(
         # 상세 정보는 디버깅 모드에서만 기록
         debug_log(logger, f"[방책추천 API] 응답 상세 - coas_summary 길이: {len(coas_summary)}, axis_states: {len(axis_states_data) if axis_states_data else 0}개")
         
+        # [옵션 A] 에이전트가 직접 생성한 상황판단 사용
+        situation_assessment = result.get('situation_assessment')
+        
+        logger.info(f"[방책추천 API] 상황판단: {'에이전트 생성 (' + situation_assessment[:50] + '...)' if situation_assessment else '없음'}")
+        
         return COAResponse(
             coas=coas_summary,
             axis_states=axis_states_data,
             original_request=request,
             situation_summary=situation_summary,
-            situation_summary_source=situation_summary_source
+            situation_summary_source=situation_summary_source,
+            situation_assessment=situation_assessment
         )
 
     except Exception as e:
@@ -854,19 +853,17 @@ def generate_situation_summary(
 - 임무 성공 가능성: {success_level_ko} ({int((1-threat_level)*100) if threat_level < 1 else 50}%)
 
 ## 작문 지시사항:
-1. **임무 중심**: 임무 정보(임무명, 목표)를 주요 내용으로 하고, 위협 정보는 보조적으로 언급하세요.
-2. **자연어 중심 작성**: 코드는 괄호 안에만 표기하고, 자연어 명칭을 주어로 사용하세요.
-3. **군사적 어조**: "~가 하달됨", "~이 예상됨", "~로 평가됨" 등 전문적인 보고체를 사용하세요.
-4. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
-5. **분량**: **두 ~ 세 문장**으로 간결하게 작성하세요.
+1. **지휘관 보고 양식**: 지휘보고 형식을 갖추어 "~가 하달되었습니다", "~로 평가됩니다" 등 정중하고 명확한 군사적 문체를 사용하세요.
+2. **이름 우선 표기**: TERR007 같은 코드보다는 **"가칠봉"** 같은 지식 그래프의 명칭을 주어로 사용하세요.
+3. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
+4. **분량**: **두 ~ 세 문장**으로 간결하게 작성하세요.
 
 ## 예시:
-- 좋은 예: **{m_name}({m_id})** 임무가 하달되었습니다. 작전 축선은 **{axis_display}**이며, 작전 지역은 **{loc_display}** 일대입니다. 예상 위협으로 {threat_display} 활동이 있으며, 임무 성공 가능성은 **{success_level_ko}**으로 평가됩니다.
+- 좋은 예: **가칠봉(TERR001)** 일대에서 **서쪽 고지 탈환(MSN001)** 임무가 하달되었습니다. 작전 축선은 **인제-양구 축선(AXIS06)**이며, 임무 성공 가능성은 **보통**으로 평가됩니다.
 
 문장 생성:"""
                 else:
-                    # 위협 중심 모드 (기존 로직)
-                    # 위협 수준 변환 (0.0-1.0 기반)
+                    # 위협 중심 모드
                     if threat_level >= 0.8:
                         t_level_ko = "높음"
                     elif threat_level >= 0.5:
@@ -888,16 +885,15 @@ def generate_situation_summary(
 - 위협수준: {t_level_ko} ({int(threat_level*100)}%)
 
 ## 작문 지시사항:
-1. **원시보고 우선**: 원시 상황보고에 명시된 **구체적인 정보**(병력 규모, 장비 수량, 행동 상세 등)를 **반드시 포함**하세요.
-2. **온톨로지 팩트 보완**: 원시보고에 없는 정보(코드명, 축선 등)는 온톨로지 팩트로 보완하세요.
-3. **자연어 중심 작성**: 코드는 괄호 안에만 표기하고, 자연어 명칭을 주어로 사용하세요.
-4. **군사적 어조**: "~이 식별됨", "~로 분석됨", "~가 예상됨" 등 전문적인 보고체를 사용하세요.
-5. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
-6. **분량**: **한 ~ 두 문장**으로 간결하게 작성하세요.
+1. **기계적 코드 노출 방지**: TERR007, THR_TYPE_001 등의 **코드를 문장의 주어로 절대 사용하지 마세요.** 반드시 **가칠봉**, **침투** 등의 이름이나 지명을 사용하여 보고 문장을 시작하세요.
+2. **전문적 보고체**: 지휘관에게 드리는 정식 상황 보고 체계를 갖추어 "~이 식별되었습니다", "~로 판단됩니다" 등의 표현을 사용하세요.
+3. **원시보고 중심**: 원시 상황보고에 포함된 구체적인 행동 묘사를 최대한 보존하세요.
+4. **핵심 강조**: 중요 정보는 **굵게** 표시하세요.
+5. **분량**: **두 문장 내외**로 간결하게 작성하세요.
 
 ## 예시:
-- 나쁜 예 (원시보고 무시): THR_TYPE_002가 TERR005에서 식별됨. AXIS003으로 이동 중.
-- 좋은 예 (원시보고 반영): **도시 지역(TERR005)**에서 **적 기갑부대 차량 10여 대**가 **집결 징후(THR_TYPE_002)** 보이며, **조공축선-북측(AXIS003)** 위협 가능성이 있는 것으로 분석됨.
+- 나쁜 예: TERR007 지역에서 THR_TYPE_001 위협이 식별됨.
+- 좋은 예: **가칠봉(TERR007) 일대**에서 **적 기동 징후(THR_TYPE_001)**가 포착되었으며, 현재 **양구-인제 축선**을 향해 이동 중인 것으로 분석됩니다.
 
 문장 생성:"""
                 

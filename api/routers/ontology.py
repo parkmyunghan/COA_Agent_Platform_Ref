@@ -18,6 +18,12 @@ router = APIRouter(prefix="/api/v1/ontology", tags=["ontology"])
 # Global orchestrator instance (injected from main.py)
 _orchestrator: Optional[Orchestrator] = None
 
+# [OPTIMIZATION] Inferred Graph Cache
+_inferred_graph_cache = {
+    "graph": None,
+    "source_hash": None
+}
+
 
 def set_orchestrator(orchestrator: Orchestrator):
     """Set the global orchestrator instance."""
@@ -155,23 +161,34 @@ async def get_graph_data(
         # 추론 포함 옵션이 활성화된 경우 추론된 그래프 사용
         graph_to_use = ontology_manager.graph
         if include_inferred:
-            try:
-                from core_pipeline.owl_reasoner import OWLReasoner, OWLRL_AVAILABLE
-                
-                if OWLRL_AVAILABLE:
-                    namespace = str(ontology_manager.ns) if hasattr(ontology_manager, 'ns') and ontology_manager.ns else None
-                    reasoner = OWLReasoner(ontology_manager.graph, namespace)
-                    inferred_graph = reasoner.run_inference()
+            # [OPTIMIZATION] 캐시된 추론 그래프 사용
+            from core_pipeline.owl_reasoner import OWLRL_AVAILABLE
+            if OWLRL_AVAILABLE:
+                try:
+                    # 원본 그래프 해시 (변경 감지용 - 간단히 길이로 체크)
+                    current_source_hash = len(ontology_manager.graph)
                     
-                    if inferred_graph is not None:
-                        graph_to_use = inferred_graph
-                        logger.info(f"Using inferred graph with {len(inferred_graph)} triples (original: {len(ontology_manager.graph)})")
+                    if _inferred_graph_cache["source_hash"] == current_source_hash and _inferred_graph_cache["graph"] is not None:
+                        graph_to_use = _inferred_graph_cache["graph"]
+                        logger.info(f"Using cached inferred graph ({len(graph_to_use)} triples)")
                     else:
-                        logger.warning("Inferred graph is None, using original graph")
-                else:
-                    logger.warning("OWLRL not available, using original graph")
-            except Exception as e:
-                logger.warning(f"Failed to apply inference: {e}, using original graph")
+                        from core_pipeline.owl_reasoner import OWLReasoner
+                        namespace = str(ontology_manager.ns) if hasattr(ontology_manager, 'ns') and ontology_manager.ns else None
+                        reasoner = OWLReasoner(ontology_manager.graph, namespace)
+                        
+                        inferred_graph = reasoner.run_inference()
+                        
+                        if inferred_graph is not None:
+                            graph_to_use = inferred_graph
+                            _inferred_graph_cache["graph"] = inferred_graph
+                            _inferred_graph_cache["source_hash"] = current_source_hash
+                            logger.info(f"Created and cached inferred graph ({len(inferred_graph)} triples)")
+                        else:
+                            logger.warning("Inferred graph is None, using original graph")
+                except Exception as e:
+                    logger.warning(f"Inference cache logic failed: {e}")
+            else:
+                logger.warning("OWLRL not available, using original graph")
         
         # Get full graph data (추론된 그래프 사용)
         logger.info(f"Fetching graph data (mode={mode})")
@@ -263,8 +280,14 @@ async def convert_nl_to_sparql(request: NLToSPARQLRequest):
         prompt = f"""당신은 군사 온톨로지 전문가이자 SPARQL 마스터입니다.
 사용자의 자연어 질문을 온톨로지 지식그래프를 조회하기 위한 SPARQL 쿼리로 변환하세요.
 
+[필수 요구사항]
+생성된 SPARQL 쿼리는 사용자의 학습을 돕기 위해 **각 라인마다 상세한 한글 주석(#)**을 반드시 포함해야 합니다.
+어떤 데이터를 조회하는지, 어떤 필터를 거는지 상세히 설명해주세요.
+
 [Prefixes - 반드시 포함]
+# 온톨로지 기본 네임스페이스
 PREFIX def: <http://coa-agent-platform.org/ontology#>
+# 라벨 및 설명 스키마
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 [클래스 및 속성 - 반드시 이 이름만 사용하세요!]
@@ -655,6 +678,7 @@ SELECT ?terrain ?terrainName ?entity ?entityName ?entityType WHERE {{
 6. **관계 탐색 필수**: 직접 속성이 없으면 관계를 따라 탐색 (예: 축선 좌표 → has지형셀 → 지형셀.좌표정보)
 7. 여러 엔티티를 연결할 때 JOIN 패턴 사용: ?부대 def:has전장축선 ?축선 . ?축선 def:has지형셀 ?지형 .
 8. 역방향 탐색 가능: "이 축선에 배치된 부대" → ?부대 def:has전장축선 ?축선 패턴 사용
+9. **주석 필수**: 초보자도 이해할 수 있도록 라인별로 친절한 한글 주석을 달아주세요.
 
 [Question]
 "{request.question}"
@@ -665,16 +689,30 @@ SELECT ?terrain ?terrainName ?entity ?entityName ?entityType WHERE {{
         # LLM 호출
         response = llm_manager.generate(prompt, max_tokens=500)
         
-        # 응답 정제 (마크다운 코드 블록 제거)
+        # 응답 정제 (마크다운 코드 블록 및 불필요한 텍스트 제거)
         sparql = response.strip()
         sparql = sparql.replace("```sparql", "").replace("```", "")
-        sparql = sparql.strip()
         
-        # PREFIX가 없으면 추가
+        # 라인 단위 정제 (구분선 등 제거)
+        clean_lines = []
+        for line in sparql.split('\n'):
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith('---'): # 구분선 제거
+                continue
+            clean_lines.append(line)
+        
+        sparql = '\n'.join(clean_lines)
         if not sparql.upper().startswith("PREFIX"):
-            prefixes = """PREFIX def: <http://coa-agent-platform.org/ontology#>
+            prefixes = """# [네임스페이스 설정]
+# 기본 온톨로지 스키마 (클래스, 속성 등)
+PREFIX def: <http://coa-agent-platform.org/ontology#>
+# RDF 구문 및 타입 정의
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# RDFS 스키마 (라벨, 레이블 등)
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+# OWL 웹 온톨로지 언어
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 """

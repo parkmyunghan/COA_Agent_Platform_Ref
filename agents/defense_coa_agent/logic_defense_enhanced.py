@@ -28,6 +28,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'config'))
 
 from agents.base_agent import BaseAgent
 from agents.defense_coa_agent.rule_engine import RuleEngine
+from api.utils.code_label_mapper import get_mapper
 
 
 def safe_print(msg, also_log_file: bool = True, logger_name: Optional[str] = None):
@@ -62,6 +63,9 @@ class EnhancedDefenseCOAAgent(BaseAgent):
             "defense", "offensive", "counter_attack", 
             "preemptive", "deterrence", "maneuver", "information_ops"
         ]
+        
+        # 🔥 NEW: 가독성 개선을 위한 코드-라벨 매퍼 주입
+        self.mapper = get_mapper()
         
         # 콜백 함수 저장
         self.status_callback = None
@@ -264,11 +268,21 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                 # RAG 검색 (선택적)
                 if kwargs.get("use_embedding", True) and self.core.rag_manager and self.core.rag_manager.is_available():
                     try:
-                        threat_query = f"위협 상황 {selected_situation_info.get('위협유형', selected_situation_info.get('threat_type', '일반'))}"
+                        # [FIX] 매퍼를 사용하여 한글 위협 유형명 추출
+                        t_code = selected_situation_info.get('위협유형', selected_situation_info.get('threat_type', '일반'))
+                        t_name = t_code
+                        if self.mapper:
+                            t_name = self.mapper.get_threat_type_label(t_code)
+                            
+                        # 검색 쿼리 개선 (한글 + 코드 혼용)
+                        threat_query = f"위협 상황 {t_name} ({t_code}) 대응 작전 교범"
+                        # threat_query = f"위협 상황 {selected_situation_info.get('위협유형', selected_situation_info.get('threat_type', '일반'))}"
+                        
                         situation_analysis["rag_results"] = self.core.rag_manager.retrieve_with_context(
                             threat_query,
                             top_k=5
                         )
+                        safe_print(f"[INFO] RAG 검색 수행 (Query: {threat_query}): {len(situation_analysis['rag_results'])}건 발견")
                     except Exception as e:
                         safe_print(f"[WARN] RAG 검색 실패: {e}")
             # situation_id가 없거나 빈 문자열이면 바로 일반 분석 수행
@@ -563,9 +577,14 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                 doctrine_results = []
                 if self.core.rag_manager and self.core.rag_manager.is_available():
                     try:
-                        doctrine_query = f"{situation_info.get('위협유형', '적군 침입')} 대응 작전 교범 및 지침"
+                        t_code = situation_info.get('위협유형', situation_info.get('threat_type', '적군 침입'))
+                        t_name = t_code
+                        if self.mapper:
+                            t_name = self.mapper.get_threat_type_label(t_code)
+                            
+                        doctrine_query = f"{t_name} ({t_code}) 대응 작전 교범 및 지침"
                         doctrine_results = self.core.rag_manager.retrieve_with_context(doctrine_query, top_k=3)
-                        safe_print(f"[INFO] 교리 RAG 검색 완료: {len(doctrine_results)}건 발견")
+                        safe_print(f"[INFO] 교리 RAG 검색 완료 (Query: {doctrine_query}): {len(doctrine_results)}건 발견")
                     except Exception as e:
                         safe_print(f"[WARN] 교리 RAG 검색 실패: {e}")
                 
@@ -1011,11 +1030,23 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                 reasoning = score_breakdown.get('reasoning', [])
                 strengths = strategy.get('strengths', [])
                 
-                # 상황 정보
-                threat_type = situation_info.get('위협유형') or situation_info.get('threat_type') or '식별된 위협'
+                # [FIX] 상황 정보 - ID를 자연어로 변환
+                threat_type_code = situation_info.get('위협유형') or situation_info.get('threat_type') or 'UNKNOWN'
+                loc_id = situation_info.get('발생장소') or situation_info.get('location') or 'N/A'
+                axis_id = situation_info.get('관련축선ID') or situation_info.get('axis_id', 'N/A')
+                
+                # [FIX] 매핑 엔진으로 실제 명칭 변환
+                real_loc_name = self.mapper.get_terrain_label(loc_id) if loc_id != 'N/A' else '작전 구역'
+                t_type_ko = self.mapper.get_threat_type_label(threat_type_code)
+                real_axis_name = self.mapper.get_axis_label(axis_id) if axis_id != 'N/A' else '주 축선'
+                
+                # Display용 포맷 (이름(ID) 형식)
+                loc_display = self.mapper.format_with_code(real_loc_name, loc_id)
+                threat_display = self.mapper.format_with_code(t_type_ko, threat_type_code)
+                axis_display = self.mapper.format_with_code(real_axis_name, axis_id)
+                
                 threat_level = self._extract_threat_level(situation_info)
                 threat_pct = int(threat_level * 100)
-                location = situation_info.get('발생장소') or situation_info.get('location') or '작전 구역'
                 
                 # 온톨로지 trace 요약 생성
                 trace_summary = ""
@@ -1062,13 +1093,14 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                         if reason_text:
                             top_reasons.append(f"- {reason_text} (기여도: {score_val:.3f})")
                 
-                # LLM 프롬프트 구성
+                # [FIX] LLM 프롬프트 구성 - 자연어 명칭 사용 및 코드 노출 방지
                 prompt = f"""당신은 작전 참모입니다. 다음 정보를 바탕으로 방책 선정 사유를 자연스럽고 전문적인 한국어로 작성하세요.
 
 ## 현재 상황
-- 위협 유형: {threat_type}
+- 발생 위치: {loc_display}
+- 위협 유형: {threat_display}
 - 위협 수준: {threat_pct}%
-- 발생 위치: {location}
+- 관련 축선: {axis_display}
 - 접근 모드: {"임무 중심" if approach_mode == "mission_centered" else "위협 중심"}
 
 ## 추천 방책 정보
@@ -1091,14 +1123,15 @@ class EnhancedDefenseCOAAgent(BaseAgent):
 {chr(10).join([f"- {s}" for s in strengths[:3]]) if strengths else "강점 정보 없음"}
 
 ## 작성 요구사항
-1. **정확성**: 위의 수치와 정보를 정확히 반영하세요. 임의로 수치를 변경하거나 과장하지 마세요.
-2. **자연스러움**: 템플릿처럼 보이지 않도록 자연스러운 문장으로 작성하세요.
-3. **구조**: 다음 순서로 작성하세요:
-   - 첫 문장: 방책의 핵심 특징과 현재 상황과의 연관성
+1. **자연어 명칭 의무화**: "TERR003", "THR_TYPE_001", "AXIS06" 같은 **코드를 문장에 절대 사용하지 마세요.** 반드시 **"{real_loc_name}", "{t_type_ko}", "{real_axis_name}"** 같은 자연어 명칭을 사용하세요.
+2. **정확성**: 위의 수치와 정보를 정확히 반영하세요. 임의로 수치를 변경하거나 과장하지 마세요.
+3. **자연스러움**: 템플릿처럼 보이지 않도록 자연스러운 문장으로 작성하세요.
+4. **구조**: 다음 순서로 작성하세요:
+   - 첫 문장: 방책의 핵심 특징과 현재 상황과의 연관성 (자연어 지명 사용 필수)
    - 중간 문장: 온톨로지 탐색 경로나 평가 요소 중 가장 중요한 근거 2-3개
    - 마지막 문장: 종합 평가 및 선정 이유
-4. **톤앤매너**: 전문적이면서도 이해하기 쉬운 군사 작전 보고 스타일
-5. **길이**: 3-5문장으로 간결하게 작성 (최대 200자)
+5. **톤앤매너**: 전문적이면서도 이해하기 쉬운 군사 작전 보고 스타일
+6. **길이**: 3-5문장으로 간결하게 작성 (최대 200자)
 
 방책 선정 사유:"""
 
@@ -1244,142 +1277,110 @@ class EnhancedDefenseCOAAgent(BaseAgent):
         """
         approach_mode = situation_info.get("approach_mode", "threat_centered")
         
-        # key mapping (English and Korean variants)
-        location = situation_info.get('발생장소') or situation_info.get('location') or situation_info.get('상황위치') or '작전 구역'
-        threat_type = situation_info.get('위협유형') or situation_info.get('threat_type') or situation_info.get('상황명') or '미상'
+        # [FIX] 매핑 엔진 활용 (ID -> 자연어)
+        loc_id = situation_info.get('location') or situation_info.get('발생장소') or situation_info.get('상황위치') or 'N/A'
+        threat_type_code = situation_info.get('threat_type') or situation_info.get('위협유형') or situation_info.get('상황명') or 'UNKNOWN'
+        axis_id = situation_info.get('관련축선ID') or situation_info.get('axis_id', 'N/A')
+        axis_name = situation_info.get('관련축선명') or situation_info.get('axis_name', 'N/A')
+        enemy = situation_info.get('적부대') or situation_info.get('enemy_units', 'N/A')
+        detection_time = situation_info.get('탐지시각') or situation_info.get('occurrence_time', '최근')
+        description = situation_info.get('상황설명') or situation_info.get('description', '')
+        
+        # 전문 명칭 치환
+        real_loc_name = self.mapper.get_terrain_label(loc_id) if loc_id != 'N/A' else '작전 구역'
+        t_type_ko = self.mapper.get_threat_type_label(threat_type_code)
+        real_axis_name = self.mapper.get_axis_label(axis_id) if axis_id != 'N/A' else axis_name
+        
+        codec_map = {
+            "INFANTRY": "보병", "ARMOR": "기갑", "ARTILLERY": "포병", "AIR": "항공", "MISSILE": "미사일", 
+            "UNKNOWN": "미상", "ENU_ESTIMATED": "식별된 적 부대"
+        }
+        enemy_ko = codec_map.get(str(enemy).upper(), enemy)
+
         threat_level = self._extract_threat_level(situation_info)
         threat_pct = int(threat_level * 100)
         
-        # situation_info가 정말 비어있는지 확인
-        if not situation_info or (location == '작전 구역' and threat_type == '미상' and threat_level == 0.7):
-            if not situation_info:
-                return "분석 가능한 상황 데이터가 부족합니다. 추가 작전 정보를 수정하여 상세 분석을 수행해야 합니다." if approach_mode == "mission_centered" else "분석 가능한 상황 데이터가 부족합니다. 정찰 자산을 투입하여 상세 정보를 수집해야 합니다."
+        # Display용 텍스트 구성 (이름(ID) 형식)
+        loc_display = self.mapper.format_with_code(real_loc_name, loc_id)
+        axis_display = self.mapper.format_with_code(real_axis_name, axis_id)
 
         # [FIX] 상황판단 생성 시작 진행상황 업데이트
         if self.status_callback:
             self._report_status("상황판단 생성 중...", progress=None)
         
-        # 1. LLM 기반 생성 시도 (우선순위 1)
+        # 1. LLM 기반 생성 시도
         if self.core.llm_manager and self.core.llm_manager.is_available():
             try:
-                # [FIX] LLM 호출 전 진행상황 업데이트
                 if self.status_callback:
                     self._report_status("상황판단 LLM 생성 중...", progress=None)
-                
-                # 추가 컨텍스트 수집
-                axis_id = situation_info.get('관련축선ID') or situation_info.get('axis_id', 'N/A')
-                axis_name = situation_info.get('관련축선명') or situation_info.get('axis_name', 'N/A')
-                enemy = situation_info.get('적부대') or situation_info.get('enemy_units', 'N/A')
-                detection_time = situation_info.get('탐지시각', '최근')
-                description = situation_info.get('상황설명') or situation_info.get('description', '')
                 
                 if approach_mode == "mission_centered":
                     m_id = situation_info.get('mission_id') or situation_info.get('임무ID', 'N/A')
                     m_name = situation_info.get('임무명') or situation_info.get('mission_name', 'N/A')
                     m_type = situation_info.get('임무종류') or situation_info.get('mission_type', 'N/A')
                     m_objective = situation_info.get('임무목표') or situation_info.get('mission_objective', 'N/A')
-                    success_prob = 1.0 - threat_level
-                    success_pct = int(success_prob * 100)
+                    success_pct = int((1.0 - threat_level) * 100)
                     
-                    prompt = f"""당신은 작전 참모입니다. 다음 정보를 바탕으로 임무 상황에 대한 전문적인 판단을 작성하세요.
+                    prompt = f"""당신은 작전 참모입니다. 다음의 작전 환경 정보를 바탕으로 임무 상황에 대한 전문적인 지휘 판단을 작성하세요.
 
-## 임무 정보
-- 임무명: {m_name} (ID: {m_id})
+## 임무 팩트:
+- 작전구역: {loc_display}
+- 임무명: {m_name} ({m_id})
 - 임무유형: {m_type}
-- 임무목표: {m_objective}
-- 하달시각: {detection_time}
+- 주요축선: {axis_display}
+- 성공가능성: {success_pct}%
+- 상세목표: {m_objective}
 
-## 작전 환경
-- 작전구역: {location}
-- 주요축선: {axis_name} ({axis_id})
-- 성공 가능성: {success_pct}%
-
-## 상세 상황
-{description if description else "상세 상황 설명 없음"}
-
-## 작성 요구사항
-1. **정확성**: 위의 수치(성공 가능성 {success_pct}%)를 정확히 반영하세요. 임의로 수치를 변경하지 마세요.
-2. **전문성**: 군사 작전 보고 스타일로 작성하세요.
-3. **구조**: 
-   - 첫 문장: 임무 개요 및 작전구역
-   - 중간 문장: 성공 가능성 평가 및 주요 고려사항
-   - 마지막 문장: 권장 조치사항
-4. **길이**: 2-3문장으로 간결하게 작성 (최대 150자)
-5. **톤**: 객관적이고 전문적인 판단 톤
-6. **자연스러움**: 템플릿처럼 보이지 않도록 자연스러운 문장으로 작성하세요.
+## 작성 지시사항:
+1. **명칭 중심 기술**: 코드를 문장의 주어로 사용하지 마세요. 반드시 **"{real_loc_name}", "{real_axis_name}"** 등의 명칭을 주어로 사용해야 합니다.
+2. **군사적 통찰 반영**: 단순 정보 나열이 아닌, 성공 가능성 {success_pct}%에 대한 전술적 심각도나 기회 요인을 작전적 관점에서 서술하세요.
+3. **전문 보고 문체**: "~로 평가됨", "~가 제한됨", "~이 요구됨" 등의 간결하고 명확한 군사 보고체 사용.
+4. **분량**: 2-3문장으로 핵심만 요약하여 작성.
 
 상황 판단:"""
                 else:
-                    prompt = f"""당신은 작전 참모입니다. 다음 정보를 바탕으로 위협 상황에 대한 전문적인 판단을 작성하세요.
+                    prompt = f"""당신은 작전 참모입니다. 다음의 위협 정보를 바탕으로 현재 전술 상황에 대한 전문적인 지휘 판단을 작성하세요.
 
-## 위협 정보
-- 위협 유형: {threat_type}
-- 위협 수준: {threat_pct}%
-- 위협원: {enemy}
-- 발생시각: {detection_time}
+## 위협 팩트:
+- 발생위치: {loc_display}
+- 위협원: {enemy_ko}
+- 위협유형: {t_type_ko} ({threat_type_code})
+- 관련축선: {axis_display}
+- 위협수준: {threat_pct}%
+- 발생정보: {description if description else "최근 징후 포착"}
 
-## 발생 위치
-- 발생장소: {location}
-- 관련축선: {axis_name} ({axis_id})
-
-## 상세 상황
-{description if description else "상세 상황 설명 없음"}
-
-## 작성 요구사항
-1. **정확성**: 위의 수치(위협 수준 {threat_pct}%)를 정확히 반영하세요. 임의로 수치를 변경하지 마세요.
-2. **전문성**: 군사 작전 보고 스타일로 작성하세요.
-3. **구조**: 
-   - 첫 문장: 위협 개요 및 발생 위치
-   - 중간 문장: 위협 수준 평가 및 심각도 판단
-   - 마지막 문장: 권장 대응 조치
-4. **길이**: 2-3문장으로 간결하게 작성 (최대 150자)
-5. **톤**: 객관적이고 전문적인 판단 톤
-6. **자연스러움**: 템플릿처럼 보이지 않도록 자연스러운 문장으로 작성하세요.
+## 작성 지시사항:
+1. **자연어 명칭 의무화**: "TERR", "THR_TYPE" 등의 **기계적 코드를 문장의 주어로 절대 사용하지 마세요.** 반드시 **"{real_loc_name}", "{t_type_ko}"** 등의 명칭을 주어로 삼아 브리핑을 시작하세요.
+2. **심각도 중심 판단**: 위협수준 {threat_pct}%가 갖는 작전상 의미와 대응의 시급성을 군사적 식견을 담아 기술하세요.
+3. **권장 대응 방향**: 판단 결과에 따른 핵심적인 대응 방향(예: 경계 강화, 타격 준비, 기동 차단 등)을 한 문장 포함하세요.
+4. **전문성**: 지휘관에게 보고하는 수준의 격식을 갖춘 문장 구조 유지.
 
 상황 판단:"""
                 
-                response = self.core.llm_manager.generate(prompt, temperature=0.2, max_tokens=200)
+                response = self.core.llm_manager.generate(prompt, temperature=0.2, max_tokens=250)
                 
-                # [FIX] LLM 호출 후 진행상황 업데이트
                 if self.status_callback:
                     self._report_status("상황판단 생성 완료", progress=None)
                 
                 if response:
                     assessment_text = response.strip()
-                    # 검증: 품질 확인
                     if self._validate_llm_assessment(assessment_text, situation_info):
                         safe_print(f"[INFO] LLM 기반 상황판단 생성 성공: {assessment_text[:50]}...")
                         return assessment_text
-                    else:
-                        safe_print(f"[WARN] LLM 응답이 부적절하여 fallback 사용: {assessment_text[:30]}")
             except Exception as e:
                 safe_print(f"[WARN] LLM 상황판단 생성 실패: {e}, fallback 사용")
         
-        # 2. Fallback: 기존 템플릿 방식 (LLM 실패 또는 사용 불가 시)
+        # 2. Fallback
         if approach_mode == "mission_centered":
-            m_name = situation_info.get('임무명') or situation_info.get('mission_name') or '기본 임무'
-            # 임무 중심 모드에서는 성공 가능성으로 환산 (0.8 위협 -> 20% 성공)
-            success_prob = 1.0 - threat_level
-            
-            assessment = f"'{location}' 일대에서 하달된 '{m_name}' 임무에 대한 분석 결과입니다. "
-            assessment += f"현재 임무 성공 가능성은 {int(success_prob * 100)}%로 평가되며, "
-            
-            if success_prob >= 0.7:
-                assessment += "임무 완수를 위한 제반 여건이 매우 양호한 것으로 판단됩니다."
-            elif success_prob >= 0.4:
-                assessment += "효과적인 자원 분배와 치밀한 계획 수립이 필요한 상황입니다."
-            else:
-                assessment += "임무 수행을 위한 추가 자원 확보 및 작전 계획 재검토가 필요할 수 있습니다."
+            success_pct = int((1.0 - threat_level) * 100)
+            assessment = f"'{real_loc_name}' 일대에서 하달된 '{m_name}' 임무 분석 결과, 성공 가능성은 {success_pct}%로 평가됩니다. "
+            if success_pct >= 70: assessment += "현재 작전 여건이 양호하며, 계획된 절차에 따른 임무 수행이 가능할 것으로 판단됩니다."
+            else: assessment += "작전적 제한 사항을 고려한 추가 자원 할당 및 세밀한 계획 수립이 요구됩니다."
         else:
-            assessment = f"'{location}' 일대에서 감지된 '{threat_type}' 위협에 대한 분석 결과입니다. "
-            assessment += f"현재 위협 지수는 {int(threat_level * 100)}%로 평가되며, "
-            
-            if threat_level >= 0.8:
-                assessment += "즉각적이고 단호한 대응이 필요한 심각한 위협 상황으로 판단됩니다."
-            elif threat_level >= 0.5:
-                assessment += "지속적인 정찰과 유연한 대응 태세 유지가 필요한 상황입니다."
-            else:
-                assessment += "정상 수준의 감시 체계를 유지하며 상황 변화를 예의주시해야 합니다."
+            assessment = f"'{real_loc_name}' 일대에서 식별된 '{t_type_ko}' 위협은 현재 {threat_pct}%의 위협 수준을 보이고 있습니다. "
+            if threat_pct >= 80: assessment += "즉각적인 대응과 전투 준비가 필요한 심각한 상황입니다."
+            elif threat_pct >= 50: assessment += "관련 축선의 경계를 강화하고 유연한 대응 태세를 유지해야 합니다."
+            else: assessment += "정상적인 감시 체계를 유지하며 상황 변화를 지속 추적해야 합니다."
             
         return assessment
     
@@ -1403,133 +1404,91 @@ class EnhancedDefenseCOAAgent(BaseAgent):
         """전체 전술 상황을 온톨로지 기반 서술형으로 요약 (COP 상단 노출용)"""
         approach_mode = situation_info.get("approach_mode", "threat_centered")
         
-        loc_id = situation_info.get('발생장소') or situation_info.get('location') or '작전 지역'
-        loc_name = situation_info.get('발생지형명') or situation_info.get('location_name')
-        loc_region = situation_info.get('발생지역') or situation_info.get('location_region')
-        threat_type = situation_info.get('위협유형') or situation_info.get('threat_type') or 'UNKNOWN'
-        threat_level = self._extract_threat_level(situation_info)
+        # [FIX] 매핑 엔진 활용 (ID -> 자연어)
+        loc_id = situation_info.get('발생장소') or situation_info.get('location') or 'N/A'
+        threat_type_code = situation_info.get('threat_type') or situation_info.get('위협유형') or 'UNKNOWN'
         enemy = situation_info.get('적부대') or situation_info.get('enemy_units') or 'ENU_ESTIMATED'
-        axis_id = situation_info.get('관련축선ID') or situation_info.get('axis_id')
-        axis_name = situation_info.get('관련축선명') or situation_info.get('axis_name')
+        axis_id = situation_info.get('관련축선ID') or situation_info.get('axis_id', 'N/A')
+        axis_name = situation_info.get('관련축선명') or situation_info.get('axis_name', 'N/A')
         
-        # 자연어 변환 매핑
+        real_loc_name = self.mapper.get_terrain_label(loc_id) if loc_id != 'N/A' else '작전 구역'
+        t_type_ko = self.mapper.get_threat_type_label(threat_type_code)
+        real_axis_name = self.mapper.get_axis_label(axis_id) if axis_id != 'N/A' else axis_name
+        
         codec_map = {
-            "INFANTRY": "보병", "ARMOR": "기갑", "ARTILLERY": "포병", 
-            "AIR": "항공", "MISSILE": "미사일", "CBRN": "화생방", 
-            "CYBER": "사이버", "INFILTRATION": "침투", "UNKNOWN": "미상",
-            "ENU_ESTIMATED": "식별된 적 부대",
-            "HIGH": "높음", "MEDIUM": "중간", "LOW": "낮음"
+            "INFANTRY": "보병", "ARMOR": "기갑", "ARTILLERY": "포병", "AIR": "항공", "MISSILE": "미사일", 
+            "UNKNOWN": "미상", "ENU_ESTIMATED": "식별된 적 부대"
         }
-        
-        t_type_ko = codec_map.get(str(threat_type).upper(), threat_type)
         enemy_ko = codec_map.get(str(enemy).upper(), enemy)
         
-        # 임무 중심 모드에서는 성공 가능성으로 역전시켜 해석
+        threat_level = self._extract_threat_level(situation_info)
+        t_level_ko = "낮음"
         if approach_mode == "mission_centered":
-            if threat_level >= 0.8:
-                t_level_ko = "낮음"
-            elif threat_level >= 0.4:
-                t_level_ko = "보통"
-            else:
-                t_level_ko = "높음"
+            if threat_level >= 0.8: t_level_ko = "낮음"
+            elif threat_level >= 0.4: t_level_ko = "보통"
+            else: t_level_ko = "높음"
         else:
-            t_level_ko = codec_map.get(str(threat_level).upper(), threat_level)
+            if threat_level >= 0.8: t_level_ko = "높음"
+            elif threat_level >= 0.5: t_level_ko = "중간"
+            else: t_level_ko = "낮음"
 
-        # 1. LLM을 활용한 자연스러운 요약 생성 시도
+        # Display용 텍스트 구성
+        loc_display = self.mapper.format_with_code(real_loc_name, loc_id)
+        axis_display = self.mapper.format_with_code(real_axis_name, axis_id)
+
+        # 1. LLM 기반 요약 생성
         if self.core.llm_manager and self.core.llm_manager.is_available():
             try:
-                # 풍부한 컨텍스트 구성을 위해 명칭과 ID 병기
-                loc_full = f"{loc_region} {loc_name}" if loc_region and loc_name else (loc_name or loc_id)
-                axis_full = f"{axis_name}({axis_id})" if axis_name and axis_name != "N/A" else (axis_id if axis_id != "N/A" else "미상")
-                
                 if approach_mode == "mission_centered":
                     m_id = situation_info.get('mission_id') or situation_info.get('임무ID', 'N/A')
                     m_name = situation_info.get('임무명') or situation_info.get('mission_name', 'N/A')
                     m_type = situation_info.get('임무종류') or situation_info.get('mission_type', 'N/A')
                     m_objective = situation_info.get('임무목표') or situation_info.get('mission_objective', 'N/A')
                     
-                    prompt = f"""다음의 온톨로지 팩트를 기반으로 지휘관에게 보고하는 자연스러운 군사 임무 요약 문장을 한 문장으로 생성하세요.
+                    prompt = f"""다음의 임무 팩트를 기반으로 지휘관에게 보고하는 자연스러운 군사 임무 요약 문장을 한 문장으로 생성하세요.
                     
 ## 온톨로지 팩트:
 - 하달시각: {situation_info.get('탐지시각', '최근')}
-- 작전구역: {loc_full} (ID: {loc_id})
-- 임무명: {m_name} (ID: {m_id})
+- 작전구역: {loc_display}
+- 임무명: {m_name} ({m_id})
 - 임무유형: {m_type}
-- 주요축선: {axis_full}
+- 주요축선: {axis_display}
 - 성공가능성: {t_level_ko}
 - 상세목표: {m_objective}
 
 ## 요구사항:
+- **명칭 중심 작성**: "{m_name}", "{real_loc_name}" 등의 명칭을 주어로 사용. 코드를 문장의 주어로 사용 금지.
 - 전문적인 군사 보고 톤앤매너 사용 (예: "~이 하달되었습니다", "~로 분석됩니다")
-- '위협'이나 '적군'이라는 단어 대신 '임무 수행'이나 '작전 환경' 및 '대항군'이라는 단어를 사용하세요.
 - 핵심 명사는 굵게(**) 표시
-- 지명과 축선명 뒤에 ID를 괄호로 병기
-- 상세목표의 핵심 내용을 문장에 자연스럽게 녹여내세요.
-- 불필요한 수식어는 배제하고 간결하게 작성
-- 한 문장으로 생성
+- 한 문장으로 간결하게 생성
 """
                 else:
-                    prompt = f"""다음의 온톨로지 팩트를 기반으로 지휘관에게 보고하는 자연스러운 군사 상황 요약 문장을 한 문장으로 생성하세요.
+                    prompt = f"""다음의 위협 팩트를 기반으로 지휘관에게 보고하는 자연스러운 군사 상황 요약 문장을 한 문장으로 생성하세요.
                 
 ## 온톨로지 팩트:
 - 발생시각: {situation_info.get('탐지시각', '최근')}
-- 발생위치: {loc_full} (ID: {loc_id})
+- 발생위치: {loc_display}
 - 위협원: {enemy_ko}
-- 위협유형: {t_type_ko}
-- 관련축선: {axis_full}
+- 위협유형: {t_type_ko} ({threat_type_code})
+- 관련축선: {axis_display}
 - 위협수준: {t_level_ko}
 
 ## 요구사항:
+- **자연어 우선**: 반드시 **"{real_loc_name}"**, **"{t_type_ko}"** 등의 명칭을 활용. 코드를 문장의 주어로 사용 금지.
 - 전문적인 군사 보고 톤앤매너 사용 (예: "~이 식별되었습니다", "~로 분석됩니다")
 - 핵심 명사는 굵게(**) 표시
-- 지명과 축선명 뒤에 ID를 괄호로 병기
-- 불필요한 수식어는 배제하고 간결하게 작성
-- 한 문장으로 생성
+- 한 문장으로 간결하게 생성
 """
                 summary = self.core.llm_manager.generate(prompt, max_tokens=256).strip()
-                if summary:
-                    return summary
+                if summary: return summary
             except Exception as e:
-                safe_print(f"LLM summary generation failed: {e}")
+                safe_print(f"LLM overall summary generation failed: {e}")
 
-        # 2. LLM 실패 시 기존 템플릿 방식 (Fallback)
-        # 지형 정보 조립
-        full_loc = ""
-        if loc_region and loc_region != "N/A":
-            full_loc = f"{loc_region} "
-        if loc_name and loc_name != "N/A":
-            full_loc += loc_name
-        
-        if full_loc and full_loc.strip():
-            loc_disp = f"**{full_loc.strip()}**({loc_id})"
-        elif loc_id != '작전 지역':
-            loc_disp = f"**{loc_id}**"
-        else:
-            loc_disp = "작전 구역"
-
+        # 2. Fallback
         if approach_mode == "mission_centered":
-            m_id = situation_info.get('mission_id') or situation_info.get('임무ID', 'N/A')
-            m_name = situation_info.get('임무명') or situation_info.get('mission_name', 'N/A')
-            m_type = situation_info.get('임무종류') or situation_info.get('mission_type', 'N/A')
-            
-            summary = f"{loc_disp} 일대에서 **{m_name}**({m_id}) {m_type} 임무가 하달되었습니다. "
-            if axis_id and axis_id != "N/A":
-                ax_disp = f"**{axis_name}**" if axis_name and axis_name != "N/A" else f"**{axis_id}**"
-                summary += f"주요 작전 축선은 {ax_disp} 방향이며, 임무 성공 가능성은 **{t_level_ko}** 수준으로 분석됩니다."
-            else:
-                summary += f"현재 임무 성공 가능성은 {int(threat_level * 100)}% 수준으로 평가됩니다."
+            summary = f"**{real_loc_name}**({loc_id}) 일대에서 **{situation_info.get('임무명', '기본')}** 임무가 하달되었으며, 주요 작전 축선은 **{real_axis_name}** 방향입니다."
         else:
-            # 주체 정보
-            enemy_part = f"**{enemy_ko}**에 의한 " if enemy_ko and enemy_ko != "N/A" else "미상의 위협원에 의한 "
-            type_part = f"**{t_type_ko}** 위협이 포착되었습니다. "
-            
-            summary = f"{loc_disp} 일대에서 {enemy_part}{type_part}"
-            
-            if axis_id and axis_id != "N/A":
-                ax_disp = f"**{axis_name}**" if axis_name and axis_name != "N/A" else f"**{axis_id}**"
-                summary += f"{ax_disp} 방향의 위협 수준은 **{t_level_ko}** 상태로 분석됩니다."
-            else:
-                summary += f"현재 전반적인 위협 지수는 **{int(threat_level * 100)}%** 수준입니다."
+            summary = f"**{real_loc_name}**({loc_id}) 일대에서 **{enemy_ko}**에 의한 **{t_type_ko}** 위협이 포착되었으며, 전반적인 위협 수준은 **{t_level_ko}** 상태입니다."
             
         return summary
 
@@ -2412,6 +2371,25 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                 coa["필요자원"] = ", ".join(list(coa["필요자원"]))
                 coa["전장환경_제약"] = ", ".join(list(coa["전장환경_제약"]))
                 
+                # 🔥 NEW: 키워드 매칭 점수 계산 (검색 단계에서 우선순위 부여)
+                keyword_match_score = 0
+                if threat_type:
+                    t_lower = threat_type.lower()
+                    k_lower = coa["키워드"].lower()
+                    d_lower = coa["설명"].lower()
+                    n_lower = coa["명칭"].lower()
+                    
+                    if t_lower in k_lower: keyword_match_score += 3
+                    if t_lower in d_lower: keyword_match_score += 1
+                    if t_lower in n_lower: keyword_match_score += 2
+                    
+                    # 특수 키워드 보너스
+                    for spec in ["침투", "공중", "도하", "상륙", "기갑", "화생방"]:
+                        if spec in t_lower and spec in k_lower:
+                            keyword_match_score += 2
+                
+                coa["keyword_match_score"] = keyword_match_score
+                
                 # 위협 유형 필터링 (다국어 지원 및 로직 개선)
                 if threat_type:
                     coa_keywords = coa.get("키워드", "").lower()
@@ -2419,24 +2397,46 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                     
                     # 1. 억제(Deterrence), 정보작전(Information_Ops) 등 범용/비물리 타입인 경우 통과
                     current_coa_type = coa.get("coa_type", "").lower()
-                    if coa_type and coa_type.lower() in ["deterrence", "information_ops"]:
-                        is_match = True
-                    # 2. 특정 방책 유형이 명시된 경우 후보 확보를 위해 필터링 완화 (Scorer에서 정밀 평가)
-                    elif coa_type:
-                        # 주요 전술 방책(방어, 공격 등)은 위협 종류와 관계없이 분석 대상에 포함시키는 것이 안전
-                        is_match = True
-                    # 3. 키워드 매칭 (개선된 매처 사용)
-                    elif self._match_threat_type(threat_type, coa_keywords) or self._match_threat_type(threat_type, coa_desc):
-                        is_match = True
-                    # 4. '일반' 위협이거나 방책 키워드가 없는 경우 통과 (안전장치)
-                    elif "일반" in threat_type.lower() or not coa_keywords:
-                        is_match = True
-                    # 5. 키워드에 방책 이름 포함 시도 (보완)
-                    elif self._match_threat_type(threat_type, coa.get("명칭", "")):
-                         is_match = True
-                    else:
-                        is_match = False
                     
+                    # 🔥 FIX: 필터링 로직 강화 - 범용 타입이라도 키워드가 있으면 검사
+                    is_match = False
+                    
+                    # 1. 범용 방책 (Defense, Offensive 등) - 완화된 기준
+                    if coa_type and coa_type.lower() in ["defense", "offensive", "maneuver"]:
+                         # 키워드가 아예 없으면 통과
+                         if not coa_keywords:
+                             is_match = True
+                         # 키워드가 있으면 검사 (단, "일반" 위협이면 통과)
+                         elif "일반" in threat_type or "unknown" in threat_type.lower():
+                             is_match = True
+                         # 매칭 시도
+                         elif self._match_threat_type(threat_type, coa_keywords) or \
+                              self._match_threat_type(threat_type, coa_desc) or \
+                              self._match_threat_type(threat_type, coa.get("명칭", "")):
+                             is_match = True
+                         # 매칭 실패해도 범용 타입은 일부 허용 (단, 점수에서 페널티) -> 여기서는 후보군 포함
+                         else:
+                             # 특화 키워드(침투, 도발 등)가 있는데 현재 위협과 다르면 제외
+                             is_specialized = any(k in coa_keywords for k in ["침투", "도발", "테러", "특수전", "infiltration"])
+                             if is_specialized and not self._match_threat_type(threat_type, coa_keywords):
+                                 is_match = False
+                             else:
+                                 is_match = True # 그 외에는 일단 통과 (점수에서 판별)
+
+                    # 2. 특화 방책 (Deterrence, Information_Ops 등) - 해당 타입이면 통과
+                    elif coa_type and coa_type.lower() in ["deterrence", "information_ops", "preemptive"]:
+                        is_match = True
+
+                    # 3. 키워드 매칭 (기본)
+                    elif self._match_threat_type(threat_type, coa_keywords) or \
+                         self._match_threat_type(threat_type, coa_desc) or \
+                         self._match_threat_type(threat_type, coa.get("명칭", "")):
+                        is_match = True
+                    
+                    # 4. '일반' 위협이면 통과
+                    elif "일반" in threat_type or "unknown" in threat_type.lower():
+                        is_match = True
+
                     if not is_match:
                         # safe_print(f"[DEBUG] 위협 미매칭 제외: {coa['명칭']} (방책키워드: {coa_keywords}, 현재위협: {threat_type})")
                         continue
@@ -2647,29 +2647,36 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                         match_method = 'low_threat_main_defense'
                 
                 # 🔥 NEW: 엑셀 검색에서도 위협 유형 필터링 적용 (Strict Filtering)
-                # 단, Preemptive(선제공격)나 InformationOps(정보작전) 등은 다양한 위협에 적용될 수 있으므로 유연하게 처리
                 is_threat_match = True
                 
-                # '침투' 등 특수 위협에 대한 필터링 로직 완화
+                # '침투' 등 특수 위협에 대한 필터링 로직 강화
                 # 1. 일반적인 Strict Filtering (방어, 공격 등)
                 if coa_type and coa_type.lower() in ['defense', 'offensive', 'maneuver']:
                     if threat_type and keywords and "일반" not in threat_type.lower():
                         if not self._match_threat_type(threat_type, keywords) and \
                            not self._match_threat_type(threat_type, coa_name):
-                             is_threat_match = False
-                
-                # 2. 유연한 Filtering (억제, 선제, 정보 등) - 명시적 비매칭만 제외하거나 패스
-                # 현재 로직에서는 여기서는 별도 필터링을 하지 않음 (기본 True)
+                             # 키워드 매칭 안되면 제외 (단, 특화 키워드가 있는 경우만 엄격 적용)
+                             is_specialized = any(k in keywords for k in ["침투", "도발", "테러", "특수전", "infiltration"])
+                             if is_specialized:
+                                 is_threat_match = False
+                             else:
+                                 # 특화 키워드가 없으면 일단 통과 (점수 페널티)
+                                 pass
                 
                 if not is_threat_match:
                     continue
 
-                # 위협 유형 매칭 (추가 보너스)
-                # ... (매칭 로직 유지)
-
-                # 위협 유형 매칭 (추가 보너스)
+                # 위협 유형 매칭 (추가 가산점 대폭 상향)
+                is_type_match = False
                 if threat_type and (self._match_threat_type(threat_type, keywords) or self._match_threat_type(threat_type, coa_name)):
-                    match_score = min(1.0, match_score + 0.15) # 조금 더 높은 보너스
+                    match_score = min(1.0, match_score + 0.3) # +0.15 -> +0.3 (강력한 가산점)
+                    is_type_match = True
+                
+                # 불일치 시 페널티 적용 (신규)
+                if not is_type_match and threat_type and "일반" not in threat_type.lower():
+                     if "침투" in threat_type or "특수전" in threat_type:
+                          # 침투 상황인데 침투 대응 방책이 아니면 감점
+                         match_score = max(0.0, match_score - 0.2)
                 
                 # 심각도 매칭 (추가 보너스)
                 if threat_severity and str(threat_severity).lower() in keywords:
@@ -2902,6 +2909,10 @@ class EnhancedDefenseCOAAgent(BaseAgent):
         )
         situation_id = situation_info.get('위협ID', situation_info.get('ID', 'THREAT001'))
         
+        # 🔥 NEW: Threat Appropriateness Matrix 로드
+        threat_appropriateness = scorer.THREAT_COA_APPROPRIATENESS
+
+        
         # Pass 1: 대략적인 점수 계산 (모든 후보 대상)
         self._report_status(f"Pass 1: {len(strategies)}개 후보 방책에 대한 기초 평가 수행 중...")
         pass1_strategies = []
@@ -2947,6 +2958,55 @@ class EnhancedDefenseCOAAgent(BaseAgent):
                 "situation_id": situation_id,
                 "is_first_coa": False # Pass 1에서는 모두 첫 번째 COA가 아님
             }
+            
+            # 🔥 NEW: Pass 1에서 적합도 점수 강제 적용 (변별력 강화)
+            # COA Scorer의 매트릭스를 활용하여 위협 유형과 COA 유형 간의 궁합 점수 계산
+            appropriateness_score = 0.5  # 기본값
+            
+            # 1. 위협 유형 매칭 (한글/영어/유사어)
+            t_type_candidates = [
+                pass1_context["threat_type"], 
+                threat_type,
+                situation_info.get('threat_type_code'),
+                situation_info.get('위협유형')
+            ]
+            t_type_matched_key = None
+            
+            # 매트릭스 키와 매칭 시도
+            for cand in t_type_candidates:
+                if not cand: continue
+                cand_str = str(cand).strip()
+                if cand_str in threat_appropriateness:
+                    t_type_matched_key = cand_str
+                    break
+                # 부분 매칭 시도 (예: "Air Threat" -> "공중위협", "Air")
+                for key in threat_appropriateness.keys():
+                    if key in cand_str or cand_str in key: # 상호 포함 관계
+                        t_type_matched_key = key
+                        break
+                    # 영문/한글 매핑 (하드코딩 Fallback)
+                    if cand_str.lower() in ["air", "aircraft", "helicopter", "uav"] and key == "공중위협":
+                        t_type_matched_key = key
+                        break
+                    if cand_str.lower() in ["armor", "tank"] and key == "기갑공격":  # 매트릭스에 기갑공격이 있다면
+                         pass # 현재 매트릭스에는 '정면공격' 등이 있음.
+                if t_type_matched_key: break
+            
+            # 2. 적합도 점수 조회
+            if t_type_matched_key:
+                matrix = threat_appropriateness[t_type_matched_key]
+                # COA Type 확인
+                c_type = strategy.get("coa_type", "defense").lower()
+                
+                # 매트릭스에서 점수 조회 (없으면 기본값 0.5)
+                appropriateness_score = matrix.get(c_type, 0.5)
+                # safe_print(f"[DEBUG] 적합도 점수 적용: {t_type_matched_key} vs {c_type} -> {appropriateness_score}")
+            
+            # 3. Pass 1 Context에 주입 (chain 점수 대용 또는 별도 팩터)
+            # 초기 평가에서는 구체적 체인이 없으므로, 이 적합도 점수를 '전술적 타당성'으로 활용
+            pass1_context["chain_info"] = {"score": appropriateness_score}
+            # 별도 필드로도 저장 (나중에 가중치 적용 시 활용 가능)
+            pass1_context["appropriateness_score"] = appropriateness_score
             
             # [NEW] 환경 정보 주입 (UI 입력 -> Context)
             if 'environment' in situation_info:

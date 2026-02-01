@@ -26,6 +26,7 @@ class CodeLabelMapper:
         if not self._initialized:
             self.threat_type_map: Dict[str, str] = {}
             self.axis_map: Dict[str, str] = {}
+            self.terrain_map: Dict[str, str] = {}
             self.threat_id_map: Dict[str, str] = {}
             self._load_mappings()
             CodeLabelMapper._initialized = True
@@ -76,6 +77,23 @@ class CodeLabelMapper:
                     print(f"[CodeLabelMapper] 경고: 전장축선.xlsx에 필요한 컬럼이 없습니다.")
             else:
                 print(f"[CodeLabelMapper] 경고: {axis_file} 파일을 찾을 수 없습니다.")
+            
+            # 지형 매핑 로드
+            terrain_file = data_lake / "지형셀.xlsx"
+            if terrain_file.exists():
+                df = pd.read_excel(terrain_file)
+                # 지형셀ID -> 지형명 매핑
+                if '지형셀ID' in df.columns and '지형명' in df.columns:
+                    for _, row in df.iterrows():
+                        code = str(row['지형셀ID']).strip()
+                        name = str(row['지형명']).strip()
+                        if code and name and code != 'nan' and name != 'nan':
+                            self.terrain_map[code] = name
+                    print(f"[CodeLabelMapper] 지형 매핑 로드 완료: {len(self.terrain_map)}개")
+                else:
+                    print(f"[CodeLabelMapper] 경고: 지형셀.xlsx에 필요한 컬럼이 없습니다.")
+            else:
+                print(f"[CodeLabelMapper] 경고: {terrain_file} 파일을 찾을 수 없습니다.")
             
             # 위협 ID -> 위협 유형 매핑 로드 (위협상황.xlsx에서)
             threat_file = data_lake / "위협상황.xlsx"
@@ -145,6 +163,27 @@ class CodeLabelMapper:
         # 코드를 한글로 변환
         return self.axis_map.get(code_str, code_str)
     
+    def get_terrain_label(self, code: str) -> str:
+        """
+        지형 코드를 한글 라벨로 변환
+        
+        Args:
+            code: 지형 코드 (예: "TERR001")
+            
+        Returns:
+            한글 라벨 (예: "백암산")
+        """
+        if not code or str(code).strip() in ['', 'nan', 'None', 'N/A']:
+            return ''
+        
+        code_str = str(code).strip()
+        
+        # 이미 한글인 경우 (한글이 포함된 경우) 그대로 반환
+        if any('\uac00' <= char <= '\ud7a3' for char in code_str):
+             return code_str
+             
+        return self.terrain_map.get(code_str, code_str)
+    
     def get_threat_id_label(self, threat_id: str) -> str:
         """
         위협 ID를 위협 유형명으로 변환
@@ -190,6 +229,7 @@ class CodeLabelMapper:
         return {
             "threat_types": self.threat_type_map,
             "axes": self.axis_map,
+            "terrain": self.terrain_map,
             "threat_ids": self.threat_id_map
         }
 

@@ -159,7 +159,7 @@ export default function CommandControlPage() {
 
         // 🔥 FIX: SITREP/데모/수동 모드인 경우 실제 위협 기반 API 호출을 스킵
         const isDemoOrSitrepOrManual = situationInfo?.is_demo || situationInfo?.is_sitrep || situationInfo?.is_manual;
-        
+
         // 1. 실제 위협이 선택된 경우 (SITREP/데모 모드가 아닌 경우에만)
         if (selectedThreat && !coaResponse && !isDemoOrSitrepOrManual) {
             // 이미 마지막 응답이 있고, 그것이 현재 선택된 위협에 대한 것이라면 스킵
@@ -548,13 +548,13 @@ export default function CommandControlPage() {
             // [정합성 검증] 현재 상황 ID와 응답 ID가 일치하는지 확인
             // 🔥 FIX: SITREP/데모 모드에서는 situationInfo의 ID를 우선 사용
             const isDemoOrSitrep = situationInfo?.is_demo || situationInfo?.is_sitrep || situationInfo?.is_manual;
-            
+
             // SITREP/데모 모드에서는 situationInfo를 우선, 그 외에는 selectedThreat 우선
             const currentId = isDemoOrSitrep
                 ? (situationInfo?.threat_id || situationInfo?.위협ID || situationInfo?.situation_id || selectedThreat?.threat_id)
                 : (selectedThreat?.threat_id || situationInfo?.threat_id || situationInfo?.위협ID || situationInfo?.situation_id);
-            
-            const responseId = lastResponse.threat_id 
+
+            const responseId = lastResponse.threat_id
                 || lastResponse.situation_id  // 데모 시나리오용
                 || lastResponse.original_request?.threat_id;
 
@@ -666,7 +666,7 @@ export default function CommandControlPage() {
             // 🔥 FIX: 수동/데모/SITREP 모드에서는 lastResponse를 즉시 초기화하지 않음
             // useEffect가 새 데이터로 API를 호출하고 응답을 업데이트할 것임
             const isDemoOrSitrepOrManual = newSituation.is_demo || newSituation.is_sitrep || newSituation.is_manual;
-            
+
             // situation_id가 완전히 바뀐 경우에만 초기화 (모드 전환 등)
             if (situationIdChanged && !isDemoOrSitrepOrManual) {
                 setLastResponse(null);
@@ -835,7 +835,7 @@ export default function CommandControlPage() {
                                 onCOAClick={setSelectedCOA}
                                 situationSummary={situationSummary}
                                 situationSummarySource={lastResponse?.situation_summary_source}
-                                situationAssessment={coaResponse?.coas?.[0]?.reasoning?.situation_assessment}
+                                situationAssessment={coaResponse?.situation_assessment}
                                 axisStates={coaResponse?.axis_states || lastResponse?.axis_states || []}
                                 situationInfo={situationInfo}
                                 friendlyUnits={friendlyUnits}

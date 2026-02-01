@@ -780,3 +780,75 @@ class COAService:
             "weights": coa_evaluation.weights
         }
 
+    def generate_coas_with_agent(
+        self,
+        mission_id=None,
+        threat_id=None,
+        threat_event=None,
+        user_params=None
+    ):
+        """EnhancedDefenseCOAAgent direct call for agent-based generation"""
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        try:
+            from agents.defense_coa_agent.logic_defense_enhanced import EnhancedDefenseCOAAgent
+            
+            if not hasattr(self, '_agent_core') or self._agent_core is None:
+                logger.warning('[COAService] agent_core not set, falling back')
+                return self.generate_coas_unified(
+                    mission_id=mission_id,
+                    threat_id=threat_id,
+                    threat_event=threat_event,
+                    user_params=user_params
+                )
+            
+            agent = EnhancedDefenseCOAAgent(self._agent_core)
+            situation_info = user_params.copy() if user_params else {}
+            
+            if threat_event:
+                from common.situation_converter import SituationInfoConverter
+                normalized_level, _, _ = SituationInfoConverter.normalize_threat_level(
+                    threat_event.threat_level if hasattr(threat_event, 'threat_level') else 0.5
+                )
+                situation_info.update({
+                    'threat_id': threat_event.threat_id,
+                    'threat_type': threat_event.threat_type_code,
+                    'threat_level': normalized_level,
+                    'location': threat_event.location_cell_id,
+                    'axis_id': threat_event.related_axis_id,
+                })
+            
+            if mission_id:
+                situation_info['mission_id'] = mission_id
+            
+            agent_result = agent.execute_reasoning(
+                user_query='Situation analysis and COA recommendation',
+                situation_info=situation_info
+            )
+            
+            return {
+                'coas': agent_result.get('recommendations', []),
+                'situation_assessment': agent_result.get('situation_assessment'),
+                'situation_summary': agent_result.get('situation_summary') or agent_result.get('overall_summary'),
+                'axis_states': agent_result.get('axis_states', []),
+                'approach_mode': situation_info.get('approach_mode', 'threat_centered'),
+                'mission_id': mission_id,
+                'threat_id': threat_id or (threat_event.threat_id if threat_event else None),
+                'threat_event': threat_event,
+            }
+            
+        except Exception as e:
+            logger.error(f'[COAService] Agent call failed: {e}')
+            import traceback
+            traceback.print_exc()
+            return self.generate_coas_unified(
+                mission_id=mission_id,
+                threat_id=threat_id,
+                threat_event=threat_event,
+                user_params=user_params
+            )
+    
+    def set_agent_core(self, core):
+        """Set agent core for agent-based generation"""
+        self._agent_core = core

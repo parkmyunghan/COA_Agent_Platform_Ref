@@ -60,12 +60,28 @@ class PalantirSearch:
             except Exception as e:
                 print(f"[WARN] Ontology preprocessing failed: {e}")
         
-        # 2. RAG 검색 (문서 기반)
+        # 2. SPARQL 기반 온톨로지 검색 (관계 추론)
+        sparql_results = self._search_with_sparql(query)
+        
+        # 3. 구조화된 데이터 검색 (부대 현황 등)
+        structured_results = self._search_structured_entities(query)
+        
+        # 3. RAG 검색 (문서 기반)
         rag_results = []
         if self.rag_manager.is_available():
             try:
                 # 확장된 쿼리로 검색
                 rag_results = self.rag_manager.retrieve_with_context(expanded_query, top_k=top_k)
+                
+                # SPARQL 결과 추가 (LLM 참조용)
+                if sparql_results:
+                    for res in sparql_results:
+                        rag_results.append(res)
+                
+                # 구조화된 데이터 결과 추가 (LLM 참조용)
+                if structured_results:
+                    for res in structured_results:
+                         rag_results.append(res)
                 
                 # 가설 정보를 메타데이터에 추가 (LLM 참조용)
                 if tactical_hypothesis:
@@ -84,21 +100,268 @@ class PalantirSearch:
             except Exception as e:
                 print(f"[WARN] RAG search failed: {e}")
         
-        # 3. RAG 결과에서 엔티티 추출
+        # 4. RAG 결과에서 엔티티 추출
         entities = self._extract_entities_from_text(rag_results)
         
-        # 4. 그래프에서 관련 엔티티 찾기
+        # 5. 그래프에서 관련 엔티티 찾기
         graph_results = []
         if use_graph and self.ontology_manager.graph is not None:
             graph_results = self._find_graph_entities(query, entities)
         
-        # 5. 통합 점수 계산 및 정렬
+        # 6. 통합 점수 계산 및 정렬
         combined_results = self._combine_results(rag_results, graph_results, query)
         
         # 상위 k개 반환
         return sorted(combined_results, key=lambda x: -x['combined_score'])[:top_k]
+
+    def _search_structured_entities(self, query: str) -> List[Dict]:
+        """
+        사용자 질의에서 구조화된 엔티티(부대, 자산, 위협, 지형 등) 관련 키워드 감지 시 DB/Excel 직접 조회
+        이는 온톨로지의 원천 데이터를 검색하여 팩트 기반 답변을 보장함
+        """
+        results = []
+        
+        # 키워드 매핑 정의 (Intent-to-Table)
+        intent_map = {
+            "friendly_unit": {
+                "keywords": ["아군", "우리 부대", "부대 현황", "부대 정보", "유닛", "자산", "친선", "우리 측"],
+                "table": "아군부대현황",
+                "title": "아군 부대 현황",
+                "format_fn": self._format_friendly_unit
+            },
+            "threat_situation": {
+                "keywords": ["위협", "적군", "적군 부대", "침투", "공격", "위험", "상황"],
+                "table": "위협상황",
+                "title": "현재 위협 상황",
+                "format_fn": self._format_threat_situation
+            },
+            "terrain_cell": {
+                "keywords": ["지형", "지역", "지질", "축선", "지형 정보"],
+                "table": "지형셀",
+                "title": "지형 정보 (셀 단위)",
+                "format_fn": self._format_terrain_cell
+            },
+            "friendly_asset": {
+                "keywords": ["가용 자산", "장비", "무기", "화력"],
+                "table": "아군가용자산",
+                "title": "아군 가용 자산",
+                "format_fn": self._format_friendly_asset
+            }
+        }
+        
+        try:
+            # OntologyManager를 통해 DataManager에 접근
+            if not (hasattr(self.ontology_manager, 'data_manager') and self.ontology_manager.data_manager):
+                return results
+
+            dm = self.ontology_manager.data_manager
+            
+            for intent, config in intent_map.items():
+                if any(kw in query for kw in config["keywords"]):
+                    table_df = dm.load_table(config["table"])
+                    if table_df is not None and not table_df.empty:
+                        # 데이터가 너무 많으면 상위 N개만 추출 또는 요약
+                        display_df = table_df.head(10)
+                        
+                        formatted_text = config["format_fn"](display_df)
+                        
+                        results.append({
+                            "text": f"[{config['title']} (시스템 실시간 데이터)]\n{formatted_text}",
+                            "score": 1.0,
+                            "metadata": {
+                                "type": f"structured_{intent}",
+                                "source": "system_database",
+                                "title": config["title"],
+                                "doc_name": config["title"]
+                            }
+                        })
+                        print(f"[INFO] PalantirSearch: Injected structured data from '{config['table']}'")
+                        
+        except Exception as e:
+            print(f"[WARN] Structured search failed: {e}")
+                
+        return results
+
+    def _format_friendly_unit(self, df) -> str:
+        lines = []
+        for _, row in df.iterrows():
+            status = row.get('가용상태', row.get('상태', '가용'))
+            lines.append(f"- {row.get('부대명', 'Unknown')} ({row.get('병종', '-')}): {row.get('임무역할', '-')}, {row.get('상급부대', '-')} 배속, {row.get('배치축선ID', '-')} 일대 ({status})")
+        return "\n".join(lines)
+
+    def _format_threat_situation(self, df) -> str:
+        lines = []
+        for _, row in df.iterrows():
+            lines.append(f"- 위협(ID: {row.get('위협ID', row.get('threat_id', '-'))}): {row.get('위협명', '-')}, 유형: {row.get('위협유형', '-')}, 위협수준: {row.get('위협수준', '-')}, {row.get('발생지역', '-')} 일대")
+        return "\n".join(lines)
+
+    def _format_terrain_cell(self, df) -> str:
+        lines = []
+        for _, row in df.iterrows():
+            lines.append(f"- {row.get('지형명', row.get('terrain_name', 'Unknown'))}: 유형: {row.get('지형유형', '-')}, 좌표: ({row.get('위도', '-')}, {row.get('경도', '-')}), 영향: {row.get('지형영향', '-')}")
+        return "\n".join(lines)
+
+    def _format_friendly_asset(self, df) -> str:
+        lines = []
+        for _, row in df.iterrows():
+            lines.append(f"- {row.get('자산명', 'Unknown')}: 종류: {row.get('자산종류', '-')}, 화력: {row.get('화력지수', '-')}, 가용: {row.get('가용여부', '-')}")
+        return "\n".join(lines)
+
+    def _search_with_sparql(self, query: str) -> List[Dict]:
+        """
+        LLM을 사용하여 자연어를 SPARQL로 변환하고, 온톨로지 그래프를 쿼리한 뒤
+        결과를 자연어 컨텍스트로 반환합니다.
+        """
+        results = []
+        
+        # 관계 추론이 필요한 쿼리 패턴 감지
+        # 예: "~의 상급부대는?", "~에 배치된 부대는?", "~와 관련된 ~"
+        relation_keywords = ["상급", "하급", "배치", "배속", "연결", "관련", "소속", "위치한", "어떤"]
+        
+        if not any(kw in query for kw in relation_keywords):
+            return results  # 관계 질문이 아니면 스킵 (기존 방식 사용)
+        
+        if self.ontology_manager.graph is None:
+            return results
+            
+        try:
+            # 1. LLM을 사용하여 NL -> SPARQL 변환
+            # (LLM Manager에 직접 접근하기 위해 Orchestrator를 통해 접근해야 함)
+            # 현재 PalantirSearch는 ontology_manager만 가지고 있으므로,
+            # 간단한 패턴 기반 SPARQL 생성을 먼저 시도
+            sparql_query = self._generate_simple_sparql(query)
+            
+            if not sparql_query:
+                return results
+            
+            # 2. SPARQL 실행
+            print(f"[INFO] PalantirSearch: Executing SPARQL query for: {query[:50]}...")
+            try:
+                sparql_results = self.ontology_manager.graph.query(sparql_query)
+            except Exception as e:
+                print(f"[WARN] SPARQL execution failed: {e}")
+                return results
+            
+            # 3. 결과 파싱 및 자연어로 변환
+            result_lines = ["[온톨로지 관계 분석 결과(SPARQL)]"]
+            row_count = 0
+            for row in sparql_results:
+                row_count += 1
+                if row_count > 10:  # 최대 10개
+                    result_lines.append(f"... 외 {len(list(sparql_results)) - 10}개 추가 결과")
+                    break
+                
+                # 각 변수를 읽어서 라인으로 변환
+                row_parts = []
+                for var in sparql_results.vars:
+                    val = row[var]
+                    if val:
+                        # URI에서 로컬 이름만 추출
+                        val_str = str(val).split('#')[-1].split('/')[-1]
+                        row_parts.append(f"{var}: {val_str}")
+                
+                if row_parts:
+                    result_lines.append(f"- {', '.join(row_parts)}")
+            
+            if row_count > 0:
+                results.append({
+                    "text": "\n".join(result_lines),
+                    "score": 0.95,  # 높은 신뢰도
+                    "metadata": {
+                        "type": "sparql_inference",
+                        "source": "ontology_graph",
+                        "title": "온톨로지 관계 분석",
+                        "doc_name": "온톨로지 관계 분석"
+                    }
+                })
+                print(f"[INFO] PalantirSearch: SPARQL returned {row_count} results")
+            else:
+                print(f"[INFO] PalantirSearch: SPARQL returned no results")
+                
+        except Exception as e:
+            print(f"[WARN] SPARQL search failed: {e}")
+            
+        return results
+
+    def _generate_simple_sparql(self, query: str) -> Optional[str]:
+        """
+        자연어 질문에서 간단한 SPARQL 쿼리를 패턴 매칭으로 생성합니다.
+        복잡한 질문은 None을 반환하여 fallback 합니다.
+        """
+        ns = "http://coa-agent-platform.org/ontology#"
+        
+        # 패턴 1: "X의 상급부대는?" or "X 상급부대"
+        if "상급부대" in query or "상급 부대" in query:
+            # 부대명 추출 시도
+            unit_name = None
+            patterns = [r"([가-힣0-9]+(?:사단|여단|대대|중대|연대|군단))", r"([가-힣]+부대)"]
+            for pat in patterns:
+                match = re.search(pat, query)
+                if match:
+                    unit_name = match.group(1)
+                    break
+            
+            if unit_name:
+                return f"""
+PREFIX def: <{ns}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?unit ?unitName ?superior WHERE {{
+  ?unit a def:아군부대현황 .
+  ?unit rdfs:label ?unitName .
+  ?unit def:상급부대 ?superior .
+  FILTER(CONTAINS(?unitName, "{unit_name}"))
+}}
+"""
+        
+        # 패턴 2: "X에 배치된 부대" or "X 축선의 부대"
+        if "배치된" in query or "축선" in query:
+            axis_match = re.search(r"([가-힣]+축선|AXIS\d+)", query)
+            if axis_match:
+                axis_name = axis_match.group(1)
+                return f"""
+PREFIX def: <{ns}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?unit ?unitName ?axisName WHERE {{
+  ?unit a def:아군부대현황 .
+  ?unit rdfs:label ?unitName .
+  ?unit def:has전장축선 ?axis .
+  ?axis rdfs:label ?axisName .
+  FILTER(CONTAINS(?axisName, "{axis_name}"))
+}}
+"""
+        
+        # 패턴 3: "위협 수준이 높은" or "고위협"
+        if "위협" in query and ("높은" in query or "고위협" in query or "심각" in query):
+            return f"""
+PREFIX def: <{ns}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?threat ?threatName ?level ?location WHERE {{
+  ?threat a def:위협상황 .
+  ?threat rdfs:label ?threatName .
+  ?threat def:위협수준 ?level .
+  OPTIONAL {{ ?threat def:발생장소 ?location }}
+  FILTER(?level = "High" || ?level = "심각")
+}}
+"""
+        
+        # 패턴 4: 일반적인 부대 정보 조회
+        if "어떤" in query and ("부대" in query or "병력" in query):
+            return f"""
+PREFIX def: <{ns}>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?unit ?unitName ?type ?role ?superior WHERE {{
+  ?unit a def:아군부대현황 .
+  ?unit rdfs:label ?unitName .
+  OPTIONAL {{ ?unit def:병종 ?type }}
+  OPTIONAL {{ ?unit def:임무역할 ?role }}
+  OPTIONAL {{ ?unit def:상급부대 ?superior }}
+}} LIMIT 10
+"""
+        
+        return None
     
     def _expand_query_with_ontology(self, query: str) -> List[str]:
+
         """
         온톨로지를 활용한 질의 확장
         질문 속 키워드와 연관된 온톨로지 용어(Label, Alias)를 찾음

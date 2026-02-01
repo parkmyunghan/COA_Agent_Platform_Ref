@@ -121,16 +121,16 @@ const EXPLORE_SCENARIOS: ExploreScenario[] = [
         name: '축선별 부대',
         icon: '🗺️',
         description: '축선과 배치된 부대 관계',
-        nodeTypes: ['전장축선', 'Axis', '아군부대현황', '적군부대현황', 'Unit'],
-        relationTypes: ['has전장축선', 'locatedIn']
+        nodeTypes: ['전장축선', 'Axis', '아군부대현황', '적군부대현황', 'Unit', '임무정보', 'Mission', '위협상황', 'Threat'],
+        relationTypes: ['has전장축선', 'hasMission', 'has임무정보', 'has적군부대현황']
     },
     {
         id: 'threat-coa',
         name: '위협-방책',
         icon: '⚔️',
         description: '위협상황과 대응 방책',
-        nodeTypes: ['위협상황', 'Threat', 'COA', 'COA_Library', 'DefenseCOA', 'OffensiveCOA', 'CounterAttackCOA', 'ManeuverCOA', 'PreemptiveCOA', 'DeterrenceCOA', 'InformationOpsCOA'],
-        relationTypes: ['respondsTo', 'hasRelatedCOA']
+        nodeTypes: ['위협상황', 'Threat', 'COA', 'COA_Library', 'DefenseCOA', 'OffensiveCOA', 'CounterAttackCOA', 'ManeuverCOA', 'PreemptiveCOA', 'DeterrenceCOA', 'InformationOpsCOA', '위협유형_마스터'],
+        relationTypes: ['respondsTo', 'hasRelatedCOA', '위협유형코드']
     },
     {
         id: 'mission-resource',
@@ -138,14 +138,14 @@ const EXPLORE_SCENARIOS: ExploreScenario[] = [
         icon: '📋',
         description: '임무와 할당된 자원/부대',
         nodeTypes: ['임무정보', 'Mission', '아군가용자산', 'Resource', '가용자원', '임무별_자원할당'],
-        relationTypes: ['requiresResource', 'has전장축선']
+        relationTypes: ['requiresResource', 'has전장축선', 'assignedToMission', 'referencesAsset']
     },
     {
         id: 'unit-terrain',
         name: '부대-지형',
         icon: '⛰️',
         description: '부대 위치와 지형 정보',
-        nodeTypes: ['아군부대현황', '적군부대현황', 'Unit', '지형셀', 'Terrain'],
+        nodeTypes: ['아군부대현황', '적군부대현황', '아군가용자산', 'Unit', '지형셀', 'Terrain'],
         relationTypes: ['locatedIn']
     },
     {
@@ -177,14 +177,51 @@ const RELATION_STYLES: Record<string, { color: string; label: string }> = {
     'hasType': { color: '#9d174d', label: '유형' },
     'has임무정보': { color: '#0369a1', label: '임무 정보' },
     '위협유형코드': { color: '#b91c1c', label: '위협 유형' },
+    '위협유형': { color: '#b91c1c', label: '위협 유형' },
+    '단계정보': { color: '#fbbf24', label: '단계 정보' },
+    '설명': { color: '#94a3b8', label: '상세 설명' },
+    '적대응전술': { color: '#991b1b', label: '적 대응 전술' },
+    '적용조건': { color: '#0ea5e9', label: '적용 조건' },
+    '필요자원': { color: '#f59e0b', label: '필요 자원' },
+    '환경호환성': { color: '#22c55e', label: '호환 환경' },
+    '환경비호환성': { color: '#b91c1c', label: '비호환 환경' },
+    '연계방책': { color: '#6366f1', label: '연계 방책' },
+    '자원우선순위': { color: '#f59e0b', label: '자원 우선순위' },
+    '워게임_모의_분석_승률': { color: '#10b981', label: '모의 승률' },
+    '전장환경_최적조건': { color: '#22c55e', label: '최적 환경' },
+    '전장환경_제약': { color: '#f97316', label: '환경 제약' },
+    '주노력여부': { color: '#ef4444', label: '주노력 여부' },
+    '키워드': { color: '#64748b', label: '키워드' },
+    '위협수준': { color: '#ef4444', label: '위협 수준' },
+    '위협심도': { color: '#7f1d1d', label: '위협 심도' },
+    '위협카테고리': { color: '#991b1b', label: '위협 범주' },
+    '임무역할': { color: '#0369a1', label: '임무 역할' },
+    '고유명칭': { color: '#312e81', label: '고유 명칭' },
+    '상급부대': { color: '#1e40af', label: '상급 부대' },
+    '병종': { color: '#1e293b', label: '병종' },
+    '제대': { color: '#334155', label: '제대' },
+    '가용상태': { color: '#22c55e', label: '가용 상태' },
     'incompatibleWith': { color: '#7c2d12', label: '비호환 환경' },
+    'isVirtualEntity': { color: '#71717a', label: '가상 엔티티' },
+    'virtualEntitySource': { color: '#71717a', label: '가상 소스' },
+    '포함됨In': { color: '#06b6d4', label: '하위 포함' },
+    '배치된부대': { color: '#10b981', label: '배치 부대' },
+    '소속축선': { color: '#78716c', label: '소속 축선' },
+    '할당부대': { color: '#0891b2', label: '할당 부대' },
+    '인접함': { color: '#d946ef', label: '인접' },
+    '협력관계': { color: '#fb7185', label: '협력' },
+    '축선연결': { color: '#f43f5e', label: '축선 연결' },
+    '작전가능지역': { color: '#a855f7', label: '작전 가능 구역' },
+    '위협영향지역': { color: '#ec4899', label: '위협 영향 구역' },
+    '임무축선': { color: '#6366f1', label: '임무 축선' },
+    '시나리오적군': { color: '#f43f5e', label: '시나리오 적군' },
     'sameAs': { color: '#4a044e', label: '동일 객체' },
     'subPropertyOf': { color: '#312e81', label: '상위 속성' },
     'equivalentClass': { color: '#1e1b4b', label: '동일 클래스' },
     'subClassOf': { color: '#94a3b8', label: '하위 클래스' },
     'domain': { color: '#6366f1', label: '도메인' },
     'range': { color: '#f43f5e', label: '레인지' },
-    'default': { color: '#3f3f46', label: '관계' }
+    'default': { color: '#3f3f46', label: '기타 관계' }
 };
 
 export default function GraphExplorerPanel() {
@@ -769,7 +806,7 @@ export default function GraphExplorerPanel() {
                                     className="w-full bg-zinc-800 text-zinc-200 text-sm border border-zinc-700 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
                                 >
                                     <option value="">선택...</option>
-                                    {availableGroups.filter(g => !TECHNICAL_GROUPS.includes(g)).map(group => (
+                                    {availableGroups.filter(g => mode === 'schema' ? true : !TECHNICAL_GROUPS.includes(g)).map(group => (
                                         <option key={group} value={group}>{NODE_STYLES[group]?.label || group}</option>
                                     ))}
                                 </select>
@@ -847,7 +884,7 @@ export default function GraphExplorerPanel() {
                     {/* Filter Tags (Legend Interactivity) */}
                     <div className="mt-4 flex flex-wrap gap-2 pt-3 border-t border-zinc-800/50">
                         <span className="text-xs text-zinc-500 mr-2 self-center">노드:</span>
-                        {availableGroups.filter(g => !TECHNICAL_GROUPS.includes(g)).map(group => {
+                        {availableGroups.filter(g => mode === 'schema' ? true : !TECHNICAL_GROUPS.includes(g)).map(group => {
                             const style = NODE_STYLES[group] || NODE_STYLES['Unknown'];
                             const isSelected = selectedGroups.includes(group);
                             return (
@@ -1025,6 +1062,7 @@ export default function GraphExplorerPanel() {
                     )}
                 </div>
 
+
                 {/* Node Details Modal - 노드 선택 시 팝업으로 표시 */}
                 {selectedNode && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setSelectedNode(null)}>
@@ -1036,7 +1074,8 @@ export default function GraphExplorerPanel() {
                             className="relative w-96 max-h-[80vh] bg-zinc-900 border border-zinc-700 rounded-2xl flex flex-col shadow-2xl overflow-hidden"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="p-4 border-b border-zinc-800 flex justify-between items-center bg-gradient-to-r from-blue-900/30 to-purple-900/30">
+                            {/* Header */}
+                            <div className="p-4 border-b border-zinc-800 flex justify-between items-center bg-gradient-to-r from-blue-900/30 to-purple-900/30 shrink-0">
                                 <h3 className="font-semibold text-zinc-200 flex items-center gap-2">
                                     <Search className="w-4 h-4 text-blue-500" />
                                     엔티티 정보
@@ -1050,13 +1089,14 @@ export default function GraphExplorerPanel() {
                                 </button>
                             </div>
 
+                            {/* Scrollable Content */}
                             <div className="flex-1 overflow-y-auto p-4 space-y-6">
                                 {selectedNode && (
                                     <>
                                         {/* Header Info */}
                                         <div className="flex items-start gap-3">
                                             <div
-                                                className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl shadow-inner bg-zinc-950 border border-zinc-800"
+                                                className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl shadow-inner bg-zinc-950 border border-zinc-800 shrink-0"
                                                 style={{ borderColor: (NODE_STYLES[selectedNode.group] || NODE_STYLES['Unknown']).color }}
                                             >
                                                 {(NODE_STYLES[selectedNode.group] || NODE_STYLES['Unknown']).icon}
@@ -1107,25 +1147,26 @@ export default function GraphExplorerPanel() {
                                                 ) : null}
                                             </div>
                                         </div>
-
-                                        {/* Actions */}
-                                        <div className="space-y-2 pt-2">
-                                            <button
-                                                onClick={handleExploreConnections}
-                                                className="w-full py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded-lg text-sm font-medium transition-colors border border-blue-500/20 flex items-center justify-center gap-2"
-                                            >
-                                                <Search className="w-4 h-4" />
-                                                연결망 탐색
-                                            </button>
-                                            <button
-                                                onClick={handleNavigateToStudio}
-                                                className="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-sm font-medium transition-colors border border-zinc-700"
-                                            >
-                                                온톨로지 스튜디오에서 보기
-                                            </button>
-                                        </div>
                                     </>
                                 )}
+                            </div>
+
+                            {/* Footer Actions (Fixed) */}
+                            <div className="p-4 border-t border-zinc-800 bg-zinc-900 shrink-0 space-y-2">
+                                <button
+                                    onClick={handleExploreConnections}
+                                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-bold transition-all shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2"
+                                >
+                                    <Search className="w-4 h-4" />
+                                    연결망 탐색 (Focus)
+                                </button>
+                                <button
+                                    onClick={handleNavigateToStudio}
+                                    className="w-full py-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg text-sm font-medium transition-colors border border-zinc-700 flex items-center justify-center gap-2"
+                                >
+                                    <Maximize2 className="w-4 h-4" />
+                                    스튜디오에서 편집
+                                </button>
                             </div>
                         </div>
                     </div>

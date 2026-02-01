@@ -63,12 +63,20 @@ def generate_template_based_summary(situation_info: Dict[str, Any]) -> str:
     location_cell = situation_info.get('발생장소') or situation_info.get('location') or ''
     
     location_display = ''
-    if location_region and location_name:
+    if location_region and location_name and location_region != 'N/A' and location_name != 'N/A':
         location_display = f"{location_region} {location_name}"
-    elif location_name:
+    elif location_name and location_name != 'N/A':
         location_display = location_name
     elif location_cell:
-        location_display = location_cell
+        # 코드를 한글로 변환 시도
+        if _mapper:
+            loc_label = _mapper.get_terrain_label(location_cell)
+            if loc_label and loc_label != location_cell:
+                location_display = f"{loc_label} ({location_cell})"
+            else:
+                location_display = location_cell
+        else:
+            location_display = location_cell
     else:
         location_display = '작전 지역'
     

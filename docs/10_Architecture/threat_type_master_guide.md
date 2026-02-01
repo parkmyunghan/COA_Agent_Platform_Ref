@@ -175,9 +175,7 @@ python scripts/validate_threat_type_integrity.py
 ## 🔧 자동화 도구
 
 ### 1. 마스터 테이블 생성
-```bash
-python scripts/create_threat_type_master.py
-```
+(수동 생성 권장) `data_lake/위협유형_마스터.xlsx` 파일을 직접 생성하거나 템플릿을 활용하세요.
 
 ### 2. 참조 무결성 검증
 ```bash

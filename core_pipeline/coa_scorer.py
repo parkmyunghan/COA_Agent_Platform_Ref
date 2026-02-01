@@ -428,13 +428,13 @@ class COAScorer:
         # 위협 수준이 80% 이상이면 생존 위주로 가중치 재편
         if threat_level >= 0.8:
             new_weights = {
-                'threat': 0.40,  # Massive boost
+                'threat': 0.45,  # Boosted from 0.40
                 'mission_alignment': 0.05,
-                'resources': 0.20,
+                'resources': 0.15,
                 'assets': 0.15,
-                'environment': 0.10,
-                'historical': 0.10,
-                'chain': 0.00
+                'environment': 0.05,
+                'historical': 0.05,
+                'chain': 0.10  # 적합도 점수 반영 (Pass 1 chain_info)
             }
             
             try:
@@ -446,13 +446,13 @@ class COAScorer:
         # 임무가 명확하면 임무 달성 위주로 가중치 재편
         elif mission_type:
             new_weights = {
-                'mission_alignment': 0.35, # Boost
-                'threat': 0.20,
+                'mission_alignment': 0.40, # Boosted from 0.35
+                'threat': 0.15,
                 'resources': 0.15,
                 'assets': 0.10,
-                'environment': 0.10,
-                'historical': 0.10,
-                'chain': 0.00
+                'environment': 0.05,
+                'historical': 0.05,
+                'chain': 0.10  # 적합도 점수 반영
             }
             try:
                 from common.utils import safe_print

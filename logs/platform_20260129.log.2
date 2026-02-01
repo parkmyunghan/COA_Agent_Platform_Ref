@@ -1,0 +1,1483 @@
+2026-01-29 15:41:03,005 - root - INFO - Logging initialized. File: logs\platform_20260129.log
+2026-01-29 15:41:03,006 - root - INFO - [시스템] 운영 모드 - 기본 로그만 기록됩니다.
+2026-01-29 15:41:03,007 - api.dependencies - INFO - Initializing Orchestrator...
+2026-01-29 15:41:03,050 - OntologyManager - INFO - 기존 온톨로지 파일 발견: instances_reasoned.ttl. 자동 로드를 시도합니다.
+2026-01-29 15:41:03,052 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\schema.ttl)
+2026-01-29 15:41:03,092 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 1436
+2026-01-29 15:41:03,094 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\instances_reasoned.ttl)
+2026-01-29 15:41:03,572 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 17241
+2026-01-29 15:41:03,573 - OntologyManager - INFO - 'instances_reasoned.ttl' 기반으로 그래프 초기화 완료.
+2026-01-29 15:41:09,272 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:41:09,301 - LLMManager - INFO - OpenAI API 초기화 및 검증(생성 테스트) 완료 (모델: gpt-4o)
+2026-01-29 15:41:22,506 - LLMManager - INFO - 사내망 모델 4개 중 0개 사용 가능
+2026-01-29 15:41:22,515 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:41:22,543 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:41:22,543 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:41:22,547 - RuleEngine - INFO - 규칙 파일 로드 완료: 3개 규칙, 3개 가중치
+2026-01-29 15:41:22,547 - core_pipeline.orchestrator - INFO - Enhanced Ontology Manager initialized (독립 모드)
+2026-01-29 15:41:32,534 - core_pipeline.orchestrator - INFO - GPU 메모리 상태: 4.00 GB 사용 가능 / 4.00 GB 전체
+2026-01-29 15:41:32,542 - core_pipeline.orchestrator - INFO - OpenAI API 사용 가능 (모델: gpt-4o)
+2026-01-29 15:41:32,542 - core_pipeline.orchestrator - INFO - 로컬 모델 로드를 생략하고 원격 모델을 우선 사용합니다. (지연 로드)
+2026-01-29 15:41:32,542 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 중 (RAG 인덱스 최적화)...
+2026-01-29 15:42:10,040 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-29 15:42:10,296 - core_pipeline.rag_manager - INFO - Embedding model loaded (CPU): C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-29 15:42:10,299 - core_pipeline.rag_manager - INFO - FAISS index loaded: C:\POC\COA_Agent_Platform_Ref\knowledge\embeddings\faiss_index.bin
+2026-01-29 15:42:10,300 - core_pipeline.rag_manager - INFO - RAG 인덱스 메타데이터 로드 완료: 67개 청크
+2026-01-29 15:42:10,300 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 완료
+2026-01-29 15:42:10,300 - core_pipeline.orchestrator - INFO - RAG 인덱스가 이미 존재합니다: 67개 청크
+2026-01-29 15:42:10,395 - core_pipeline.orchestrator - INFO - StatusManager 초기화 완료
+2026-01-29 15:42:10,397 - core_pipeline.orchestrator - INFO - 실시간 데이터 감시 활성화
+2026-01-29 15:42:10,397 - api.dependencies - INFO - Initializing COAService...
+2026-01-29 15:42:10,407 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:42:10,424 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:42:10,424 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:42:10,429 - api.dependencies - INFO - COAService에 agent_core 주입 완료 - 에이전트 기반 생성 활성화
+2026-01-29 15:42:10,429 - api.dependencies - INFO - Global State Initialized.
+2026-01-29 15:45:08,979 - core_pipeline.visualization_generator - INFO - 지형셀 데이터 로드 완료 (31개 셀)
+2026-01-29 15:45:19,722 - api.routers.coa - INFO - [정황보고] 자연어 변환 완료: 능선503, 동부 주공축선, 침투
+2026-01-29 15:45:19,722 - api.routers.coa - INFO - [정황보고] LLM 생성 시작 - approach_mode: threat_centered
+2026-01-29 15:45:21,887 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:45:21,888 - LLMManager - INFO - OpenAI API 사용: gpt-4o
+2026-01-29 15:45:21,889 - api.routers.coa - INFO - [정황보고] LLM으로 생성됨 (길이: 120)
+2026-01-29 15:45:38,096 - api.routers.chat - ERROR - Chat completion error: 'ChatRequest' object has no attribute 'situation_info'
+2026-01-29 15:45:48,426 - DefenseCOAAgent - INFO - 교리 인용 서비스 초기화 완료
+2026-01-29 15:45:48,426 - api.routers.agent - INFO - [Agent Progress] 0%: 방책 분석 시작 (유형: defense, offensive, counter_attack, preemptive, deterrence, maneuver, information_ops)
+2026-01-29 15:45:48,426 - DefenseCOAAgent - INFO - [STATUS] [0%] 방책 분석 시작 (유형: defense, offensive, counter_attack, preemptive, deterrence, maneuver, information_ops)
+2026-01-29 15:45:48,723 - DefenseCOAAgent - INFO - 기존 온톨로지 그래프 사용 (17241개 triples)
+2026-01-29 15:45:48,725 - api.routers.agent - INFO - [Agent Progress] 10%: 전술 상황 분석 및 위협 요소 식별 중...
+2026-01-29 15:45:48,725 - DefenseCOAAgent - INFO - [STATUS] [10%] 전술 상황 분석 및 위협 요소 식별 중...
+2026-01-29 15:45:48,725 - DefenseCOAAgent - INFO - 접근 방식: threat_centered
+2026-01-29 15:45:48,726 - DefenseCOAAgent - INFO - selected_situation_info가 있어 우선 사용 (situation_id=THR001는 무시): situation_id=THR001
+2026-01-29 15:45:48,726 - DefenseCOAAgent - INFO - 위협ID로 상황 URI 찾음: http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:48,728 - DefenseCOAAgent - INFO - 관련 엔티티 탐색 완료: 13개 발견
+2026-01-29 15:45:48,728 - DefenseCOAAgent - INFO - 관련 엔티티 탐색 완료: 13개 발견
+2026-01-29 15:45:48,734 - ReasoningEngine - INFO - 온톨로지에서 임무 유형 추출 성공: 방어
+2026-01-29 15:45:48,735 - DefenseCOAAgent - INFO - 온톨로지 기반 임무 유형 보강: 방어
+2026-01-29 15:45:48,736 - api.routers.agent - INFO - [Agent Progress] 25%: 임무별 최적 방책 유형 및 대응 전략 수립 중...
+2026-01-29 15:45:48,736 - DefenseCOAAgent - INFO - [STATUS] [25%] 임무별 최적 방책 유형 및 대응 전략 수립 중...
+2026-01-29 15:45:48,737 - api.routers.agent - INFO - [Agent Progress] 20%: 통합 후보 검색 및 병렬 최적화 수행 중...
+2026-01-29 15:45:48,737 - DefenseCOAAgent - INFO - [STATUS] [20%] 통합 후보 검색 및 병렬 최적화 수행 중...
+2026-01-29 15:45:48,738 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: None)
+2026-01-29 15:45:48,738 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['DefenseCOA', 'OffensiveCOA', 'CounterAttackCOA', 'PreemptiveCOA', 'DeterrenceCOA', 'ManeuverCOA', 'InformationOpsCOA']
+2026-01-29 15:45:48,752 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 0건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,753 - DefenseCOAAgent - INFO - 통합 검색 완료: 총 0개 후보 식별
+2026-01-29 15:45:48,755 - api.routers.agent - INFO - [Agent Progress] 20%: DEFENSE 방책 후보 탐색 중...
+2026-01-29 15:45:48,755 - api.routers.agent - INFO - [Agent Progress] 20%: OFFENSIVE 방책 후보 탐색 중...
+2026-01-29 15:45:48,755 - DefenseCOAAgent - INFO - [STATUS] [20%] DEFENSE 방책 후보 탐색 중...
+2026-01-29 15:45:48,756 - api.routers.agent - INFO - [Agent Progress] 20%: COUNTER_ATTACK 방책 후보 탐색 중...
+2026-01-29 15:45:48,757 - DefenseCOAAgent - INFO - [STATUS] [20%] OFFENSIVE 방책 후보 탐색 중...
+2026-01-29 15:45:48,757 - api.routers.agent - INFO - [Agent Progress] 20%: PREEMPTIVE 방책 후보 탐색 중...
+2026-01-29 15:45:48,757 - DefenseCOAAgent - INFO - defense 방책 탐색 시작
+2026-01-29 15:45:48,758 - api.routers.agent - INFO - [Agent Progress] 20%: DETERRENCE 방책 후보 탐색 중...
+2026-01-29 15:45:48,757 - DefenseCOAAgent - INFO - [STATUS] [20%] COUNTER_ATTACK 방책 후보 탐색 중...
+2026-01-29 15:45:48,759 - api.routers.agent - INFO - [Agent Progress] 20%: MANEUVER 방책 후보 탐색 중...
+2026-01-29 15:45:48,758 - DefenseCOAAgent - INFO - offensive 방책 탐색 시작
+2026-01-29 15:45:48,759 - api.routers.agent - INFO - [Agent Progress] 20%: INFORMATION_OPS 방책 후보 탐색 중...
+2026-01-29 15:45:48,759 - DefenseCOAAgent - INFO - [STATUS] [20%] PREEMPTIVE 방책 후보 탐색 중...
+2026-01-29 15:45:48,760 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: defense)
+2026-01-29 15:45:48,760 - DefenseCOAAgent - INFO - [STATUS] [20%] DETERRENCE 방책 후보 탐색 중...
+2026-01-29 15:45:48,761 - DefenseCOAAgent - INFO - counter_attack 방책 탐색 시작
+2026-01-29 15:45:48,761 - DefenseCOAAgent - INFO - [STATUS] [20%] MANEUVER 방책 후보 탐색 중...
+2026-01-29 15:45:48,761 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: offensive)
+2026-01-29 15:45:48,762 - DefenseCOAAgent - INFO - [STATUS] [20%] INFORMATION_OPS 방책 후보 탐색 중...
+2026-01-29 15:45:48,762 - DefenseCOAAgent - INFO - preemptive 방책 탐색 시작
+2026-01-29 15:45:48,762 - DefenseCOAAgent - INFO - deterrence 방책 탐색 시작
+2026-01-29 15:45:48,762 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['DefenseCOA']
+2026-01-29 15:45:48,764 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: counter_attack)
+2026-01-29 15:45:48,764 - DefenseCOAAgent - INFO - maneuver 방책 탐색 시작
+2026-01-29 15:45:48,764 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['OffensiveCOA']
+2026-01-29 15:45:48,764 - DefenseCOAAgent - INFO - information_ops 방책 탐색 시작
+2026-01-29 15:45:48,765 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: preemptive)
+2026-01-29 15:45:48,765 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: deterrence)
+2026-01-29 15:45:48,769 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 12건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,769 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['CounterAttackCOA']
+2026-01-29 15:45:48,769 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: maneuver)
+2026-01-29 15:45:48,771 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 7건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,771 - DefenseCOAAgent - INFO - SPARQL 검색 시작 (위협: THR_TYPE_001, 타입: information_ops)
+2026-01-29 15:45:48,772 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['PreemptiveCOA']
+2026-01-29 15:45:48,773 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['DeterrenceCOA']
+2026-01-29 15:45:48,773 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (12건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,775 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 0건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,776 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['ManeuverCOA']
+2026-01-29 15:45:48,776 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (7건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,782 - api.routers.agent - INFO - [Agent Progress] 20%: DEFENSE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,776 - DefenseCOAAgent - INFO - SPARQL 검색 타겟 클래스 목록: ['InformationOpsCOA']
+2026-01-29 15:45:48,779 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 10건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,789 - api.routers.agent - INFO - [Agent Progress] 20%: OFFENSIVE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,782 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 10건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,787 - DefenseCOAAgent - INFO - 규칙 엔진 적용 완료: 0개 방책에 규칙 적용
+2026-01-29 15:45:48,789 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 9건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,790 - DefenseCOAAgent - INFO - [STATUS] [20%] DEFENSE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,791 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공: 10건 (SPARQL, 위협: THR_TYPE_001)
+2026-01-29 15:45:48,792 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (10건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,793 - DefenseCOAAgent - INFO - [STATUS] [20%] OFFENSIVE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,793 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (10건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,794 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (9건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,794 - DefenseCOAAgent - INFO - ✅ 10개 방책 발견 (top_10 반환)
+2026-01-29 15:45:48,794 - api.routers.agent - INFO - [Agent Progress] 20%: PREEMPTIVE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,796 - DefenseCOAAgent - INFO - 온톨로지 기반 검색 성공 (10건). 엑셀 검색을 건너뜁니다.
+2026-01-29 15:45:48,796 - api.routers.agent - INFO - [Agent Progress] 20%: MANEUVER 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,797 - api.routers.agent - INFO - [Agent Progress] 20%: DETERRENCE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,798 - DefenseCOAAgent - INFO - [STATUS] [20%] MANEUVER 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,798 - api.routers.agent - INFO - [Agent Progress] 20%: INFORMATION_OPS 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,798 - DefenseCOAAgent - INFO - [STATUS] [20%] PREEMPTIVE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,798 - DefenseCOAAgent - INFO - [STATUS] [20%] DETERRENCE 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,798 - DefenseCOAAgent - INFO - [STATUS] [20%] INFORMATION_OPS 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,803 - api.routers.agent - INFO - [Agent Progress] 20%: COUNTER_ATTACK 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,804 - DefenseCOAAgent - INFO - [STATUS] [20%] COUNTER_ATTACK 방책 팔란티어 모드 점수 계산 중...
+2026-01-29 15:45:48,817 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,826 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,829 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,831 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,836 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,838 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,844 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,850 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,850 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 7개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,859 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 12개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,860 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,866 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 7개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,865 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,867 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 12개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,869 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,871 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,873 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,877 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,886 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,886 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 9개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,881 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:45:48,891 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,895 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_007, Situation=THR001
+2026-01-29 15:45:48,897 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_007, Situation=THR001
+2026-01-29 15:45:48,905 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,906 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,911 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:45:48,912 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 9개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,912 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,913 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#전차대대', '기계화보병, 전차대대']
+2026-01-29 15:45:48,914 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#보병여단', 'http://coa-agent-platform.org/ontology#포병대대', '보병여단, 포병대대']
+2026-01-29 15:45:48,914 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,915 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:45:48,922 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,920 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_008, Situation=THR001
+2026-01-29 15:45:48,924 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_003, Situation=THR001
+2026-01-29 15:45:48,932 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.740
+2026-01-29 15:45:48,947 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,947 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,944 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:48,948 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,948 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:48,948 - COAScorer - INFO - [9104][COA:COA_Library_COA_OFF_007] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:48,948 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#도하중대']
+2026-01-29 15:45:48,949 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,949 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 1: 10개 후보 방책에 대한 기초 평가 수행 중...
+2026-01-29 15:45:48,950 - COAScorer - INFO - [9027][COA:COA_Library_COA_DEF_007] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:48,958 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:48,958 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:48,961 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_010, Situation=THR001
+2026-01-29 15:45:48,979 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.700
+2026-01-29 15:45:48,980 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:48,981 - COAScorer - INFO - [5012][COA:COA_Library_COA_PRE_008] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:48,983 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_003, Situation=THR001
+2026-01-29 15:45:48,983 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', '기계화보병, 공격헬기']
+2026-01-29 15:45:48,983 - COAScorer - INFO - [9104][COA:COA_Library_COA_OFF_007] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:48,987 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#전자전부대', '전자전부대']
+2026-01-29 15:45:48,983 - COAScorer - INFO - [1985][COA:COA_Library_COA_MAN_003] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:48,987 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_006, Situation=THR001
+2026-01-29 15:45:48,984 - COAScorer - INFO - [9027][COA:COA_Library_COA_DEF_007] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:48,985 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,000 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.630
+2026-01-29 15:45:49,000 - COAScorer - INFO - [9104][COA:COA_Library_COA_OFF_007] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,001 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.660
+2026-01-29 15:45:49,002 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산']
+2026-01-29 15:45:49,001 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,002 - COAScorer - INFO - [9027][COA:COA_Library_COA_DEF_007] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,003 - COAScorer - INFO - [5012][COA:COA_Library_COA_PRE_008] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,003 - COAScorer - INFO - [7969][COA:COA_CNT_010] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,004 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_007, 최종총점=0.4055 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.740, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,004 - COAScorer - INFO - [9308][COA:COA_Library_COA_INF_003] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,006 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.630
+2026-01-29 15:45:49,006 - COAScorer - INFO - [1985][COA:COA_Library_COA_MAN_003] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,007 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_007, 최종총점=0.6190 (위협:0.850, 자원:0.247, 환경:0.900, 과거:0.750, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,007 - COAScorer - INFO - [5012][COA:COA_Library_COA_PRE_008] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,008 - COAScorer - INFO - [Mismatch] COA_CNT_010 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,010 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,014 - COAScorer - INFO - [7423][COA:COA_Library_COA_DET_006] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,014 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_003, Situation=THR001
+2026-01-29 15:45:49,014 - COAScorer - INFO - [1985][COA:COA_Library_COA_MAN_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,015 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_008, 최종총점=0.4280 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.870, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,017 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_005, Situation=THR001
+2026-01-29 15:45:49,015 - COAScorer - INFO - [7969][COA:COA_CNT_010] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,019 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#자주포대대', '자주포대대, 공격헬기']
+2026-01-29 15:45:49,015 - COAScorer - INFO - [9308][COA:COA_Library_COA_INF_003] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,017 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,019 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_003, 최종총점=0.4848 (위협:0.850, 자원:0.062, 환경:0.900, 과거:0.700, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,021 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#보병여단', '보병여단, 공병대대']
+2026-01-29 15:45:49,021 - COAScorer - INFO - [7969][COA:COA_CNT_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,025 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_003, Situation=THR001
+2026-01-29 15:45:49,026 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.920
+2026-01-29 15:45:49,026 - COAScorer - INFO - [9308][COA:COA_Library_COA_INF_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,026 - COAScorer - INFO - [7423][COA:COA_Library_COA_DET_006] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,037 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:49,037 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,037 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_010, 최종총점=0.2133 (위협:0.383, 자원:0.000, 환경:0.405, 과거:0.284, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,040 - COAScorer - INFO - [9256][COA:COA_Library_COA_OFF_003] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,039 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_002, Situation=THR001
+2026-01-29 15:45:49,041 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_003, 최종총점=0.4735 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.660, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,041 - COAScorer - INFO - [7423][COA:COA_Library_COA_DET_006] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,041 - COAScorer - INFO - [4667][COA:COA_Library_COA_DEF_005] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,048 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.950
+2026-01-29 15:45:49,050 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,051 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', '기계화보병, 공병대대']
+2026-01-29 15:45:49,054 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_009, Situation=THR001
+2026-01-29 15:45:49,054 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_006, 최종총점=0.5360 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.630, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,057 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_002, Situation=THR001
+2026-01-29 15:45:49,054 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,057 - COAScorer - INFO - [8452][COA:COA_Library_COA_PRE_003] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,069 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,057 - COAScorer - INFO - [9256][COA:COA_Library_COA_OFF_003] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,069 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.930
+2026-01-29 15:45:49,074 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,073 - COAScorer - INFO - [4667][COA:COA_Library_COA_DEF_005] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,073 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_008, Situation=THR001
+2026-01-29 15:45:49,070 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:49,084 - COAScorer - INFO - [9256][COA:COA_Library_COA_OFF_003] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,085 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.850
+2026-01-29 15:45:49,085 - COAScorer - INFO - [5007][COA:COA_Library_COA_MAN_002] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,086 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#미사일부대', 'http://coa-agent-platform.org/ontology#포병여단', '포병여단, 미사일부대']
+2026-01-29 15:45:49,085 - COAScorer - INFO - [8452][COA:COA_Library_COA_PRE_003] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,086 - COAScorer - INFO - [4667][COA:COA_Library_COA_DEF_005] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,087 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:49,087 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_003, 최종총점=0.4145 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.920, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,088 - COAScorer - INFO - [3341][COA:COA_CNT_009] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,089 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,096 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:49,097 - COAScorer - INFO - [8452][COA:COA_Library_COA_PRE_003] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,098 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_005, 최종총점=0.6084 (위협:0.850, 자원:0.226, 환경:0.900, 과거:0.600, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,098 - COAScorer - INFO - [6544][COA:COA_Library_COA_INF_002] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,099 - COAScorer - INFO - [Mismatch] COA_CNT_009 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,103 - COAScorer - INFO - [5007][COA:COA_Library_COA_MAN_002] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,103 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_010, Situation=THR001
+2026-01-29 15:45:49,104 - COAScorer - INFO - [6900][COA:COA_Library_COA_DET_008] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,104 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_003, 최종총점=0.4320 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.950, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,104 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,104 - COAScorer - INFO - [3341][COA:COA_CNT_009] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,106 - COAScorer - INFO - [5007][COA:COA_Library_COA_MAN_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,106 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,107 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,110 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_CBRN_01, Situation=THR001
+2026-01-29 15:45:49,111 - COAScorer - INFO - [6544][COA:COA_Library_COA_INF_002] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,113 - COAScorer - INFO - [3341][COA:COA_CNT_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,113 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_001, Situation=THR001
+2026-01-29 15:45:49,113 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_002, 최종총점=0.4993 (위협:0.850, 자원:0.082, 환경:0.900, 과거:0.930, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,126 - COAScorer - INFO - [6900][COA:COA_Library_COA_DET_008] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,126 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.940
+2026-01-29 15:45:49,126 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#화생방대대', '화생방대대']
+2026-01-29 15:45:49,126 - COAScorer - INFO - [6544][COA:COA_Library_COA_INF_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,127 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#UAV중대', 'http://coa-agent-platform.org/ontology#포병여단', '포병여단, UAV중대']
+2026-01-29 15:45:49,126 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_009, 최종총점=0.2266 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.383, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,129 - COAScorer - INFO - [6900][COA:COA_Library_COA_DET_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,133 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_006, Situation=THR001
+2026-01-29 15:45:49,129 - COAScorer - INFO - [5244][COA:COA_Library_COA_OFF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,133 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.880
+2026-01-29 15:45:49,134 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_002, 최종총점=0.4795 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.780, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,145 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:49,147 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#수송헬기', '기계화보병, 수송헬기']
+2026-01-29 15:45:49,148 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_008, Situation=THR001
+2026-01-29 15:45:49,147 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_008, 최종총점=0.5697 (위협:0.850, 자원:0.165, 환경:0.900, 과거:0.810, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,148 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,149 - COAScorer - INFO - [2950][COA:COA_Library_COA_DEF_CBRN_01] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,151 - COAScorer - INFO - [6527][COA:COA_Library_COA_PRE_001] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,160 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.740
+2026-01-29 15:45:49,159 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,159 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_010, Situation=THR001
+2026-01-29 15:45:49,160 - COAScorer - INFO - [5244][COA:COA_Library_COA_OFF_010] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,161 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_CBRN_01 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,164 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_007, Situation=THR001
+2026-01-29 15:45:49,164 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_001 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,166 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_006] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,176 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:49,176 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:49,176 - COAScorer - INFO - [5244][COA:COA_Library_COA_OFF_010] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,177 - COAScorer - INFO - [2950][COA:COA_Library_COA_DEF_CBRN_01] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,178 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#미사일부대', '미사일부대']
+2026-01-29 15:45:49,178 - COAScorer - INFO - [6527][COA:COA_Library_COA_PRE_001] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,178 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,179 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:49,179 - COAScorer - INFO - [2009][COA:COA_CNT_008] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,179 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_010, 최종총점=0.4155 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.940, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,179 - COAScorer - INFO - [2950][COA:COA_Library_COA_DEF_CBRN_01] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,182 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.650
+2026-01-29 15:45:49,182 - COAScorer - INFO - [6527][COA:COA_Library_COA_PRE_001] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,183 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_006] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,183 - COAScorer - INFO - [2363][COA:COA_Library_COA_INF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,183 - COAScorer - INFO - [Mismatch] COA_CNT_008 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,185 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_CBRN_01, 최종총점=0.5685 (위협:0.850, 자원:0.000, 환경:0.500, 과거:0.880, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,185 - COAScorer - INFO - [1515][COA:COA_Library_COA_DET_007] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,187 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_006, Situation=THR001
+2026-01-29 15:45:49,185 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_001, 최종총점=0.4467 (위협:0.850, 자원:0.165, 환경:0.900, 과거:0.750, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,188 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_006] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,188 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,189 - COAScorer - INFO - [2009][COA:COA_CNT_008] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,190 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#자주포대대', '자주포대대, 공격헬기']
+2026-01-29 15:45:49,192 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_010, Situation=THR001
+2026-01-29 15:45:49,190 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,195 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_007, Situation=THR001
+2026-01-29 15:45:49,193 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_006, 최종총점=0.4775 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.740, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,195 - COAScorer - INFO - [2363][COA:COA_Library_COA_INF_010] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,196 - COAScorer - INFO - [2009][COA:COA_CNT_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,198 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.710
+2026-01-29 15:45:49,198 - COAScorer - INFO - [1515][COA:COA_Library_COA_DET_007] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,198 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,199 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,200 - COAScorer - INFO - [2363][COA:COA_Library_COA_INF_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,200 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_008, 최종총점=0.2210 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.270, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,203 - COAScorer - INFO - [1450][COA:COA_Library_COA_OFF_006] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,203 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_009, Situation=THR001
+2026-01-29 15:45:49,203 - COAScorer - INFO - [1515][COA:COA_Library_COA_DET_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,219 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:49,220 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.820
+2026-01-29 15:45:49,220 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_010, 최종총점=0.4810 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.810, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,222 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#도하중대', '공병대대, 도하중대']
+2026-01-29 15:45:49,221 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,223 - COAScorer - INFO - [7886][COA:COA_Library_COA_DEF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,223 - COAScorer - INFO - [5073][COA:COA_Library_COA_PRE_007] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,223 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_007, 최종총점=0.5370 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.650, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,225 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_007, Situation=THR001
+2026-01-29 15:45:49,233 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.620
+2026-01-29 15:45:49,233 - COAScorer - INFO - [1450][COA:COA_Library_COA_OFF_006] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,236 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_005, Situation=THR001
+2026-01-29 15:45:49,235 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,237 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#포병대대', '포병대대, 공격헬기']
+2026-01-29 15:45:49,240 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_002, Situation=THR001
+2026-01-29 15:45:49,236 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,240 - COAScorer - INFO - [7333][COA:COA_Library_COA_MAN_009] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,241 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:49,240 - COAScorer - INFO - [1450][COA:COA_Library_COA_OFF_006] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,241 - COAScorer - INFO - [7886][COA:COA_Library_COA_DEF_010] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,248 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:49,248 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#미사일부대', 'http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산, 미사일부대']
+2026-01-29 15:45:49,249 - COAScorer - INFO - [5073][COA:COA_Library_COA_PRE_007] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,249 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,251 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:49,251 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_006, 최종총점=0.4040 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.710, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,251 - COAScorer - INFO - [7886][COA:COA_Library_COA_DEF_010] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,252 - COAScorer - INFO - [8701][COA:COA_CNT_007] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,254 - COAScorer - INFO - [5073][COA:COA_Library_COA_PRE_007] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,254 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.830
+2026-01-29 15:45:49,254 - COAScorer - INFO - [7333][COA:COA_Library_COA_MAN_009] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,255 - COAScorer - INFO - [2371][COA:COA_Library_COA_INF_005] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,255 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_010, 최종총점=0.6098 (위협:0.850, 자원:0.185, 환경:0.900, 과거:0.750, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,259 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_004, Situation=THR001
+2026-01-29 15:45:49,256 - COAScorer - INFO - [Mismatch] COA_CNT_007 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,256 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_007, 최종총점=0.4255 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.820, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,259 - COAScorer - INFO - [6489][COA:COA_Library_COA_DET_002] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,259 - COAScorer - INFO - [7333][COA:COA_Library_COA_MAN_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,261 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#전차대대', '전차대대, 기계화보병']
+2026-01-29 15:45:49,259 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,261 - COAScorer - INFO - [8701][COA:COA_CNT_007] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,264 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_008, Situation=THR001
+2026-01-29 15:45:49,265 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,276 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_005, Situation=THR001
+2026-01-29 15:45:49,265 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_009, 최종총점=0.4838 (위협:0.850, 자원:0.082, 환경:0.900, 과거:0.620, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,278 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.900
+2026-01-29 15:45:49,278 - COAScorer - INFO - [2371][COA:COA_Library_COA_INF_005] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,279 - COAScorer - INFO - [8701][COA:COA_CNT_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,279 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#방공대대']
+2026-01-29 15:45:49,279 - COAScorer - INFO - [6489][COA:COA_Library_COA_DET_002] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,279 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,281 - COAScorer - INFO - [3383][COA:COA_Library_COA_OFF_004] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,283 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_005, Situation=THR001
+2026-01-29 15:45:49,282 - COAScorer - INFO - [2371][COA:COA_Library_COA_INF_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,282 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_007, 최종총점=0.2298 (위협:0.383, 자원:0.074, 환경:0.405, 과거:0.392, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,294 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:49,294 - COAScorer - INFO - [6489][COA:COA_Library_COA_DET_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,303 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,303 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.770
+2026-01-29 15:45:49,303 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#도하중대']
+2026-01-29 15:45:49,303 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_005, 최종총점=0.4795 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.780, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,304 - COAScorer - INFO - [1409][COA:COA_Library_COA_DEF_008] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,304 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_002, 최종총점=0.5460 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.830, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,307 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_006, Situation=THR001
+2026-01-29 15:45:49,307 - COAScorer - INFO - [3383][COA:COA_Library_COA_OFF_004] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,308 - COAScorer - INFO - [3721][COA:COA_Library_COA_PRE_005] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,317 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:49,317 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,321 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_006, Situation=THR001
+2026-01-29 15:45:49,321 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#특수전팀', '특수전팀, 기계화보병']
+2026-01-29 15:45:49,323 - COAScorer - INFO - [3383][COA:COA_Library_COA_OFF_004] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,323 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_010, Situation=THR001
+2026-01-29 15:45:49,324 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,324 - COAScorer - INFO - [9802][COA:COA_Library_COA_MAN_005] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,325 - COAScorer - INFO - [1409][COA:COA_Library_COA_DEF_008] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,325 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#PSYOPS팀', 'PSYOPS팀']
+2026-01-29 15:45:49,332 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:49,333 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_004, 최종총점=0.4135 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.900, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,333 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산']
+2026-01-29 15:45:49,333 - COAScorer - INFO - [3721][COA:COA_Library_COA_PRE_005] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,333 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,334 - COAScorer - INFO - [1409][COA:COA_Library_COA_DEF_008] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,336 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.670
+2026-01-29 15:45:49,336 - COAScorer - INFO - [4948][COA:COA_CNT_006] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,338 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.940
+2026-01-29 15:45:49,340 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_008, Situation=THR001
+2026-01-29 15:45:49,340 - COAScorer - INFO - [3721][COA:COA_Library_COA_PRE_005] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,341 - COAScorer - INFO - [9802][COA:COA_Library_COA_MAN_005] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,341 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_008, 최종총점=0.5930 (위협:0.850, 자원:0.123, 환경:0.900, 과거:0.600, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,341 - COAScorer - INFO - [4968][COA:COA_Library_COA_INF_006] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,342 - COAScorer - INFO - [Mismatch] COA_CNT_006 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,342 - COAScorer - INFO - [5145][COA:COA_Library_COA_DET_010] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,343 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,343 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_005, 최종총점=0.4230 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.770, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,343 - COAScorer - INFO - [9802][COA:COA_Library_COA_MAN_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,344 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,345 - COAScorer - INFO - [4948][COA:COA_CNT_006] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,345 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,348 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_AIR_01, Situation=THR001
+2026-01-29 15:45:49,354 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.830
+2026-01-29 15:45:49,356 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_005, 최종총점=0.4933 (위협:0.850, 자원:0.062, 환경:0.900, 과거:0.870, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,357 - COAScorer - INFO - [4968][COA:COA_Library_COA_INF_006] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,357 - COAScorer - INFO - [4948][COA:COA_CNT_006] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,358 - COAScorer - INFO - [5145][COA:COA_Library_COA_DET_010] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,358 - COAScorer - INFO - [8553][COA:COA_Library_COA_OFF_008] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,359 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#방공대대', 'http://coa-agent-platform.org/ontology#휴대용대공미사일반', '방공대대, 휴대용대공미사일반']
+2026-01-29 15:45:49,361 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_006, Situation=THR001
+2026-01-29 15:45:49,362 - COAScorer - INFO - [4968][COA:COA_Library_COA_INF_006] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,363 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_006, 최종총점=0.2126 (위협:0.383, 자원:0.000, 환경:0.405, 과거:0.270, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,363 - COAScorer - INFO - [5145][COA:COA_Library_COA_DET_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,365 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_010, Situation=THR001
+2026-01-29 15:45:49,365 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,373 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,372 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.720
+2026-01-29 15:45:49,373 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_006, 최종총점=0.4740 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.670, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,374 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_010, 최종총점=0.5515 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.940, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,375 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#수송헬기', '기계화보병, 수송헬기']
+2026-01-29 15:45:49,377 - COAScorer - INFO - [8553][COA:COA_Library_COA_OFF_008] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,383 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.680
+2026-01-29 15:45:49,377 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_005, Situation=THR001
+2026-01-29 15:45:49,384 - COAScorer - INFO - [1438][COA:COA_Library_COA_DEF_AIR_01] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,394 - COAScorer - INFO - [8553][COA:COA_Library_COA_OFF_008] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,394 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_009, Situation=THR001
+2026-01-29 15:45:49,397 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_001, Situation=THR001
+2026-01-29 15:45:49,396 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.790
+2026-01-29 15:45:49,398 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,398 - COAScorer - INFO - [6115][COA:COA_Library_COA_PRE_006] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,400 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#PSYOPS팀', 'PSYOPS팀']
+2026-01-29 15:45:49,398 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_AIR_01 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,400 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_008, 최종총점=0.4100 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.830, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,400 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#미사일부대', '미사일부대']
+2026-01-29 15:45:49,401 - COAScorer - INFO - [5074][COA:COA_Library_COA_MAN_010] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,408 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.800
+2026-01-29 15:45:49,409 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,411 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.800
+2026-01-29 15:45:49,411 - COAScorer - INFO - [1438][COA:COA_Library_COA_DEF_AIR_01] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,413 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.900
+2026-01-29 15:45:49,415 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_009, Situation=THR001
+2026-01-29 15:45:49,414 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,415 - COAScorer - INFO - [1014][COA:COA_CNT_005] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,417 - COAScorer - INFO - [6115][COA:COA_Library_COA_PRE_006] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,417 - COAScorer - INFO - [6566][COA:COA_Library_COA_INF_009] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,417 - COAScorer - INFO - [1438][COA:COA_Library_COA_DEF_AIR_01] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,419 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,418 - COAScorer - INFO - [7538][COA:COA_Library_COA_DET_001] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,420 - COAScorer - INFO - [5074][COA:COA_Library_COA_MAN_010] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,420 - COAScorer - INFO - [Mismatch] COA_CNT_005 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,421 - COAScorer - INFO - [6115][COA:COA_Library_COA_PRE_006] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,421 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,421 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_AIR_01, 최종총점=0.5605 (위협:0.850, 자원:0.000, 환경:0.500, 과거:0.720, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,431 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.790
+2026-01-29 15:45:49,431 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_001 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,431 - COAScorer - INFO - [5074][COA:COA_Library_COA_MAN_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,433 - COAScorer - INFO - [1014][COA:COA_CNT_005] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,433 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_006, 최종총점=0.4185 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.680, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,433 - COAScorer - INFO - [6566][COA:COA_Library_COA_INF_009] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,434 - COAScorer - INFO - [3012][COA:COA_Library_COA_OFF_009] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,435 - COAScorer - INFO - [7538][COA:COA_Library_COA_DET_001] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,436 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_010, 최종총점=0.4800 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.790, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,438 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_006, Situation=THR001
+2026-01-29 15:45:49,436 - COAScorer - INFO - [1014][COA:COA_CNT_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,439 - COAScorer - INFO - [6566][COA:COA_Library_COA_INF_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,442 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_009, Situation=THR001
+2026-01-29 15:45:49,439 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,441 - COAScorer - INFO - [7538][COA:COA_Library_COA_DET_001] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,445 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_008, Situation=THR001
+2026-01-29 15:45:49,446 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#포병대대', '공병대대, 포병대대']
+2026-01-29 15:45:49,446 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_005, 최종총점=0.2255 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.360, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,447 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_009, 최종총점=0.4805 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.800, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,447 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,447 - COAScorer - INFO - [3012][COA:COA_Library_COA_OFF_009] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,448 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_001, 최종총점=0.5495 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.900, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,448 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', '공병대대, 기계화보병']
+2026-01-29 15:45:49,464 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.770
+2026-01-29 15:45:49,473 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_004, Situation=THR001
+2026-01-29 15:45:49,473 - COAScorer - INFO - [3012][COA:COA_Library_COA_OFF_009] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,477 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.860
+2026-01-29 15:45:49,477 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_004, Situation=THR001
+2026-01-29 15:45:49,493 - COAScorer - INFO - [8200][COA:COA_Library_COA_DEF_006] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,493 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,495 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.840
+2026-01-29 15:45:49,495 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_009, Situation=THR001
+2026-01-29 15:45:49,496 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_009, 최종총점=0.4080 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.790, 체인:0.300, Mission:0.290)
+2026-01-29 15:45:49,496 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#전자전부대', '전자전부대']
+2026-01-29 15:45:49,496 - COAScorer - INFO - [5788][COA:COA_Library_COA_PRE_009] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,497 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,504 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.680
+2026-01-29 15:45:49,506 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:49,505 - COAScorer - INFO - [9315][COA:COA_Library_COA_MAN_008] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,505 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#미사일부대', '미사일부대']
+2026-01-29 15:45:49,507 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.690
+2026-01-29 15:45:49,507 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,507 - COAScorer - INFO - [8200][COA:COA_Library_COA_DEF_006] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,508 - COAScorer - INFO - [6641][COA:COA_CNT_004] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,508 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:49,509 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,510 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.680
+2026-01-29 15:45:49,510 - COAScorer - INFO - [5965][COA:COA_Library_COA_INF_004] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,511 - COAScorer - INFO - [5788][COA:COA_Library_COA_PRE_009] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,511 - COAScorer - INFO - [8200][COA:COA_Library_COA_DEF_006] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,511 - COAScorer - INFO - [Mismatch] COA_CNT_004 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,513 - COAScorer - INFO - [9315][COA:COA_Library_COA_MAN_008] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,513 - COAScorer - INFO - [2505][COA:COA_Library_COA_DET_009] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,514 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,515 - COAScorer - INFO - [5788][COA:COA_Library_COA_PRE_009] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,515 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_006, 최종총점=0.6200 (위협:0.850, 자원:0.247, 환경:0.900, 과거:0.770, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,517 - COAScorer - INFO - [6641][COA:COA_CNT_004] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,517 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_010, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,520 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,523 - COAScorer - INFO - [9315][COA:COA_Library_COA_MAN_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,523 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_004, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,526 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,526 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,528 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_009, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,528 - COAScorer - INFO - [5965][COA:COA_Library_COA_INF_004] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,529 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_009, 최종총점=0.4275 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.860, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,530 - COAScorer - INFO - [6641][COA:COA_CNT_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,531 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,533 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_009, Situation=THR001
+2026-01-29 15:45:49,533 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#자주포대대', '자주포대대, 공격헬기']
+2026-01-29 15:45:49,533 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_008, 최종총점=0.4948 (위협:0.850, 자원:0.082, 환경:0.900, 과거:0.840, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,534 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#전차대대', '전차대대, 기계화보병']
+2026-01-29 15:45:49,535 - COAScorer - INFO - [2505][COA:COA_Library_COA_DET_009] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,535 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,535 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#자주포대대', '기계화보병, 자주포대대']
+2026-01-29 15:45:49,536 - COAScorer - INFO - [5965][COA:COA_Library_COA_INF_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,537 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_004, 최종총점=0.2228 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.306, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,537 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:49,541 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_OFF_003에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:49,538 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#보병여단', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,540 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_004, Situation=THR001
+2026-01-29 15:45:49,548 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_OFF_004에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:49,549 - COAScorer - INFO - [2505][COA:COA_Library_COA_DET_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,559 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_OFF_008에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:49,570 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_004, 최종총점=0.4750 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.690, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,552 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_004, Situation=THR001
+2026-01-29 15:45:49,570 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_OFF_009에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:49,579 - ReasoningEngine - INFO - 자원 매칭률: 0.00/3 = 0.00 (품질 반영: 0.39)
+2026-01-29 15:45:49,583 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_003, Situation=THR001
+2026-01-29 15:45:49,583 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,594 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.650
+2026-01-29 15:45:49,594 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,595 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,595 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_009, 최종총점=0.5385 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.680, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,596 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,597 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#도하중대', '공병대대, 도하중대']
+2026-01-29 15:45:49,597 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_010, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,598 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,598 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,635 - COAScorer - INFO - [8639][COA:COA_Library_COA_DEF_009] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,662 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_003)
+2026-01-29 15:45:49,601 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_008, Situation=THR001
+2026-01-29 15:45:49,673 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.770
+2026-01-29 15:45:49,695 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_004)
+2026-01-29 15:45:49,761 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_005, Situation=THR001
+2026-01-29 15:45:49,761 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_008)
+2026-01-29 15:45:49,771 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.760
+2026-01-29 15:45:49,771 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:49,814 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,814 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_009)
+2026-01-29 15:45:49,814 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.880
+2026-01-29 15:45:49,815 - COAScorer - INFO - [7250][COA:COA_Library_COA_PRE_004] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:49,815 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:49,822 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#미사일부대', '미사일부대']
+2026-01-29 15:45:49,829 - COAScorer - INFO - [6400][COA:COA_Library_COA_MAN_004] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:49,831 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.920
+2026-01-29 15:45:49,832 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_OFF_010에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:49,832 - COAScorer - INFO - [8639][COA:COA_Library_COA_DEF_009] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:49,832 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.900
+2026-01-29 15:45:49,833 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.830
+2026-01-29 15:45:49,833 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,833 - COAScorer - INFO - [3324][COA:COA_CNT_003] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:49,837 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.890
+2026-01-29 15:45:49,839 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.710
+2026-01-29 15:45:49,840 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.790
+2026-01-29 15:45:49,857 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:49,840 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,857 - COAScorer - INFO - [3215][COA:COA_Library_COA_OFF_003] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,857 - COAScorer - INFO - [8639][COA:COA_Library_COA_DEF_009] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:49,859 - COAScorer - INFO - [6871][COA:COA_Library_COA_OFF_004] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,860 - COAScorer - INFO - [9015][COA:COA_Library_COA_OFF_008] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,861 - COAScorer - INFO - [7250][COA:COA_Library_COA_PRE_004] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:49,921 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_OFF_010)
+2026-01-29 15:45:49,861 - COAScorer - INFO - [Mismatch] COA_CNT_003 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:49,862 - COAScorer - INFO - [9813][COA:COA_Library_COA_INF_008] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:49,862 - COAScorer - INFO - [5567][COA:COA_Library_COA_DET_005] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:49,864 - COAScorer - INFO - [6596][COA:COA_Library_COA_OFF_009] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,922 - COAScorer - INFO - [6400][COA:COA_Library_COA_MAN_004] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:49,923 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,923 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_009, 최종총점=0.6048 (위협:0.850, 자원:0.185, 환경:0.900, 과거:0.650, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:49,924 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,924 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,924 - COAScorer - INFO - [7250][COA:COA_Library_COA_PRE_004] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:49,927 - COAScorer - INFO - [3324][COA:COA_CNT_003] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:49,928 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,929 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.940
+2026-01-29 15:45:49,930 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,930 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,930 - COAScorer - INFO - [6400][COA:COA_Library_COA_MAN_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,935 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_004, Situation=THR001
+2026-01-29 15:45:49,931 - COAScorer - INFO - [3215][COA:COA_Library_COA_OFF_003] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,931 - COAScorer - INFO - [6871][COA:COA_Library_COA_OFF_004] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,931 - COAScorer - INFO - [9015][COA:COA_Library_COA_OFF_008] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,935 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_004, 최종총점=0.4230 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.770, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:49,936 - COAScorer - INFO - [3324][COA:COA_CNT_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:49,936 - COAScorer - INFO - [9813][COA:COA_Library_COA_INF_008] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:49,937 - COAScorer - INFO - RelevanceMapper 사용: COA=offensive, Threat=THR_TYPE_001, Score=0.500
+2026-01-29 15:45:49,937 - COAScorer - INFO - [5567][COA:COA_Library_COA_DET_005] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:49,937 - COAScorer - INFO - [6596][COA:COA_Library_COA_OFF_009] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:49,939 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#방공대대', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,939 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_004, 최종총점=0.4908 (위협:0.850, 자원:0.082, 환경:0.900, 과거:0.760, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,939 - COAScorer - INFO - [3215][COA:COA_Library_COA_OFF_003] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,939 - COAScorer - INFO - [6871][COA:COA_Library_COA_OFF_004] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,940 - COAScorer - INFO - [9015][COA:COA_Library_COA_OFF_008] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,940 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_003, 최종총점=0.2273 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.396, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:49,941 - COAScorer - INFO - [9813][COA:COA_Library_COA_INF_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:49,943 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_010, Situation=THR001
+2026-01-29 15:45:49,941 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.50 → 최종=0.60
+2026-01-29 15:45:49,943 - COAScorer - INFO - [5567][COA:COA_Library_COA_DET_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:49,944 - COAScorer - INFO - [6596][COA:COA_Library_COA_OFF_009] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:49,960 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:49,961 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_003, 최종총점=0.4345 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.920, 체인:0.600, Mission:0.290)
+2026-01-29 15:45:49,961 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_004, 최종총점=0.4335 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.900, 체인:0.600, Mission:0.290)
+2026-01-29 15:45:49,961 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_008, 최종총점=0.4300 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.830, 체인:0.600, Mission:0.290)
+2026-01-29 15:45:49,962 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_008, 최종총점=0.4850 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.890, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:49,964 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_007, Situation=THR001
+2026-01-29 15:45:49,965 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:49,967 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_002, Situation=THR001
+2026-01-29 15:45:49,967 - COAScorer - INFO - [5968][COA:COA_Library_COA_OFF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='offensive' -> defaults to 0.5
+2026-01-29 15:45:49,968 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_005, 최종총점=0.5400 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.710, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:49,968 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_009, 최종총점=0.4280 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.790, 체인:0.600, Mission:0.290)
+2026-01-29 15:45:49,968 - COAScorer - INFO - [4604][COA:COA_Library_COA_DEF_004] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:49,969 - DefenseCOAAgent - INFO - COA COA_Library_COA_OFF_003 제외: 시간 제약 위반
+2026-01-29 15:45:49,970 - DefenseCOAAgent - INFO - COA COA_Library_COA_OFF_004 제외: 시간 제약 위반
+2026-01-29 15:45:49,971 - DefenseCOAAgent - INFO - COA COA_Library_COA_OFF_008 제외: 시간 제약 위반
+2026-01-29 15:45:49,971 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#도하중대', 'http://coa-agent-platform.org/ontology#수송헬기']
+2026-01-29 15:45:49,980 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:49,983 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.730
+2026-01-29 15:45:49,983 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_007, Situation=THR001
+2026-01-29 15:45:49,983 - COAScorer - INFO - [Mismatch] COA_Library_COA_OFF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,983 - DefenseCOAAgent - INFO - COA COA_Library_COA_OFF_009 제외: 시간 제약 위반
+2026-01-29 15:45:49,984 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:49,987 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_003, Situation=THR001
+2026-01-29 15:45:49,996 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.700
+2026-01-29 15:45:50,004 - COAScorer - INFO - [8952][COA:COA_Library_COA_PRE_010] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:50,006 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.680
+2026-01-29 15:45:50,006 - COAScorer - INFO - [5968][COA:COA_Library_COA_OFF_010] 미션 매칭 결과: '방어' + COA='offensive' -> weight: 0.20
+2026-01-29 15:45:50,006 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#전자전부대', '전자전부대']
+2026-01-29 15:45:50,008 - COAScorer - INFO - [4604][COA:COA_Library_COA_DEF_004] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:50,008 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#포병여단', '포병여단']
+2026-01-29 15:45:50,008 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_007] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:50,009 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,009 - COAScorer - INFO - [8955][COA:COA_CNT_002] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:50,009 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.35
+2026-01-29 15:45:50,011 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.760
+2026-01-29 15:45:50,012 - COAScorer - INFO - [4604][COA:COA_Library_COA_DEF_004] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:50,023 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.880
+2026-01-29 15:45:50,023 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,023 - COAScorer - INFO - [8952][COA:COA_Library_COA_PRE_010] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:50,023 - COAScorer - INFO - [Mismatch] COA_CNT_002 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:50,025 - COAScorer - INFO - [5968][COA:COA_Library_COA_OFF_010] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.20*0.4) = 0.29
+2026-01-29 15:45:50,025 - COAScorer - INFO - [7772][COA:COA_Library_COA_INF_007] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:50,026 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_004, 최종총점=0.5930 (위협:0.850, 자원:0.123, 환경:0.900, 과거:0.600, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:50,026 - COAScorer - INFO - [3533][COA:COA_Library_COA_DET_003] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:50,026 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_007] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:50,026 - COAScorer - INFO - [8952][COA:COA_Library_COA_PRE_010] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:50,026 - COAScorer - INFO - [8955][COA:COA_CNT_002] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:50,026 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_OFF_010, 최종총점=0.4355 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.940, 체인:0.600, Mission:0.290)
+2026-01-29 15:45:50,033 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_TW01, Situation=THR001
+2026-01-29 15:45:50,028 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,029 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,029 - COAScorer - INFO - [2620][COA:COA_Library_COA_MAN_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:50,033 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_010, 최종총점=0.4210 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.730, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:50,033 - COAScorer - INFO - [8955][COA:COA_CNT_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:50,034 - DefenseCOAAgent - INFO - COA COA_Library_COA_OFF_010 제외: 시간 제약 위반
+2026-01-29 15:45:50,035 - ReasoningEngine - INFO - 필요한 자원: 5개 - ['http://coa-agent-platform.org/ontology#공병여단', 'http://coa-agent-platform.org/ontology#기계화보병사단', 'http://coa-agent-platform.org/ontology#포병여단']
+2026-01-29 15:45:50,035 - COAScorer - INFO - [7772][COA:COA_Library_COA_INF_007] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:50,035 - COAScorer - INFO - [3533][COA:COA_Library_COA_DET_003] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:50,036 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_007, 최종총점=0.4848 (위협:0.850, 자원:0.062, 환경:0.900, 과거:0.700, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:50,036 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_002, 최종총점=0.2228 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.306, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:50,052 - COAScorer - INFO - [7772][COA:COA_Library_COA_INF_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:50,054 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_002, Situation=THR001
+2026-01-29 15:45:50,056 - api.routers.agent - INFO - [Agent Progress] 20%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,056 - api.routers.agent - INFO - [Agent Progress] 30%: 방책 유형 분석 완료: OFFENSIVE
+2026-01-29 15:45:50,054 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.850
+2026-01-29 15:45:50,056 - COAScorer - INFO - [3533][COA:COA_Library_COA_DET_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:50,059 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_007, 최종총점=0.4785 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.760, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:50,059 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:50,061 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_001, Situation=THR001
+2026-01-29 15:45:50,062 - DefenseCOAAgent - INFO - [STATUS] [20%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,062 - DefenseCOAAgent - INFO - [STATUS] [30%] 방책 유형 분석 완료: OFFENSIVE
+2026-01-29 15:45:50,062 - COAScorer - INFO - [7738][COA:COA_Library_COA_DEF_TW01] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:50,062 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_003, 최종총점=0.5855 (위협:0.850, 자원:0.247, 환경:0.900, 과거:0.880, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:50,074 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:50,077 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_001, Situation=THR001
+2026-01-29 15:45:50,077 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_TW01 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,078 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.830
+2026-01-29 15:45:50,099 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_004, Situation=THR001
+2026-01-29 15:45:50,099 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#전자전부대', '전자전부대']
+2026-01-29 15:45:50,103 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_002, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,106 - COAScorer - INFO - [7738][COA:COA_Library_COA_DEF_TW01] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:50,106 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,109 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_005, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,106 - COAScorer - INFO - [2970][COA:COA_Library_COA_PRE_002] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:50,126 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:50,109 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#미사일부대', 'http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산, 미사일부대']
+2026-01-29 15:45:50,129 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.660
+2026-01-29 15:45:50,135 - COAScorer - INFO - [7738][COA:COA_Library_COA_DEF_TW01] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:50,126 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_004, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,129 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', '기계화보병, 공병대대']
+2026-01-29 15:45:50,133 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_007, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,146 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,144 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', '공병대대, 기계화보병']
+2026-01-29 15:45:50,147 - COAScorer - INFO - [8936][COA:COA_CNT_001] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:50,145 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#도하중대']
+2026-01-29 15:45:50,174 - COAScorer - INFO - [Mismatch] COA_CNT_001 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:50,150 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#도하중대', '공병대대, 도하중대']
+2026-01-29 15:45:50,148 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.930
+2026-01-29 15:45:50,150 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_TW01, 최종총점=0.5918 (위협:0.850, 자원:0.099, 환경:0.700, 과거:0.850, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:50,151 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:50,151 - COAScorer - INFO - [2970][COA:COA_Library_COA_PRE_002] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:50,151 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#도하중대', 'http://coa-agent-platform.org/ontology#수송헬기']
+2026-01-29 15:45:50,171 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_MAN_008에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,148 - COAScorer - INFO - [3879][COA:COA_Library_COA_INF_001] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:50,196 - COAScorer - INFO - [8936][COA:COA_CNT_001] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:50,195 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_MAN_005에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,211 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_MAN_004에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,212 - COAScorer - INFO - [5022][COA:COA_Library_COA_DET_004] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:50,222 - COAScorer - INFO - [2970][COA:COA_Library_COA_PRE_002] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:50,235 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_MAN_007에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,236 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU007' (신뢰도: 0.64)
+2026-01-29 15:45:50,235 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_001 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,237 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,241 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_DISP_01, Situation=THR001
+2026-01-29 15:45:50,240 - COAScorer - INFO - [8936][COA:COA_CNT_001] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:50,241 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,241 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,242 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,243 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_002, 최종총점=0.4260 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.830, 체인:0.300, Mission:0.330)
+2026-01-29 15:45:50,244 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,245 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU007' (신뢰도: 0.64)
+2026-01-29 15:45:50,245 - COAScorer - INFO - [3879][COA:COA_Library_COA_INF_001] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:50,322 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_008)
+2026-01-29 15:45:50,326 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#통신대대', '공병대대, 통신대대']
+2026-01-29 15:45:50,327 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_001, 최종총점=0.2257 (위협:0.383, 자원:0.056, 환경:0.405, 과거:0.365, 체인:0.135, Mission:0.247)
+2026-01-29 15:45:50,774 - api.routers.agent - INFO - [Agent Progress] 30%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,709 - COAScorer - INFO - [5022][COA:COA_Library_COA_DET_004] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:50,742 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_004)
+2026-01-29 15:45:50,830 - ReasoningEngine - INFO - 자원 매칭률: 0.64/3 = 0.08 (품질 반영: 0.39)
+2026-01-29 15:45:50,831 - COAScorer - INFO - [3879][COA:COA_Library_COA_INF_001] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:50,774 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_005)
+2026-01-29 15:45:50,845 - api.routers.agent - INFO - [Agent Progress] 30%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,845 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.820
+2026-01-29 15:45:50,822 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_007)
+2026-01-29 15:45:50,846 - COAScorer - INFO - [5022][COA:COA_Library_COA_DET_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:50,846 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_002, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,844 - DefenseCOAAgent - INFO - [STATUS] [30%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,847 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_001, 최종총점=0.4735 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.660, 체인:0.300, Mission:0.470)
+2026-01-29 15:45:50,852 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.840
+2026-01-29 15:45:50,850 - DefenseCOAAgent - INFO - [STATUS] [30%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,855 - COAScorer - INFO - [9673][COA:COA_Library_COA_DEF_DISP_01] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:50,856 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:50,861 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.760
+2026-01-29 15:45:50,867 - api.routers.agent - INFO - [Agent Progress] 30%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,862 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_004, 최종총점=0.5510 (위협:0.850, 자원:0.000, 환경:0.900, 과거:0.930, 체인:0.300, Mission:0.630)
+2026-01-29 15:45:50,865 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:50,865 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.700
+2026-01-29 15:45:50,870 - COAScorer - INFO - [2452][COA:COA_Library_COA_MAN_008] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:50,872 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_DISP_01 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,876 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,882 - COAScorer - INFO - [8435][COA:COA_Library_COA_MAN_005] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:50,880 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_001, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,888 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_009, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,884 - COAScorer - INFO - [7952][COA:COA_Library_COA_MAN_004] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:50,893 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_007, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,896 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,889 - DefenseCOAAgent - INFO - [STATUS] [30%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,905 - api.routers.agent - INFO - [Agent Progress] 30%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,900 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_007, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,903 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,911 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_MAN_002에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,909 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_005, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,915 - COAScorer - INFO - [7244][COA:COA_Library_COA_MAN_007] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:50,909 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_009, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,913 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_001, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,915 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,917 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:50,916 - COAScorer - INFO - [9673][COA:COA_Library_COA_DEF_DISP_01] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:50,917 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,918 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#UAV중대', 'http://coa-agent-platform.org/ontology#포병여단', '포병여단, UAV중대']
+2026-01-29 15:45:50,918 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:50,918 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,920 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:50,921 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#보병중대', 'http://coa-agent-platform.org/ontology#의무대', 'http://coa-agent-platform.org/ontology#통신소대']
+2026-01-29 15:45:50,922 - DefenseCOAAgent - INFO - [STATUS] [30%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:50,923 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#포병대대', '포병대대, 공격헬기']
+2026-01-29 15:45:50,923 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:50,925 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:50,925 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:50,924 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,928 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,932 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_010, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,932 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#특수전팀', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:50,938 - COAScorer - INFO - [2452][COA:COA_Library_COA_MAN_008] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:50,935 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_009, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,951 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_PRE_003에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,935 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공격헬기', 'http://coa-agent-platform.org/ontology#기계화보병', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:50,952 - COAScorer - INFO - [9673][COA:COA_Library_COA_DEF_DISP_01] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:50,938 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_005, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,951 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_002, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:50,953 - COAScorer - INFO - [8435][COA:COA_Library_COA_MAN_005] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:50,954 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:50,964 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_PRE_009에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,965 - COAScorer - INFO - [7952][COA:COA_Library_COA_MAN_004] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:50,979 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_PRE_007에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,990 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_PRE_008에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,005 - DefenseCOAAgent - INFO - Pass 2: COA_CNT_003에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:50,992 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:51,019 - DefenseCOAAgent - INFO - Pass 2: COA_CNT_005에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,023 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,056 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,024 - COAScorer - INFO - [7244][COA:COA_Library_COA_MAN_007] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:51,099 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_010, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,096 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_MAN_002)
+2026-01-29 15:45:51,099 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:51,102 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_001, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,119 - DefenseCOAAgent - INFO - Pass 2: COA_CNT_009에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,105 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_004, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,119 - COAScorer - INFO - [2452][COA:COA_Library_COA_MAN_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:51,105 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:51,121 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#PSYOPS팀', 'PSYOPS팀']
+2026-01-29 15:45:51,133 - DefenseCOAAgent - INFO - Pass 2: COA_CNT_001에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,134 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_DISP_01, 최종총점=0.5778 (위협:0.850, 자원:0.082, 환경:0.500, 과거:0.820, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:51,134 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,135 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:51,135 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#사이버전팀', '사이버전팀']
+2026-01-29 15:45:51,136 - COAScorer - INFO - [8435][COA:COA_Library_COA_MAN_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:51,141 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:51,141 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,141 - COAScorer - INFO - [7952][COA:COA_Library_COA_MAN_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:51,143 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,143 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,147 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,148 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:51,149 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,149 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#포병여단', '포병여단']
+2026-01-29 15:45:51,149 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#미사일부대', 'http://coa-agent-platform.org/ontology#포병여단', '포병여단, 미사일부대']
+2026-01-29 15:45:51,150 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산']
+2026-01-29 15:45:51,150 - COAScorer - INFO - [7244][COA:COA_Library_COA_MAN_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:51,152 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:51,156 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.930
+2026-01-29 15:45:51,157 - ReasoningEngine - INFO - 필요한 자원: 2개 - ['http://coa-agent-platform.org/ontology#미사일부대', '미사일부대']
+2026-01-29 15:45:51,158 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#미사일부대', 'http://coa-agent-platform.org/ontology#영상감시자산', '영상감시자산, 미사일부대']
+2026-01-29 15:45:51,158 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,160 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_INF_010에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,158 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_008, 최종총점=0.5188 (위협:0.850, 자원:0.082, 환경:0.700, 과거:0.840, 체인:0.640, Mission:0.470)
+2026-01-29 15:45:51,162 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_INF_009에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,163 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,191 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_003)
+2026-01-29 15:45:51,192 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_INF_005에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,198 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_003, Situation=THR001
+2026-01-29 15:45:51,198 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_005, 최종총점=0.5173 (위협:0.850, 자원:0.062, 환경:0.700, 과거:0.870, 체인:0.640, Mission:0.470)
+2026-01-29 15:45:51,193 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_INF_002에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,198 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:51,279 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_009)
+2026-01-29 15:45:51,280 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_004, 최종총점=0.5148 (위협:0.850, 자원:0.082, 환경:0.700, 과거:0.760, 체인:0.640, Mission:0.470)
+2026-01-29 15:45:51,695 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_008)
+2026-01-29 15:45:51,780 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:51,696 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_007)
+2026-01-29 15:45:51,750 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_003)
+2026-01-29 15:45:51,796 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:51,808 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_005)
+2026-01-29 15:45:51,823 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_007, 최종총점=0.5088 (위협:0.850, 자원:0.062, 환경:0.700, 과거:0.700, 체인:0.640, Mission:0.470)
+2026-01-29 15:45:51,821 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DET_008에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,822 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DET_010에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,825 - ReasoningEngine - INFO - 자원 매칭률: 0.00/2 = 0.00 (품질 반영: 0.39)
+2026-01-29 15:45:51,827 - COAScorer - INFO - RelevanceMapper 사용: COA=maneuver, Threat=THR_TYPE_001, Score=0.700
+2026-01-29 15:45:51,829 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DET_001에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,831 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DET_004에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:51,885 - DefenseCOAAgent - INFO - COA COA_Library_COA_MAN_008 제외: 시간 제약 위반
+2026-01-29 15:45:51,896 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_009)
+2026-01-29 15:45:51,897 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,898 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,966 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_001)
+2026-01-29 15:45:51,973 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#보병여단', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:51,972 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,973 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.950
+2026-01-29 15:45:51,974 - DefenseCOAAgent - INFO - COA COA_Library_COA_MAN_005 제외: 시간 제약 위반
+2026-01-29 15:45:51,976 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:51,976 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:51,978 - DefenseCOAAgent - INFO - COA COA_Library_COA_MAN_004 제외: 시간 제약 위반
+2026-01-29 15:45:51,984 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.860
+2026-01-29 15:45:51,996 - DefenseCOAAgent - INFO - COA COA_Library_COA_MAN_007 제외: 시간 제약 위반
+2026-01-29 15:45:51,996 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:52,004 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_INF_008, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,005 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,006 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:52,039 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:52,086 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,098 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_INF_010)
+2026-01-29 15:45:52,119 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.880
+2026-01-29 15:45:52,099 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,121 - COAScorer - INFO - [5420][COA:COA_Library_COA_PRE_003] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:52,099 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,177 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_INF_002)
+2026-01-29 15:45:52,178 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:52,214 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_INF_009)
+2026-01-29 15:45:52,214 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.70 → 최종=0.64
+2026-01-29 15:45:52,214 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.820
+2026-01-29 15:45:52,511 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.800
+2026-01-29 15:45:52,548 - COAScorer - INFO - [9235][COA:COA_Library_COA_PRE_009] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:52,553 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:52,554 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:52,547 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_INF_005)
+2026-01-29 15:45:52,610 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.850
+2026-01-29 15:45:52,634 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:52,632 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DET_008)
+2026-01-29 15:45:52,634 - COAScorer - INFO - [9986][COA:COA_Library_COA_PRE_008] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:52,635 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:52,634 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:52,692 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DET_001)
+2026-01-29 15:45:52,698 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_CNT_003 (counter_attack), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,698 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:52,762 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DET_004)
+2026-01-29 15:45:52,763 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,797 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DET_010)
+2026-01-29 15:45:52,800 - COAScorer - INFO - [7229][COA:COA_Library_COA_DEF_003] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:52,803 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:52,806 - COAScorer - INFO - [7719][COA:COA_Library_COA_MAN_002] 위협 매칭 실패: 'THR_TYPE_001', COA='maneuver' -> defaults to 0.5
+2026-01-29 15:45:52,810 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_CNT_005 (counter_attack), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,807 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.800
+2026-01-29 15:45:52,809 - COAScorer - INFO - [7482][COA:COA_Library_COA_PRE_007] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:52,814 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_CNT_009 (counter_attack), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,811 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,811 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_INF_008에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:52,812 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:52,818 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:52,819 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:52,820 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,826 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_CNT_001 (counter_attack), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,833 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_Library_COA_INF_010 (information_ops), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,828 - COAScorer - INFO - [1890][COA:COA_CNT_003] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:52,827 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:52,828 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.810
+2026-01-29 15:45:52,839 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.900
+2026-01-29 15:45:52,840 - COAScorer - INFO - [5420][COA:COA_Library_COA_PRE_003] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:52,841 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.930
+2026-01-29 15:45:52,847 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_Library_COA_INF_002 (information_ops), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,844 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,848 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.940
+2026-01-29 15:45:52,848 - COAScorer - INFO - [Mismatch] COA_Library_COA_MAN_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,849 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_Library_COA_INF_009 (information_ops), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,848 - COAScorer - INFO - [3792][COA:COA_CNT_005] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:52,851 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,851 - COAScorer - INFO - [9147][COA:COA_CNT_009] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:52,852 - COAScorer - INFO - [9235][COA:COA_Library_COA_PRE_009] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:52,853 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:52,855 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_Library_COA_INF_005 (information_ops), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,853 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:52,856 - COAScorer - INFO - [9986][COA:COA_Library_COA_PRE_008] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:52,856 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:52,856 - COAScorer - INFO - [9799][COA:COA_CNT_001] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:52,857 - COAScorer - INFO - [4646][COA:COA_Library_COA_INF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:52,857 - COAScorer - INFO - [Mismatch] COA_CNT_003 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:52,858 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:52,859 - COAScorer - INFO - [2550][COA:COA_Library_COA_DET_008] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:52,861 - COAScorer - INFO - [6721][COA:COA_Library_COA_DET_001] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:52,863 - COAScorer - INFO - [5420][COA:COA_Library_COA_PRE_003] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:52,863 - COAScorer - INFO - [7844][COA:COA_Library_COA_INF_002] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:52,864 - COAScorer - INFO - [1670][COA:COA_Library_COA_DET_004] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:52,865 - COAScorer - INFO - [7229][COA:COA_Library_COA_DEF_003] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:52,866 - COAScorer - INFO - [4829][COA:COA_Library_COA_DET_010] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:52,866 - COAScorer - INFO - [7719][COA:COA_Library_COA_MAN_002] 미션 매칭 결과: '방어' + COA='maneuver' -> weight: 0.50
+2026-01-29 15:45:52,866 - COAScorer - INFO - [7057][COA:COA_Library_COA_INF_009] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:52,868 - COAScorer - INFO - [Mismatch] COA_CNT_005 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:52,868 - COAScorer - INFO - [7482][COA:COA_Library_COA_PRE_007] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:52,869 - COAScorer - INFO - [Mismatch] COA_CNT_009 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:52,869 - COAScorer - INFO - [9235][COA:COA_Library_COA_PRE_009] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:52,870 - COAScorer - INFO - [8639][COA:COA_Library_COA_INF_005] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:52,956 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_INF_008)
+2026-01-29 15:45:52,958 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:52,958 - COAScorer - INFO - [9986][COA:COA_Library_COA_PRE_008] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:52,959 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:52,960 - COAScorer - INFO - [Mismatch] COA_CNT_001 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:52,960 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,961 - COAScorer - INFO - [1890][COA:COA_CNT_003] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:52,962 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:52,962 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,962 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_001 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,963 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_003, 최종총점=0.4550 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.950, 체인:0.630, Mission:0.330)
+2026-01-29 15:45:52,964 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_002 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,964 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_004 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,965 - COAScorer - INFO - [7229][COA:COA_Library_COA_DEF_003] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:52,966 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,966 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.45
+2026-01-29 15:45:52,967 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_009 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,967 - COAScorer - INFO - [3792][COA:COA_CNT_005] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:52,968 - COAScorer - INFO - [7482][COA:COA_Library_COA_PRE_007] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:52,968 - COAScorer - INFO - [9147][COA:COA_CNT_009] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:52,969 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_009, 최종총점=0.4505 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.860, 체인:0.630, Mission:0.330)
+2026-01-29 15:45:52,970 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:52,979 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.48)
+2026-01-29 15:45:52,981 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_008, 최종총점=0.4510 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.870, 체인:0.630, Mission:0.330)
+2026-01-29 15:45:52,982 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.890
+2026-01-29 15:45:52,986 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.48)
+2026-01-29 15:45:52,986 - COAScorer - INFO - [9799][COA:COA_CNT_001] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:52,987 - COAScorer - INFO - [4646][COA:COA_Library_COA_INF_010] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:52,988 - COAScorer - INFO - [1890][COA:COA_CNT_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:52,989 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:52,990 - COAScorer - INFO - [2550][COA:COA_Library_COA_DET_008] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:52,991 - COAScorer - INFO - [6721][COA:COA_Library_COA_DET_001] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:52,992 - DefenseCOAAgent - INFO - COA COA_Library_COA_PRE_003 제외: 시간 제약 위반
+2026-01-29 15:45:52,992 - COAScorer - INFO - [7844][COA:COA_Library_COA_INF_002] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:52,993 - COAScorer - INFO - [1670][COA:COA_Library_COA_DET_004] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:52,993 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_003, 최종총점=0.6113 (위협:0.850, 자원:0.185, 환경:0.900, 과거:0.780, 체인:0.300, Mission:0.730)
+2026-01-29 15:45:52,994 - COAScorer - INFO - [4829][COA:COA_Library_COA_DET_010] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:52,994 - COAScorer - INFO - [7719][COA:COA_Library_COA_MAN_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:52,995 - COAScorer - INFO - [7057][COA:COA_Library_COA_INF_009] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:52,995 - COAScorer - INFO - [3792][COA:COA_CNT_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:52,996 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_007, 최종총점=0.4485 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.820, 체인:0.630, Mission:0.330)
+2026-01-29 15:45:52,996 - COAScorer - INFO - [9147][COA:COA_CNT_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:52,997 - DefenseCOAAgent - INFO - COA COA_Library_COA_PRE_009 제외: 시간 제약 위반
+2026-01-29 15:45:52,998 - COAScorer - INFO - [8639][COA:COA_Library_COA_INF_005] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:52,998 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.48)
+2026-01-29 15:45:53,000 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_Library_COA_INF_008 (information_ops), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:52,999 - DefenseCOAAgent - INFO - COA COA_Library_COA_PRE_008 제외: 시간 제약 위반
+2026-01-29 15:45:53,002 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.48)
+2026-01-29 15:45:53,002 - COAScorer - INFO - [9799][COA:COA_CNT_001] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:53,002 - COAScorer - INFO - [4646][COA:COA_Library_COA_INF_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:53,002 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_003, 최종총점=0.2363 (위협:0.383, 자원:0.056, 환경:0.315, 과거:0.396, 체인:0.270, Mission:0.247)
+2026-01-29 15:45:53,004 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,005 - COAScorer - INFO - [2550][COA:COA_Library_COA_DET_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:53,005 - COAScorer - INFO - [6721][COA:COA_Library_COA_DET_001] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:53,006 - COAScorer - INFO - [7844][COA:COA_Library_COA_INF_002] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:53,007 - COAScorer - INFO - [1670][COA:COA_Library_COA_DET_004] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:53,008 - api.routers.agent - INFO - [Agent Progress] 30%: Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:53,009 - COAScorer - INFO - [4829][COA:COA_Library_COA_DET_010] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:53,009 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_MAN_002, 최종총점=0.5233 (위협:0.850, 자원:0.082, 환경:0.700, 과거:0.930, 체인:0.640, Mission:0.470)
+2026-01-29 15:45:53,011 - DefenseCOAAgent - INFO - COA COA_Library_COA_PRE_007 제외: 시간 제약 위반
+2026-01-29 15:45:53,009 - COAScorer - INFO - [7057][COA:COA_Library_COA_INF_009] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:53,010 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_005, 최종총점=0.2345 (위협:0.383, 자원:0.056, 환경:0.315, 과거:0.360, 체인:0.270, Mission:0.247)
+2026-01-29 15:45:53,011 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_009, 최종총점=0.2356 (위협:0.383, 자원:0.056, 환경:0.315, 과거:0.383, 체인:0.270, Mission:0.247)
+2026-01-29 15:45:53,013 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:53,013 - COAScorer - INFO - [8639][COA:COA_Library_COA_INF_005] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:53,014 - COAScorer - INFO - RelevanceMapper 사용: COA=information_ops, Threat=THR_TYPE_001, Score=0.500
+2026-01-29 15:45:53,015 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:53,016 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_001, 최종총점=0.2347 (위협:0.383, 자원:0.056, 환경:0.315, 과거:0.365, 체인:0.270, Mission:0.247)
+2026-01-29 15:45:53,016 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_010, 최종총점=0.5010 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.810, 체인:0.600, Mission:0.470)
+2026-01-29 15:45:53,016 - DefenseCOAAgent - INFO - COA COA_CNT_003 제외: 시간 제약 위반
+2026-01-29 15:45:53,022 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,022 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_008, 최종총점=0.5907 (위협:0.850, 자원:0.165, 환경:0.700, 과거:0.810, 체인:0.610, Mission:0.630)
+2026-01-29 15:45:53,023 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_001, 최종총점=0.5705 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.900, 체인:0.610, Mission:0.630)
+2026-01-29 15:45:53,024 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_002, 최종총점=0.4995 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.780, 체인:0.600, Mission:0.470)
+2026-01-29 15:45:53,024 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_004, 최종총점=0.5720 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.930, 체인:0.610, Mission:0.630)
+2026-01-29 15:45:53,025 - DefenseCOAAgent - INFO - [STATUS] [30%] Pass 2: 유망 후보 5개 방책에 대한 정밀 분석 및 스코어링 중...
+2026-01-29 15:45:53,025 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_010, 최종총점=0.5725 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.940, 체인:0.610, Mission:0.630)
+2026-01-29 15:45:53,026 - DefenseCOAAgent - INFO - COA COA_Library_COA_MAN_002 제외: 시간 제약 위반
+2026-01-29 15:45:53,027 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_009, 최종총점=0.5005 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.800, 체인:0.600, Mission:0.470)
+2026-01-29 15:45:53,028 - DefenseCOAAgent - INFO - COA COA_CNT_005 제외: 시간 제약 위반
+2026-01-29 15:45:53,029 - DefenseCOAAgent - INFO - COA COA_CNT_009 제외: 시간 제약 위반
+2026-01-29 15:45:53,029 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:53,031 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_005, 최종총점=0.4995 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.780, 체인:0.600, Mission:0.470)
+2026-01-29 15:45:53,031 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.50 → 최종=0.60
+2026-01-29 15:45:53,032 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:53,033 - DefenseCOAAgent - INFO - COA COA_CNT_001 제외: 시간 제약 위반
+2026-01-29 15:45:53,033 - DefenseCOAAgent - INFO - COA COA_Library_COA_INF_010 제외: 시간 제약 위반
+2026-01-29 15:45:53,035 - DefenseCOAAgent - INFO - COA COA_Library_COA_DET_008 제외: 시간 제약 위반
+2026-01-29 15:45:53,036 - DefenseCOAAgent - INFO - COA COA_Library_COA_DET_001 제외: 시간 제약 위반
+2026-01-29 15:45:53,037 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,036 - DefenseCOAAgent - INFO - COA COA_Library_COA_INF_002 제외: 시간 제약 위반
+2026-01-29 15:45:53,037 - DefenseCOAAgent - INFO - COA COA_Library_COA_DET_004 제외: 시간 제약 위반
+2026-01-29 15:45:53,038 - DefenseCOAAgent - INFO - COA COA_Library_COA_DET_010 제외: 시간 제약 위반
+2026-01-29 15:45:53,042 - api.routers.agent - INFO - [Agent Progress] 36%: 방책 유형 분석 완료: MANEUVER
+2026-01-29 15:45:53,046 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_006, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,041 - DefenseCOAAgent - INFO - COA COA_Library_COA_INF_009 제외: 시간 제약 위반
+2026-01-29 15:45:53,052 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_007, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,056 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,059 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_010, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,061 - DefenseCOAAgent - INFO - COA COA_Library_COA_INF_005 제외: 시간 제약 위반
+2026-01-29 15:45:53,065 - COAScorer - INFO - [1846][COA:COA_Library_COA_INF_008] 위협 매칭 실패: 'THR_TYPE_001', COA='information_ops' -> defaults to 0.5
+2026-01-29 15:45:53,064 - ReasoningEngine - INFO - 자원 가용성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_005, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,065 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:53,067 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:53,069 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:53,071 - DefenseCOAAgent - INFO - [STATUS] [36%] 방책 유형 분석 완료: MANEUVER
+2026-01-29 15:45:53,072 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#포병대대', '공병대대, 포병대대']
+2026-01-29 15:45:53,073 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#보병여단', 'http://coa-agent-platform.org/ontology#포병대대', '보병여단, 포병대대']
+2026-01-29 15:45:53,073 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#보병여단', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:53,074 - ReasoningEngine - INFO - 필요한 자원: 4개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#대전차미사일', 'http://coa-agent-platform.org/ontology#포병대대']
+2026-01-29 15:45:53,075 - COAScorer - INFO - [Mismatch] COA_Library_COA_INF_008 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,075 - ReasoningEngine - INFO - 필요한 자원: 3개 - ['http://coa-agent-platform.org/ontology#공병대대', 'http://coa-agent-platform.org/ontology#보병여단', '보병여단, 공병대대']
+2026-01-29 15:45:53,076 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:53,077 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:53,078 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:53,079 - ReasoningEngine - INFO - 가용 자원: 3개 (일반: 0, 자산: 0, 부대: 1, 레거시: 0)
+2026-01-29 15:45:53,093 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DEF_007에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,110 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DEF_003에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,127 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DEF_010에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,127 - COAScorer - INFO - [1846][COA:COA_Library_COA_INF_008] 미션 매칭 결과: '방어' + COA='information_ops' -> weight: 0.50
+2026-01-29 15:45:53,147 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DEF_005에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,148 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단, UAV중대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,150 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대, 공격헬기' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,150 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:53,156 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU007' (신뢰도: 0.64)
+2026-01-29 15:45:53,156 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,158 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.45
+2026-01-29 15:45:53,157 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,157 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,159 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,158 - ReasoningEngine - INFO - 자원 매칭률: 1.28/3 = 0.16 (품질 반영: 0.39)
+2026-01-29 15:45:53,159 - ReasoningEngine - INFO - 자원 매칭률: 1.28/3 = 0.16 (품질 반영: 0.39)
+2026-01-29 15:45:53,160 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:53,161 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU007' (신뢰도: 0.64)
+2026-01-29 15:45:53,178 - COAScorer - INFO - [1846][COA:COA_Library_COA_INF_008] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.50*0.4) = 0.47
+2026-01-29 15:45:53,177 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_007)
+2026-01-29 15:45:53,195 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_010)
+2026-01-29 15:45:53,238 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_003)
+2026-01-29 15:45:53,563 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_001, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,586 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_005)
+2026-01-29 15:45:53,578 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_007, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,587 - ReasoningEngine - INFO - 대체 자원 매칭: '포병여단' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,594 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,595 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_INF_008, 최종총점=0.5050 (위협:0.850, 자원:0.000, 환경:0.700, 과거:0.890, 체인:0.600, Mission:0.470)
+2026-01-29 15:45:53,607 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:53,608 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:53,614 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:53,619 - ReasoningEngine - INFO - 자원 매칭률: 1.28/2 = 0.25 (품질 반영: 0.39)
+2026-01-29 15:45:53,624 - DefenseCOAAgent - INFO - COA COA_Library_COA_INF_008 제외: 시간 제약 위반
+2026-01-29 15:45:53,625 - COAScorer - INFO - [2004][COA:COA_Library_COA_DEF_010] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:53,626 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.780
+2026-01-29 15:45:53,628 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:53,629 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_PRE_001에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,631 - api.routers.agent - INFO - [Agent Progress] 42%: 방책 유형 분석 완료: INFORMATION_OPS
+2026-01-29 15:45:53,630 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DET_003, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,628 - COAScorer - INFO - [7448][COA:COA_Library_COA_DEF_007] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:53,630 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,634 - DefenseCOAAgent - INFO - Pass 2: COA_CNT_007에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,633 - COAScorer - INFO - [7612][COA:COA_Library_COA_DEF_003] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:53,633 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.600
+2026-01-29 15:45:53,637 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:53,636 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,634 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_010 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,638 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_007 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,636 - DefenseCOAAgent - INFO - [STATUS] [42%] 방책 유형 분석 완료: INFORMATION_OPS
+2026-01-29 15:45:53,640 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:53,640 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,641 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,644 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DET_003에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,643 - COAScorer - INFO - [1462][COA:COA_Library_COA_DEF_005] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:53,680 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_PRE_001)
+2026-01-29 15:45:53,681 - COAScorer - INFO - [2004][COA:COA_Library_COA_DEF_010] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:53,682 - COAScorer - INFO - [7448][COA:COA_Library_COA_DEF_007] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:53,755 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:53,718 - COAScorer - INFO - [7612][COA:COA_Library_COA_DEF_003] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:53,756 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_005 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,755 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_CNT_007)
+2026-01-29 15:45:53,758 - COAScorer - INFO - [2004][COA:COA_Library_COA_DEF_010] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:53,758 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,759 - COAScorer - INFO - [7448][COA:COA_Library_COA_DEF_007] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:53,764 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:53,765 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.750
+2026-01-29 15:45:53,765 - COAScorer - INFO - [7612][COA:COA_Library_COA_DEF_003] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:53,765 - COAScorer - INFO - [1462][COA:COA_Library_COA_DEF_005] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:53,770 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_010, 최종총점=0.6378 (위협:0.850, 자원:0.185, 환경:0.700, 과거:0.750, 체인:0.680, Mission:0.730)
+2026-01-29 15:45:53,811 - DefenseCOAAgent - INFO - 체인 탐색 결과: 11개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DET_003)
+2026-01-29 15:45:53,795 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.870
+2026-01-29 15:45:53,812 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_007, 최종총점=0.6470 (위협:0.850, 자원:0.247, 환경:0.700, 과거:0.750, 체인:0.680, Mission:0.730)
+2026-01-29 15:45:53,815 - COAScorer - INFO - RelevanceMapper 사용: COA=preemptive, Threat=THR_TYPE_001, Score=0.650
+2026-01-29 15:45:53,814 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:53,816 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_003, 최종총점=0.6393 (위협:0.850, 자원:0.185, 환경:0.700, 과거:0.780, 체인:0.680, Mission:0.730)
+2026-01-29 15:45:53,817 - COAScorer - INFO - [1462][COA:COA_Library_COA_DEF_005] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:53,818 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_010 제외: 시간 제약 위반
+2026-01-29 15:45:53,822 - core_pipeline.relevance_mapper - WARNING - 관련성 점수 계산 실패: COA=COA_CNT_007 (counter_attack), Threat=http://coa-agent-platform.org/ontology#위협상황_THR001 (THR_TYPE_001) -> Fallback 0.5
+2026-01-29 15:45:53,823 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_007 제외: 시간 제약 위반
+2026-01-29 15:45:53,826 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.65 → 최종=0.63
+2026-01-29 15:45:53,826 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.880
+2026-01-29 15:45:53,829 - ReasoningEngine - INFO - 대체 자원 매칭: '포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,828 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_003 제외: 시간 제약 위반
+2026-01-29 15:45:53,830 - COAScorer - INFO - RelevanceMapper 사용: COA=counter_attack, Threat=THR_TYPE_001, Score=0.500
+2026-01-29 15:45:53,830 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_005, 최종총점=0.6364 (위협:0.850, 자원:0.226, 환경:0.700, 과거:0.600, 체인:0.680, Mission:0.730)
+2026-01-29 15:45:53,831 - COAScorer - INFO - [2899][COA:COA_Library_COA_PRE_001] 위협 매칭 실패: 'THR_TYPE_001', COA='preemptive' -> defaults to 0.5
+2026-01-29 15:45:53,834 - COAScorer - INFO - RelevanceMapper 사용: COA=deterrence, Threat=THR_TYPE_001, Score=0.550
+2026-01-29 15:45:53,841 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군부대현황_FRU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,842 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.50 → 최종=0.60
+2026-01-29 15:45:53,842 - COAScorer - INFO - [Mismatch] COA_Library_COA_PRE_001 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,843 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_005 제외: 시간 제약 위반
+2026-01-29 15:45:53,844 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.55 → 최종=0.61
+2026-01-29 15:45:53,845 - COAScorer - INFO - [4156][COA:COA_CNT_007] 위협 매칭 실패: 'THR_TYPE_001', COA='counter_attack' -> defaults to 0.5
+2026-01-29 15:45:53,845 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#적군부대현황_ENU004' (신뢰도: 0.64)
+2026-01-29 15:45:53,846 - COAScorer - INFO - [2899][COA:COA_Library_COA_PRE_001] 미션 매칭 결과: '방어' + COA='preemptive' -> weight: 0.30
+2026-01-29 15:45:53,847 - COAScorer - INFO - [9157][COA:COA_Library_COA_DET_003] 위협 매칭 실패: 'THR_TYPE_001', COA='deterrence' -> defaults to 0.5
+2026-01-29 15:45:53,848 - COAScorer - INFO - [Mismatch] COA_CNT_007 targets '0.45', not 'THR_TYPE_001' (bonus: -0.15)
+2026-01-29 15:45:53,849 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.35
+2026-01-29 15:45:53,849 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST011' (신뢰도: 0.64)
+2026-01-29 15:45:53,850 - COAScorer - INFO - [Mismatch] COA_Library_COA_DET_003 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,850 - COAScorer - INFO - [4156][COA:COA_CNT_007] 미션 매칭 결과: '방어' + COA='counter_attack' -> weight: 0.70
+2026-01-29 15:45:53,852 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST020' (신뢰도: 0.64)
+2026-01-29 15:45:53,851 - COAScorer - INFO - [2899][COA:COA_Library_COA_PRE_001] Mission-COA Alignment Score: 위협 적절성(0.35*0.6) + 임무 부합성(0.30*0.4) = 0.33
+2026-01-29 15:45:53,853 - COAScorer - INFO - [9157][COA:COA_Library_COA_DET_003] 미션 매칭 결과: '방어' + COA='deterrence' -> weight: 0.90
+2026-01-29 15:45:53,853 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.45
+2026-01-29 15:45:53,855 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST016' (신뢰도: 0.64)
+2026-01-29 15:45:53,855 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_PRE_001, 최종총점=0.4697 (위협:0.850, 자원:0.165, 환경:0.700, 과거:0.750, 체인:0.630, Mission:0.330)
+2026-01-29 15:45:53,855 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.45
+2026-01-29 15:45:53,856 - COAScorer - INFO - [4156][COA:COA_CNT_007] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.70*0.4) = 0.55
+2026-01-29 15:45:53,857 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST001' (신뢰도: 0.64)
+2026-01-29 15:45:53,858 - DefenseCOAAgent - INFO - COA COA_Library_COA_PRE_001 제외: 시간 제약 위반
+2026-01-29 15:45:53,859 - COAScorer - INFO - [9157][COA:COA_Library_COA_DET_003] Mission-COA Alignment Score: 위협 적절성(0.45*0.6) + 임무 부합성(0.90*0.4) = 0.63
+2026-01-29 15:45:53,859 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_CNT_007, 최종총점=0.2388 (위협:0.383, 자원:0.074, 환경:0.315, 과거:0.392, 체인:0.270, Mission:0.247)
+2026-01-29 15:45:53,862 - ReasoningEngine - INFO - 대체 자원 매칭: '공병대대, 포병대대' <-> 'http://coa-agent-platform.org/ontology#아군가용자산_AST006' (신뢰도: 0.64)
+2026-01-29 15:45:53,863 - api.routers.agent - INFO - [Agent Progress] 47%: 방책 유형 분석 완료: PREEMPTIVE
+2026-01-29 15:45:53,863 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DET_003, 최종총점=0.6065 (위협:0.850, 자원:0.247, 환경:0.700, 과거:0.880, 체인:0.610, Mission:0.630)
+2026-01-29 15:45:53,864 - ReasoningEngine - INFO - 자원 매칭률: 1.92/3 = 0.25 (품질 반영: 0.39)
+2026-01-29 15:45:53,864 - DefenseCOAAgent - INFO - COA COA_CNT_007 제외: 시간 제약 위반
+2026-01-29 15:45:53,865 - DefenseCOAAgent - INFO - [STATUS] [47%] 방책 유형 분석 완료: PREEMPTIVE
+2026-01-29 15:45:53,866 - DefenseCOAAgent - INFO - COA COA_Library_COA_DET_003 제외: 시간 제약 위반
+2026-01-29 15:45:53,867 - ReasoningEngine - INFO - 환경 적합성 조회: COA=http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_006, Situation=http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,869 - api.routers.agent - INFO - [Agent Progress] 53%: 방책 유형 분석 완료: COUNTER_ATTACK
+2026-01-29 15:45:53,871 - ReasoningEngine - INFO - 환경 호환 매칭: '맑음' <-> '맑음' (+0.2)
+2026-01-29 15:45:53,872 - DefenseCOAAgent - INFO - [STATUS] [53%] 방책 유형 분석 완료: COUNTER_ATTACK
+2026-01-29 15:45:53,873 - api.routers.agent - INFO - [Agent Progress] 59%: 방책 유형 분석 완료: DETERRENCE
+2026-01-29 15:45:53,873 - DefenseCOAAgent - INFO - Pass 2: COA_Library_COA_DEF_006에 대한 정밀 체인 탐색 수행...
+2026-01-29 15:45:53,874 - DefenseCOAAgent - INFO - [STATUS] [59%] 방책 유형 분석 완료: DETERRENCE
+2026-01-29 15:45:53,875 - DefenseCOAAgent - INFO - 위협 URI 찾음 (이미 찾은 URI 사용): http://coa-agent-platform.org/ontology#위협상황_THR001
+2026-01-29 15:45:53,950 - DefenseCOAAgent - INFO - 체인 탐색 결과: 10개 체인 발견 (Target: http://coa-agent-platform.org/ontology#COA_Library_COA_DEF_006)
+2026-01-29 15:45:53,955 - COAScorer - INFO - 과거 성공률: 워게임_모의_분석_승률 사용 = 0.770
+2026-01-29 15:45:53,957 - COAScorer - INFO - RelevanceMapper 사용: COA=defense, Threat=THR_TYPE_001, Score=0.900
+2026-01-29 15:45:53,958 - COAScorer - INFO - 체인 점수 계산: 개수=5 (점수=0.75), 품질=0.50, 관련성=0.90 → 최종=0.68
+2026-01-29 15:45:53,959 - COAScorer - INFO - [5582][COA:COA_Library_COA_DEF_006] 위협 매칭 실패: 'THR_TYPE_001', COA='defense' -> defaults to 0.5
+2026-01-29 15:45:53,960 - COAScorer - INFO - [Mismatch] COA_Library_COA_DEF_006 targets '1.0', not 'THR_TYPE_001' (bonus: -0.05)
+2026-01-29 15:45:53,960 - COAScorer - INFO - [5582][COA:COA_Library_COA_DEF_006] 미션 매칭 결과: '방어' + COA='defense' -> weight: 1.00
+2026-01-29 15:45:53,961 - COAScorer - INFO - 위협 특성 반영: 위협수준=0.85 → 최종 적절성: 0.55
+2026-01-29 15:45:53,961 - COAScorer - INFO - [5582][COA:COA_Library_COA_DEF_006] Mission-COA Alignment Score: 위협 적절성(0.55*0.6) + 임무 부합성(1.00*0.4) = 0.73
+2026-01-29 15:45:53,962 - COAScorer - INFO - COA 점수 계산 완료: COA=COA_Library_COA_DEF_006, 최종총점=0.6480 (위협:0.850, 자원:0.247, 환경:0.700, 과거:0.770, 체인:0.680, Mission:0.730)
+2026-01-29 15:45:53,964 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_006 제외: 시간 제약 위반
+2026-01-29 15:45:53,965 - api.routers.agent - INFO - [Agent Progress] 65%: 방책 유형 분석 완료: DEFENSE
+2026-01-29 15:45:53,966 - DefenseCOAAgent - INFO - [STATUS] [65%] 방책 유형 분석 완료: DEFENSE
+2026-01-29 15:45:53,967 - api.routers.agent - INFO - [Agent Progress] 70%: 추천 방책 종합 점수 계산 및 최종 순위 생성 중...
+2026-01-29 15:45:53,969 - DefenseCOAAgent - INFO - [STATUS] [70%] 추천 방책 종합 점수 계산 및 최종 순위 생성 중...
+2026-01-29 15:45:53,972 - api.routers.agent - INFO - [Agent Progress] 85%: LLM 기반 방책 구체화 (Hybrid Adaptation) 수행 중...
+2026-01-29 15:45:53,972 - DefenseCOAAgent - INFO - [STATUS] [85%] LLM 기반 방책 구체화 (Hybrid Adaptation) 수행 중...
+2026-01-29 15:45:53,976 - DefenseCOAAgent - INFO - 교리 RAG 검색 완료 (Query: 침투 (THR_TYPE_001) 대응 작전 교범 및 지침): 3건 발견
+2026-01-29 15:45:53,976 - DefenseCOAAgent - INFO - Hybrid Adaptation 실행: 방책 구체화 중...
+2026-01-29 15:45:53,980 - DefenseCOAAgent - INFO - 모든 방책 구체화(Adaptation) 완료: 3건
+2026-01-29 15:45:53,982 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_006에 3개 RAG 기반 참조 추가 (의사결정 기여)
+2026-01-29 15:45:53,983 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_007에 3개 RAG 기반 참조 추가 (의사결정 기여)
+2026-01-29 15:45:53,983 - DefenseCOAAgent - INFO - COA COA_Library_COA_DEF_003에 3개 RAG 기반 참조 추가 (의사결정 기여)
+2026-01-29 15:45:53,985 - api.routers.agent - INFO - [Agent Progress] 85%: 상황판단 생성 중...
+2026-01-29 15:45:53,985 - DefenseCOAAgent - INFO - [STATUS] [85%] 상황판단 생성 중...
+2026-01-29 15:45:53,986 - api.routers.agent - INFO - [Agent Progress] 85%: 상황판단 LLM 생성 중...
+2026-01-29 15:45:53,986 - DefenseCOAAgent - INFO - [STATUS] [85%] 상황판단 LLM 생성 중...
+2026-01-29 15:45:59,011 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:45:59,012 - api.routers.agent - INFO - [Agent Progress] 85%: 상황판단 생성 완료
+2026-01-29 15:45:59,013 - DefenseCOAAgent - INFO - [STATUS] [85%] 상황판단 생성 완료
+2026-01-29 15:45:59,013 - DefenseCOAAgent - INFO - LLM 기반 상황판단 생성 성공: 능선503에서의 침투 위협은 현재 동부 주공축선에 대한 심각한 위협으로 평가됩니다. 위협수...
+2026-01-29 15:45:59,014 - DefenseCOAAgent - INFO - 상황판단 생성 완료 (1회 호출, 모든 방책에 재사용)
+2026-01-29 15:45:59,014 - DefenseCOAAgent - INFO - 최종 추천 방책 수: 3개 (top_k=3)
+2026-01-29 15:45:59,014 - api.routers.agent - INFO - [Agent Progress] 90%: 방책 선정사유 및 상세 정보 생성 중...
+2026-01-29 15:45:59,015 - DefenseCOAAgent - INFO - [STATUS] [90%] 방책 선정사유 및 상세 정보 생성 중...
+2026-01-29 15:46:01,896 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:46:01,897 - DefenseCOAAgent - INFO - LLM 기반 선정사유 생성 성공 (역경사면 방어): 현재 능선503에서 발생한 침투 위협에 대응하기 위해 '역경사면 방어' 방책이 적합합니다....
+2026-01-29 15:46:01,898 - api.routers.agent - INFO - [Agent Progress] 91%: '역경사면 방어' 선정사유 생성 완료 (1/3)
+2026-01-29 15:46:01,898 - DefenseCOAAgent - INFO - [STATUS] [91%] '역경사면 방어' 선정사유 생성 완료 (1/3)
+2026-01-29 15:46:01,906 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:46:01,906 - DefenseCOAAgent - INFO - LLM 기반 선정사유 생성 성공 (거점 방어): 능선503에서 발생한 침투 위협에 대응하기 위해 '거점 방어' 방책이 적합합니다. 이 방책...
+2026-01-29 15:46:01,907 - api.routers.agent - INFO - [Agent Progress] 93%: '거점 방어' 선정사유 생성 완료 (2/3)
+2026-01-29 15:46:01,908 - DefenseCOAAgent - INFO - [STATUS] [93%] '거점 방어' 선정사유 생성 완료 (2/3)
+2026-01-29 15:46:03,170 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:46:03,171 - DefenseCOAAgent - INFO - LLM 기반 선정사유 생성 성공 (도심지 방어): 능선503에서의 침투 위협에 대응하기 위해 '도심지 방어' 방책이 적합합니다. 이 방책은 ...
+2026-01-29 15:46:03,172 - api.routers.agent - INFO - [Agent Progress] 95%: '도심지 방어' 선정사유 생성 완료 (3/3)
+2026-01-29 15:46:03,173 - DefenseCOAAgent - INFO - [STATUS] [95%] '도심지 방어' 선정사유 생성 완료 (3/3)
+2026-01-29 15:46:03,173 - api.routers.agent - INFO - [Agent Progress] 95%: 방책 선정사유 생성 완료
+2026-01-29 15:46:03,173 - DefenseCOAAgent - INFO - [STATUS] [95%] 방책 선정사유 생성 완료
+2026-01-29 15:46:04,929 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:46:04,933 - api.routers.agent - INFO - [Agent Progress] 100%: 방책 분석 및 추천 완료.
+2026-01-29 15:46:04,933 - DefenseCOAAgent - INFO - [STATUS] [100%] 방책 분석 및 추천 완료.
+2026-01-29 15:46:04,934 - DefenseCOAAgent - INFO - 결과 구성 완료: status=completed, situation_id=THR001, recommendations=3
+2026-01-29 15:46:04,935 - api.routers.agent - INFO - COA 1 (역경사면 방어) 점수 추출:
+2026-01-29 15:46:04,935 - api.routers.agent - INFO -   - 총점: 0.6203
+2026-01-29 15:46:04,935 - api.routers.agent - INFO -   - 원본 필드: score=0.6203, 최종점수=None, MAUT점수=None
+2026-01-29 15:46:04,937 - api.routers.agent - INFO -   - score_breakdown 키들: ['threat', 'resources', 'assets', 'environment', 'historical', 'chain', 'mission_alignment']
+2026-01-29 15:46:04,937 - api.routers.agent - INFO -   - breakdown 값들: {'threat': 0.85, 'resources': 0.2468, 'assets': 0.5, 'environment': 0.9, 'historical': 0.77, 'chain': 0.3, 'mission_alignment': 0.73}
+2026-01-29 15:46:04,937 - api.routers.agent - INFO -   - COA 1 (COA_Library_COA_DEF_006) breakdown 값:
+2026-01-29 15:46:04,938 - api.routers.agent - INFO -     * threat=0.8500, assets=0.5000
+2026-01-29 15:46:04,938 - api.routers.agent - INFO -     * resources=0.2468, environment=0.9000
+2026-01-29 15:46:04,939 - api.routers.agent - INFO -     * historical=0.7700, chain=0.3000
+2026-01-29 15:46:04,939 - api.routers.agent - INFO -     * mission_alignment=0.7300
+2026-01-29 15:46:04,939 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,939 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,940 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.2468 (breakdown 키 존재: True)
+2026-01-29 15:46:04,940 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,940 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,941 - api.routers.agent - INFO -   - COA 1 (COA_Library_COA_DEF_006) 최종 추출 점수:
+2026-01-29 15:46:04,941 - api.routers.agent - INFO -     * threat_response_score=0.8500 (from threat=0.8500, rec.direct=None)
+2026-01-29 15:46:04,941 - api.routers.agent - INFO -     * combat_power_score=0.5000 (from assets=0.5000, rec.direct=None)
+2026-01-29 15:46:04,941 - api.routers.agent - INFO -     * mobility_score=0.2468 (from resources=0.2468, rec.direct=None)
+2026-01-29 15:46:04,941 - api.routers.agent - INFO -     * constraint_score=0.9000 (from environment=0.9000, rec.direct=None, rec.constraint_compliance=None)
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -     * risk_score=0.1500 (rec.direct=None, calculated_from_threat=0.1500)
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -   - COA 1 최종 추출 점수:
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -     * COAScorer breakdown 기반:
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -       - threat_response_score=0.8500, combat_power_score=0.5000
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -       - mobility_score=0.2468, constraint_score=0.9000, risk_score=0.1500
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -     * 적합성/타당성/수용성 (COAScorer breakdown 기반):
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -       - suitability_score=0.7300, feasibility_score=0.2468, acceptability_score=0.8850
+2026-01-29 15:46:04,942 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.2468 (breakdown 키 존재: True)
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,944 - api.routers.agent - INFO - COA 2 (도심지 방어) 점수 추출:
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -   - 총점: 0.6191
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -   - 원본 필드: score=0.6191, 최종점수=None, MAUT점수=None
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -   - score_breakdown 키들: ['threat', 'resources', 'assets', 'environment', 'historical', 'chain', 'mission_alignment']
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -   - breakdown 값들: {'threat': 0.85, 'resources': 0.2468, 'assets': 0.5, 'environment': 0.9, 'historical': 0.75, 'chain': 0.3, 'mission_alignment': 0.73}
+2026-01-29 15:46:04,944 - api.routers.agent - INFO -   - COA 2 (COA_Library_COA_DEF_007) breakdown 값:
+2026-01-29 15:46:04,946 - api.routers.agent - INFO -     * threat=0.8500, assets=0.5000
+2026-01-29 15:46:04,946 - api.routers.agent - INFO -     * resources=0.2468, environment=0.9000
+2026-01-29 15:46:04,947 - api.routers.agent - INFO -     * historical=0.7500, chain=0.3000
+2026-01-29 15:46:04,947 - api.routers.agent - INFO -     * mission_alignment=0.7300
+2026-01-29 15:46:04,947 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,947 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,947 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.2468 (breakdown 키 존재: True)
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -   - COA 2 (COA_Library_COA_DEF_007) 최종 추출 점수:
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -     * threat_response_score=0.8500 (from threat=0.8500, rec.direct=None)
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -     * combat_power_score=0.5000 (from assets=0.5000, rec.direct=None)
+2026-01-29 15:46:04,948 - api.routers.agent - INFO -     * mobility_score=0.2468 (from resources=0.2468, rec.direct=None)
+2026-01-29 15:46:04,949 - api.routers.agent - INFO -     * constraint_score=0.9000 (from environment=0.9000, rec.direct=None, rec.constraint_compliance=None)
+2026-01-29 15:46:04,949 - api.routers.agent - INFO -     * risk_score=0.1500 (rec.direct=None, calculated_from_threat=0.1500)
+2026-01-29 15:46:04,949 - api.routers.agent - WARNING -   [WARNING] COA 2의 점수가 이전 COA와 동일합니다! breakdown이 제대로 전달되지 않았을 수 있습니다.
+2026-01-29 15:46:04,949 - api.routers.agent - WARNING -     - score_breakdown 키: ['threat', 'resources', 'assets', 'environment', 'historical', 'chain', 'mission_alignment']
+2026-01-29 15:46:04,950 - api.routers.agent - WARNING -     - score_breakdown 값: {'threat': 0.85, 'resources': 0.2468, 'assets': 0.5, 'environment': 0.9, 'historical': 0.75, 'chain': 0.3, 'mission_alignment': 0.73}
+2026-01-29 15:46:04,950 - api.routers.agent - INFO -   - COA 2 최종 추출 점수:
+2026-01-29 15:46:04,951 - api.routers.agent - INFO -     * COAScorer breakdown 기반:
+2026-01-29 15:46:04,951 - api.routers.agent - INFO -       - threat_response_score=0.8500, combat_power_score=0.5000
+2026-01-29 15:46:04,951 - api.routers.agent - INFO -       - mobility_score=0.2468, constraint_score=0.9000, risk_score=0.1500
+2026-01-29 15:46:04,951 - api.routers.agent - INFO -     * 적합성/타당성/수용성 (COAScorer breakdown 기반):
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -       - suitability_score=0.7300, feasibility_score=0.2468, acceptability_score=0.8850
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.2468 (breakdown 키 존재: True)
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,952 - api.routers.agent - INFO - COA 3 (거점 방어) 점수 추출:
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -   - 총점: 0.6116
+2026-01-29 15:46:04,952 - api.routers.agent - INFO -   - 원본 필드: score=0.6116, 최종점수=None, MAUT점수=None
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -   - score_breakdown 키들: ['threat', 'resources', 'assets', 'environment', 'historical', 'chain', 'mission_alignment']
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -   - breakdown 값들: {'threat': 0.85, 'resources': 0.1851, 'assets': 0.5, 'environment': 0.9, 'historical': 0.78, 'chain': 0.3, 'mission_alignment': 0.73}
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -   - COA 3 (COA_Library_COA_DEF_003) breakdown 값:
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -     * threat=0.8500, assets=0.5000
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -     * resources=0.1851, environment=0.9000
+2026-01-29 15:46:04,954 - api.routers.agent - INFO -     * historical=0.7800, chain=0.3000
+2026-01-29 15:46:04,955 - api.routers.agent - INFO -     * mission_alignment=0.7300
+2026-01-29 15:46:04,955 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,955 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,955 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.1851 (breakdown 키 존재: True)
+2026-01-29 15:46:04,955 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -   - COA 3 (COA_Library_COA_DEF_003) 최종 추출 점수:
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     * threat_response_score=0.8500 (from threat=0.8500, rec.direct=None)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     * combat_power_score=0.5000 (from assets=0.5000, rec.direct=None)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     * mobility_score=0.1851 (from resources=0.1851, rec.direct=None)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     * constraint_score=0.9000 (from environment=0.9000, rec.direct=None, rec.constraint_compliance=None)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -     * risk_score=0.1500 (rec.direct=None, calculated_from_threat=0.1500)
+2026-01-29 15:46:04,957 - api.routers.agent - INFO -   - COA 3 최종 추출 점수:
+2026-01-29 15:46:04,958 - api.routers.agent - INFO -     * COAScorer breakdown 기반:
+2026-01-29 15:46:04,958 - api.routers.agent - INFO -       - threat_response_score=0.8500, combat_power_score=0.5000
+2026-01-29 15:46:04,959 - api.routers.agent - INFO -       - mobility_score=0.1851, constraint_score=0.9000, risk_score=0.1500
+2026-01-29 15:46:04,959 - api.routers.agent - INFO -     * 적합성/타당성/수용성 (COAScorer breakdown 기반):
+2026-01-29 15:46:04,959 - api.routers.agent - INFO -       - suitability_score=0.7300, feasibility_score=0.1851, acceptability_score=0.8850
+2026-01-29 15:46:04,959 - api.routers.agent - INFO -     [DEBUG] combat_power_score: breakdown['assets']에서 추출 = 0.5000 (breakdown 키 존재: True)
+2026-01-29 15:46:04,959 - api.routers.agent - INFO -     [DEBUG] mobility_score: breakdown['resources']에서 추출 = 0.1851 (breakdown 키 존재: True)
+2026-01-29 15:46:04,960 - api.routers.agent - INFO -     [DEBUG] threat_response_score: breakdown['threat']에서 추출 = 0.8500 (breakdown 키 존재: True)
+2026-01-29 15:46:04,960 - api.routers.agent - INFO -     [DEBUG] constraint_score: breakdown['environment']에서 추출 = 0.9000
+2026-01-29 15:46:04,961 - api.routers.agent - INFO -     [DEBUG] risk_score: threat 기반 계산 = 0.1500 (from threat=0.8500)
+2026-01-29 15:46:04,961 - api.routers.agent - INFO - [시각화 보강] 결과에 axis_states가 없음. 자동 빌드 시도...
+2026-01-29 15:46:04,964 - AxisStateBuilder - WARNING - AxisStateBuilder initialized without ontology_manager. METT-C features will be limited.
+2026-01-29 15:46:04,975 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:46:04,986 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:46:04,986 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:46:04,991 - AxisStateBuilder - WARNING - AxisStateBuilder initialized without ontology_manager. METT-C features will be limited.
+2026-01-29 15:46:05,357 - AxisStateBuilder - INFO - 축선 AXIS01 (동부 주공축선)에 10개 아군 부대 매칭 (총 전투력: 740)
+2026-01-29 15:46:05,363 - AxisStateBuilder - INFO - Loaded 11 threat master records
+2026-01-29 15:46:05,363 - AxisStateBuilder - INFO - Hydrated 10 threat events with master data
+2026-01-29 15:46:05,365 - api.routers.agent - INFO -   - 위협 THR001 기반 축선 빌드 성공: 1개 축선
+2026-01-29 15:46:05,393 - core_pipeline.visualization_generator - INFO - 지형셀 데이터 로드 완료 (31개 셀)
+2026-01-29 15:46:05,394 - core_pipeline.visualization_generator - INFO - ✅ Resolved axis AXIS01: 3 waypoints
+2026-01-29 15:46:05,394 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_006: participating_units를 문자열에서 배열로 변환: ['포병대대', '공병대대']
+2026-01-29 15:46:05,394 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_006: unit_positions가 없거나 비어있음, 재생성 시작
+2026-01-29 15:46:05,395 - api.routers.agent - INFO -   - unit_positions 상태: None
+2026-01-29 15:46:05,395 - api.routers.agent - INFO -   - participating_units: ['포병대대', '공병대대']
+2026-01-29 15:46:05,395 - api.routers.agent - INFO -   - participating_units 개수: 2
+2026-01-29 15:46:05,398 - AxisStateBuilder - WARNING - AxisStateBuilder initialized without ontology_manager. METT-C features will be limited.
+2026-01-29 15:46:05,412 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:46:05,429 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:46:05,429 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:46:05,492 - api.routers.agent - INFO -   - 병종 기반 폴백 매칭 성공: '포병대대' → '포병' → '포병여단'
+2026-01-29 15:46:05,493 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 포병대대 → 포병여단 (ID: FRU004)
+2026-01-29 15:46:05,495 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 공병대대 → 공병대대 (ID: FRU007)
+2026-01-29 15:46:05,496 - api.routers.agent - INFO -   - participating_units 정규화 완료: ['포병대대', '공병대대'] → ['포병여단', '공병대대']
+2026-01-29 15:46:05,496 - api.routers.agent - INFO -   - 조회된 부대 수: 2
+2026-01-29 15:46:05,496 - api.routers.agent - INFO -   - 생성 완료: features 개수 = 2
+2026-01-29 15:46:05,496 - api.routers.agent - INFO -   - COA COA_Library_COA_DEF_006: 축선 ID 없음, 'AXIS01'로 폴백 적용
+2026-01-29 15:46:05,508 - core_pipeline.visualization_generator - INFO - ✅ Resolved axis AXIS01: 3 waypoints
+2026-01-29 15:46:05,509 - api.routers.agent - INFO -   - 작전 경로 생성 완료: waypoints 개수 = 2
+2026-01-29 15:46:05,509 - api.routers.agent - INFO -   - 작전 영역 생성 완료
+2026-01-29 15:46:05,509 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_007: participating_units를 문자열에서 배열로 변환: ['포병대대', '보병여단']
+2026-01-29 15:46:05,509 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_007: unit_positions가 없거나 비어있음, 재생성 시작
+2026-01-29 15:46:05,509 - api.routers.agent - INFO -   - unit_positions 상태: None
+2026-01-29 15:46:05,510 - api.routers.agent - INFO -   - participating_units: ['포병대대', '보병여단']
+2026-01-29 15:46:05,510 - api.routers.agent - INFO -   - participating_units 개수: 2
+2026-01-29 15:46:05,512 - AxisStateBuilder - WARNING - AxisStateBuilder initialized without ontology_manager. METT-C features will be limited.
+2026-01-29 15:46:05,522 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:46:05,535 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:46:05,536 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:46:05,603 - api.routers.agent - INFO -   - 병종 기반 폴백 매칭 성공: '포병대대' → '포병' → '포병여단'
+2026-01-29 15:46:05,605 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 포병대대 → 포병여단 (ID: FRU004)
+2026-01-29 15:46:05,606 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 보병여단 → 보병여단 (ID: FRU002)
+2026-01-29 15:46:05,606 - api.routers.agent - INFO -   - participating_units 정규화 완료: ['포병대대', '보병여단'] → ['포병여단', '보병여단']
+2026-01-29 15:46:05,607 - api.routers.agent - INFO -   - 조회된 부대 수: 2
+2026-01-29 15:46:05,607 - api.routers.agent - INFO -   - 생성 완료: features 개수 = 2
+2026-01-29 15:46:05,607 - api.routers.agent - INFO -   - COA COA_Library_COA_DEF_007: 축선 ID 없음, 'AXIS01'로 폴백 적용
+2026-01-29 15:46:05,621 - core_pipeline.visualization_generator - INFO - ✅ Resolved axis AXIS01: 3 waypoints
+2026-01-29 15:46:05,622 - api.routers.agent - INFO -   - 작전 경로 생성 완료: waypoints 개수 = 2
+2026-01-29 15:46:05,622 - api.routers.agent - INFO -   - 작전 영역 생성 완료
+2026-01-29 15:46:05,622 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_003: participating_units를 문자열에서 배열로 변환: ['대전차미사일', '포병대대', '보병여단']
+2026-01-29 15:46:05,623 - api.routers.agent - INFO - [시각화 데이터 생성] COA COA_Library_COA_DEF_003: unit_positions가 없거나 비어있음, 재생성 시작
+2026-01-29 15:46:05,623 - api.routers.agent - INFO -   - unit_positions 상태: None
+2026-01-29 15:46:05,623 - api.routers.agent - INFO -   - participating_units: ['대전차미사일', '포병대대', '보병여단']
+2026-01-29 15:46:05,623 - api.routers.agent - INFO -   - participating_units 개수: 3
+2026-01-29 15:46:05,626 - AxisStateBuilder - WARNING - AxisStateBuilder initialized without ontology_manager. METT-C features will be limited.
+2026-01-29 15:46:05,641 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:46:05,652 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:46:05,654 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:46:05,706 - api.routers.agent - WARNING -   - 부대 정보 조회 실패: 대전차미사일 (데이터 없음)
+2026-01-29 15:46:05,707 - api.routers.agent - INFO -   - 병종 기반 폴백 매칭 성공: '포병대대' → '포병' → '포병여단'
+2026-01-29 15:46:05,709 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 포병대대 → 포병여단 (ID: FRU004)
+2026-01-29 15:46:05,711 - api.routers.agent - INFO -   - 부대 정보 조회 성공: 보병여단 → 보병여단 (ID: FRU002)
+2026-01-29 15:46:05,711 - api.routers.agent - INFO -   - participating_units 정규화 완료: ['대전차미사일', '포병대대', '보병여단'] → ['대전차미사일', '포병여단', '보병여단']
+2026-01-29 15:46:05,712 - api.routers.agent - INFO -   - 조회된 부대 수: 3
+2026-01-29 15:46:05,712 - api.routers.agent - INFO -   - 생성 완료: features 개수 = 2
+2026-01-29 15:46:05,712 - api.routers.agent - INFO -   - COA COA_Library_COA_DEF_003: 축선 ID 없음, 'AXIS01'로 폴백 적용
+2026-01-29 15:46:05,726 - core_pipeline.visualization_generator - INFO - ✅ Resolved axis AXIS01: 3 waypoints
+2026-01-29 15:46:05,726 - api.routers.agent - INFO -   - 작전 경로 생성 완료: waypoints 개수 = 2
+2026-01-29 15:46:05,726 - api.routers.agent - INFO -   - 작전 영역 생성 완료
+2026-01-29 15:46:22,536 - api.routers.chat - ERROR - Chat completion error: 'ChatRequest' object has no attribute 'situation_info'

@@ -5,7 +5,10 @@ Orchestrator
 코어 파이프라인 오케스트레이터
 """
 import importlib
+import logging
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 from typing import Dict, Optional, Type
 from core_pipeline.data_manager import DataManager
 # OntologyManager는 EnhancedOntologyManager로 대체됨
@@ -115,14 +118,14 @@ class CorePipeline:
         """
         # 이미 초기화되었는지 확인
         if hasattr(self, '_initialized') and self._initialized:
-            print("[INFO] Orchestrator가 이미 초기화되었습니다. 초기화를 건너뜜")
+            logger.info("Orchestrator가 이미 초기화되었습니다. 초기화를 건너뜜")
             if progress_callback:
                 progress_callback("시스템이 이미 초기화되어 있습니다.")
             return  # 이미 초기화됨, 스킵
         
         # EnhancedOntologyManager는 __init__에서 이미 초기화됨
         if self.ontology_manager:
-            print("[INFO] Enhanced Ontology Manager initialized (독립 모드)")
+            logger.info("Enhanced Ontology Manager initialized (독립 모드)")
             if progress_callback:
                 progress_callback("Ontology Manager 확인 완료")
         
@@ -145,7 +148,7 @@ class CorePipeline:
                 gpu_memory_total = torch.cuda.get_device_properties(0).total_memory / 1024**3
                 gpu_memory_allocated = torch.cuda.memory_allocated(0) / 1024**3
                 gpu_memory_free = gpu_memory_total - gpu_memory_allocated
-                print(f"[INFO] GPU 메모리 상태: {gpu_memory_free:.2f} GB 사용 가능 / {gpu_memory_total:.2f} GB 전체")
+                logger.info(f"GPU 메모리 상태: {gpu_memory_free:.2f} GB 사용 가능 / {gpu_memory_total:.2f} GB 전체")
                 
                 # GPU 메모리가 3GB 미만이면 LLM만 GPU에 로드, Embedding은 CPU
                 if gpu_memory_free < 3.0:
@@ -162,7 +165,7 @@ class CorePipeline:
                 use_gpu_for_embedding = False
         else:
             if HAS_TORCH:
-                print("[INFO] CUDA 사용 불가 또는 torch 미설치. CPU 모드로 로드합니다.")
+                logger.info("CUDA 사용 불가 또는 torch 미설치. CPU 모드로 로드합니다.")
             use_gpu_for_llm = False
             use_gpu_for_embedding = False
         
@@ -183,19 +186,19 @@ class CorePipeline:
             # OpenAI 또는 사내망 모델이 사용 가능하면 로컬 모델 로드 스킵 (메모리 및 시작 시간 최적화)
             if has_openai or has_internal:
                 if has_openai:
-                    print(f"[INFO] OpenAI API 사용 가능 (모델: {self.llm_manager.openai_model})")
+                    logger.info(f"OpenAI API 사용 가능 (모델: {self.llm_manager.openai_model})")
                     if progress_callback:
                         progress_callback(f"OpenAI API 연결 확인 (모델: {self.llm_manager.openai_model})")
                 if has_internal:
                     internal_count = sum(1 for k, v in available_models.items() if k.startswith('internal_') and v.get('available', False))
-                    print(f"[INFO] 사내망 모델 {internal_count}개 사용 가능")
+                    logger.info(f"사내망 모델 {internal_count}개 사용 가능")
                     if progress_callback:
                         progress_callback(f"사내망 LLM 모델 {internal_count}개 확인됨")
                 
-                print("[INFO] 로컬 모델 로드를 생략하고 원격 모델을 우선 사용합니다. (지연 로드)")
+                logger.info("로컬 모델 로드를 생략하고 원격 모델을 우선 사용합니다. (지연 로드)")
             else:
                 # OpenAI와 사내망 모델이 모두 사용 불가할 때만 로컬 모델 로드
-                print("[INFO] 로컬 모델을 로드합니다. 잠시만 기다려 주세요...")
+                logger.info("로컬 모델을 로드합니다. 잠시만 기다려 주세요...")
                 if progress_callback:
                     progress_callback("로컬 LLM 모델 로드 중 (시간이 소요될 수 있습니다)...")
                 
@@ -207,7 +210,7 @@ class CorePipeline:
                     # 의존성 확인
                     self._check_llm_dependencies()
                 else:
-                    print("[INFO] LLM 모델 로드 완료")
+                    logger.info("LLM 모델 로드 완료")
                     if progress_callback:
                         progress_callback("로컬 LLM 모델 로드 완료")
         except Exception as e:
@@ -222,7 +225,7 @@ class CorePipeline:
         # RAG 임베딩 모델 로드 (CPU 우선 정책 강제 적용)
         try:
             # CPU 우선 정책: 안정성을 위해 항상 CPU로 로드
-            print("[INFO] 임베딩 모델 로드 중 (RAG 인덱스 최적화)...")
+            logger.info("임베딩 모델 로드 중 (RAG 인덱스 최적화)...")
             if progress_callback:
                 progress_callback("RAG 임베딩 모델 로드 중...")
             
@@ -235,7 +238,7 @@ class CorePipeline:
                 self.rag_manager.load_embeddings(device='cpu')
             
             if self.rag_manager.embedding_model:
-                print("[INFO] 임베딩 모델 로드 완료")
+                logger.info("임베딩 모델 로드 완료")
                 if progress_callback:
                     progress_callback("RAG 임베딩 모델 로드 완료")
         except Exception as e:
@@ -275,7 +278,7 @@ class CorePipeline:
             if progress_callback:
                 progress_callback("상태 관리자 초기화 중...")
             self.status_manager.initialize()
-            print("[INFO] StatusManager 초기화 완료")
+            logger.info("StatusManager 초기화 완료")
         except Exception as e:
             print(f"[WARN] StatusManager 초기화 실패: {e}")
         
@@ -286,7 +289,7 @@ class CorePipeline:
                 if progress_callback:
                     progress_callback("실시간 데이터 감시 시작...")
                 self.data_watcher.start_watching()
-                print("[INFO] 실시간 데이터 감시 활성화")
+                logger.info("실시간 데이터 감시 활성화")
             except Exception as e:
                 print(f"[WARN] 실시간 데이터 감시 활성화 실패: {e}")
         
@@ -341,12 +344,12 @@ class CorePipeline:
         """RAG 인덱스가 없으면 자동 구축"""
         # 임베딩 모델이 없으면 인덱스 구축 불가
         if self.rag_manager.embedding_model is None:
-            print("[INFO] Embedding 모델이 없습니다. 인덱스 구축 건너뜀.")
+            logger.info("Embedding 모델이 없습니다. 인덱스 구축 건너뜀.")
             return
         
         # 기존 인덱스 확인 (FAISS 인덱스와 chunks 모두 확인)
         if self.rag_manager.faiss_index is not None and len(self.rag_manager.chunks) > 0:
-            print(f"[INFO] RAG 인덱스가 이미 존재합니다: {len(self.rag_manager.chunks)}개 청크")
+            logger.info(f"RAG 인덱스가 이미 존재합니다: {len(self.rag_manager.chunks)}개 청크")
             return
         
         # 저장된 인덱스 로드 시도 (load_embeddings에서 로드하지 못한 경우에만)
@@ -360,14 +363,14 @@ class CorePipeline:
                     # load_index()에서 이미 로그가 출력되므로 여기서는 추가 로그 없음
                     return
             except Exception as e:
-                print(f"[INFO] 저장된 인덱스 로드 실패, 새로 구축합니다: {e}")
+                logger.info(f"저장된 인덱스 로드 실패, 새로 구축합니다: {e}")
         
         # knowledge/rag_docs/ 문서 로드 및 인덱싱
         from pathlib import Path
         rag_docs_path = Path("knowledge/rag_docs")
         
         if not rag_docs_path.exists():
-            print(f"[INFO] RAG 문서 디렉토리가 없습니다: {rag_docs_path}")
+            logger.info(f"RAG 문서 디렉토리가 없습니다: {rag_docs_path}")
             return
         
         try:
@@ -375,7 +378,7 @@ class CorePipeline:
             doc_files = list(rag_docs_path.glob("*.txt")) + list(rag_docs_path.glob("*.md"))
             
             if not doc_files:
-                print(f"[INFO] RAG 문서가 없습니다: {rag_docs_path}")
+                logger.info(f"RAG 문서가 없습니다: {rag_docs_path}")
                 return
             
             doctrine_docs = []
@@ -399,7 +402,7 @@ class CorePipeline:
                     print(f"[WARN] 문서 로드 실패 {doc_file}: {e}")
             
             if doctrine_docs or general_docs:
-                print(f"[INFO] RAG 인덱스 자동 구축 시작: 교리 {len(doctrine_docs)}개, 일반 {len(general_docs)}개")
+                logger.info(f"RAG 인덱스 자동 구축 시작: 교리 {len(doctrine_docs)}개, 일반 {len(general_docs)}개")
                 
                 all_chunks = []
                 
@@ -422,11 +425,11 @@ class CorePipeline:
                     self.rag_manager.build_index(all_chunks)
                     # 인덱스 저장 (다음 초기화 시 재사용)
                     self.rag_manager.save_index()
-                    print(f"[INFO] RAG 인덱스 자동 구축 완료: 총 {len(all_chunks)}개 청크 (저장 경로: {self.rag_manager.embedding_path})")
+                    logger.info(f"RAG 인덱스 자동 구축 완료: 총 {len(all_chunks)}개 청크 (저장 경로: {self.rag_manager.embedding_path})")
                 else:
                     print("[WARN] 생성된 청크가 없습니다.")
             else:
-                print("[INFO] 인덱싱할 유효한 문서 내용이 없습니다.")
+                logger.info("인덱싱할 유효한 문서 내용이 없습니다.")
         except Exception as e:
             print(f"[WARN] RAG 인덱스 자동 구축 실패: {e}")
             import traceback
@@ -435,7 +438,7 @@ class CorePipeline:
     def _build_ontology_graph_if_needed(self):
         """온톨로지 그래프가 비어있으면 자동 구축"""
         if self.ontology_manager.graph is None:
-            print("[INFO] 온톨로지 그래프 객체가 없습니다. 초기화합니다...")
+            logger.info("온톨로지 그래프 객체가 없습니다. 초기화합니다...")
             try:
                 from rdflib import Graph
                 self.ontology_manager.graph = Graph()
@@ -456,7 +459,7 @@ class CorePipeline:
                         if triples_count > 0:
                             # COA 데이터는 generate_instances()에서 일반 테이블로 처리됩니다.
                             # 중복 생성을 방지하기 위해 _add_coa_library_to_graph() 호출을 제거했습니다.
-                            print(f"[INFO] 기존 온톨로지 그래프 로드 완료: {triples_count} triples")
+                            logger.info(f"기존 온톨로지 그래프 로드 완료: {triples_count} triples")
                             
                             # OWL-RL 추론 자동 실행 (설정에 따라)
                             # 단, 이미 추론이 실행되었는지 확인 (중복 추론 방지)
@@ -469,7 +472,7 @@ class CorePipeline:
                                 try:
                                     from core_pipeline.owl_reasoner import OWLReasoner, OWLRL_AVAILABLE
                                     if OWLRL_AVAILABLE:
-                                        print("[INFO] OWL-RL 추론 자동 실행 중...")
+                                        logger.info("OWL-RL 추론 자동 실행 중...")
                                         namespace = str(self.ontology_manager.ns) if hasattr(self.ontology_manager, 'ns') and self.ontology_manager.ns else None
                                         reasoner = OWLReasoner(self.ontology_manager.graph, namespace)
                                         inferred_graph = reasoner.run_inference()
@@ -479,7 +482,7 @@ class CorePipeline:
                                             if stats.get("success"):
                                                 new_count = stats.get("new_inferences", 0)
                                                 if new_count > 0:
-                                                    print(f"[INFO] OWL-RL 추론 완료: {new_count}개 새로운 트리플 생성")
+                                                    logger.info(f"OWL-RL 추론 완료: {new_count}개 새로운 트리플 생성")
                                                     # 추론된 그래프를 메모리에 적용 (파일 저장은 선택적)
                                                     self.ontology_manager.graph = inferred_graph
                                                     # 추론 실행 플래그 설정

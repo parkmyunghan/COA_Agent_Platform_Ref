@@ -1,0 +1,4 @@
+Total Nodes: 568
+MissionINFO Nodes: 10
+Assignment Nodes: 159
+Sample Mission: {'id': '임무정보_MSN006', 'label': '임무정보_MSN006 (포병 제압)', 'group': '임무정보', 'is_virtual': False}

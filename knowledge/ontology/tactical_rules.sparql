@@ -8,9 +8,9 @@ CONSTRUCT {
 } WHERE {
     ?unit ns:locatedIn ?cell .
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "산악", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "산악"))
     { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
-    FILTER(REGEX(?type, "보병", "i"))
+    FILTER(CONTAINS(LCASE(STR(?type)), "보병"))
 }
 
 # 2. 산악지형 기갑/기계화 불리 추론
@@ -19,9 +19,9 @@ CONSTRUCT {
 } WHERE {
     ?unit ns:locatedIn ?cell .
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "산악", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "산악"))
     { ?unit ns:병종 ?type } UNION { ?unit ns:자산종류 ?type }
-    FILTER(REGEX(?type, "기갑|기계화", "i"))
+    FILTER(LCASE(STR(?type)) = "기갑" || LCASE(STR(?type)) = "기계화")
 }
 
 # 3. 평지지형 기갑/기계화 유리 추론
@@ -68,11 +68,12 @@ CONSTRUCT {
 }
 
 # 7. COA 적용가능지역 추론 (산악 -> 방어)
+# [RE-ENABLED] 대규모 그래프에서는 주의 필요
 CONSTRUCT {
     ?coa ns:적용가능지역 ?cell .
 } WHERE {
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "산악", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "산악"))
     ?coa a ns:DefenseCOA .
 }
 
@@ -81,7 +82,7 @@ CONSTRUCT {
     ?coa ns:적용가능지역 ?cell .
 } WHERE {
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "평지", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "평지"))
     { ?coa a ns:ManeuverCOA } UNION { ?coa a ns:OffensiveCOA }
 }
 
@@ -90,10 +91,10 @@ CONSTRUCT {
     ?coa ns:적용가능지역 ?cell .
 } WHERE {
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "하천|강", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "하천") || CONTAINS(LCASE(STR(?terrain)), "강"))
     ?coa a ns:ManeuverCOA .
     ?coa rdfs:label ?label .
-    FILTER(REGEX(?label, "도하", "i"))
+    FILTER(CONTAINS(LCASE(STR(?label)), "도하"))
 }
 
 # 10. COA 적용가능지역 추론 (도시 -> 시가전/방어)
@@ -101,6 +102,6 @@ CONSTRUCT {
     ?coa ns:적용가능지역 ?cell .
 } WHERE {
     ?cell ns:지형유형 ?terrain .
-    FILTER(REGEX(?terrain, "도시|시가", "i"))
+    FILTER(CONTAINS(LCASE(STR(?terrain)), "도시") || CONTAINS(LCASE(STR(?terrain)), "시가"))
     { ?coa a ns:DefenseCOA } UNION { ?coa a ns:OffensiveCOA }
 }

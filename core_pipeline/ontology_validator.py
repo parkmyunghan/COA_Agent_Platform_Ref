@@ -136,8 +136,10 @@ class OntologyValidator:
         query_threat_no_coa = f"""
         SELECT (COUNT(?s) as ?count) WHERE {{
             ?s a <{ns.위협상황}> .
+            # THR 패턴을 가진 실제 위협 상황만 대상으로 함 (추론된 타 클래스 인스턴스 제외)
+            FILTER(CONTAINS(STR(?s), "THR") || CONTAINS(STR(?s), "위협상황"))
             FILTER NOT EXISTS {{
-                ?s <{ns.위협유형코드}> ?type .
+                ?s <{ns.has위협유형}> ?type .
                 ?coa <{ns.respondsTo}> ?type .
             }}
         }}

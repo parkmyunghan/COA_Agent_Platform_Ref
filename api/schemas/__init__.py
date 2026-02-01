@@ -93,15 +93,19 @@ class COASummary(BaseModel):
     coa_name: str
     total_score: float
     description: Optional[str] = None
-    reasoning: Optional[str] = None # NEW: 추론 근거/설명
+    reasoning: Optional[Any] = None  # 추론 근거/설명 (Dict 또는 str)
     rank: int
     combat_power_score: Optional[float] = 0.0
     mobility_score: Optional[float] = 0.0
     constraint_score: Optional[float] = 0.0
     threat_response_score: Optional[float] = 0.0
     risk_score: Optional[float] = 0.0
-    visualization_data: Optional[Dict[str, Any]] = None # NEW: 시각화 데이터 (경로, 영역 등)
-    unit_positions: Optional[Dict[str, Any]] = None # NEW: 부대 위치 GeoJSON
+    visualization_data: Optional[Dict[str, Any]] = None  # 시각화 데이터 (경로, 영역 등)
+    unit_positions: Optional[Dict[str, Any]] = None  # 부대 위치 GeoJSON
+    # NEW: RAG 참고자료 (DoctrineReferencePanel용)
+    doctrine_references: Optional[List[Dict[str, Any]]] = None
+    # NEW: 전략 체인 정보 (ChainVisualizer용)
+    chain_info: Optional[Dict[str, Any]] = None
 
 class COAResponse(BaseModel):
     coas: List[COASummary]
@@ -110,6 +114,7 @@ class COAResponse(BaseModel):
     analysis_time: datetime = Field(default_factory=datetime.now)
     situation_summary: Optional[str] = None  # LLM 기반 정황보고
     situation_summary_source: Optional[str] = None  # "llm", "template", "cache" - 정황보고 생성 방식
+    situation_assessment: Optional[str] = None  # LLM 기반 상황판단 (전체 상황 평가, 모든 방책에 공통)
 
 class MissionListResponse(BaseModel):
     missions: List[MissionBase]
@@ -147,6 +152,8 @@ class ChatRequest(BaseModel):
     history: List[ChatMessage] = []
     agent_id: Optional[str] = None
     situation_id: Optional[str] = None
+    situation_info: Optional[Dict[str, Any]] = None
+    coa_context: Optional[Dict] = None
     use_rag: bool = True
     llm_model: Optional[str] = None
 

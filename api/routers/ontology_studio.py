@@ -51,8 +51,8 @@ class InferenceResponse(BaseModel):
     confidence: float
 
 class OWLInferenceRequest(BaseModel):
-    entity_id: str
-    include_rdfs: bool = True
+    entity_id: Optional[str] = None
+    include_rdfs: bool = False  # [MOD] 대규모 데이터셋 성능 고려하여 기본값 False로 변경
     max_results: int = 50
     apply_to_graph: bool = False  # 추론 결과를 원본 그래프에 추가할지 여부
 
@@ -108,6 +108,7 @@ async def generate_ontology(request: GenerationRequest):
     """
     온톨로지 그래프를 생성하고 저장합니다.
     """
+    logger.info(f"[DEBUG] GenerationRequest: enable_virtual_entities={request.enable_virtual_entities}, enable_reasoned_graph={request.enable_reasoned_graph}")
     try:
         orchestrator = get_orchestrator()
         om = getattr(orchestrator.core, 'enhanced_ontology_manager', orchestrator.core.ontology_manager)
@@ -126,24 +127,42 @@ async def generate_ontology(request: GenerationRequest):
         om.generate_instances(data, enable_virtual_entities=request.enable_virtual_entities)
         
         # 4. Save
-        try:
-            save_success = om.save_graph(
-                save_schema_separately=True,
-                save_instances_separately=True,
-                save_reasoned_separately=request.enable_reasoned_graph,
-                enable_semantic_inference=True,
-                cleanup_old_files=True
-            )
-        except TypeError:
-            # Fallback for older save_graph signature
-            save_success = om.save_graph()
-            
-        # 정확한 트리플 수 측정 (중복 제거)
-        triple_count = len(set(om.graph))
+        save_stats = om.save_graph(
+            save_schema_separately=True,
+            save_instances_separately=True,
+            save_reasoned_separately=request.enable_reasoned_graph,
+            enable_semantic_inference=True,
+            cleanup_old_files=True
+        )
         
+        # [MOD] 옵션에 따른 트리플 수 및 메시지 구성
+        is_success = save_stats.get("success", False)
+        base_count = save_stats.get("instances_triples", 0)
+        reasoned_count = save_stats.get("reasoned_triples", 0)
+        schema_count = save_stats.get("schema_triples", 0)
+        
+        if request.enable_reasoned_graph:
+            # 추론 결과가 포함된 경우
+            triple_count = reasoned_count + schema_count
+            msg = f"Ontology generated with reasoning: Total {triple_count} (Instances {reasoned_count}, Schema {schema_count})."
+        else:
+            # 원본만 있는 경우
+            triple_count = base_count + schema_count
+            msg = f"Ontology generated: Total {triple_count} (Instances {base_count}, Schema {schema_count})."
+            
+        if not is_success:
+            msg = f"Generation failed: {save_stats.get('message', 'Unknown error')}"
+        
+        # [NEW] 대시보드 연동을 위해 메모리 그래프 업데이트 (추론 결과 반영 시)
+        # 단, API 요청이 성공했을 때만 수행
+        if is_success and request.enable_reasoned_graph:
+             # 여기서 om.graph를 업데이트하여 get_studio_stats에서도 반영되도록 함
+             # 단, save_graph 내부가 아닌 여기서 명시적으로 수행
+             pass # om.save_graph 내부에서 이미 메모리 그래프 처리를 고민해봐야 함
+             
         return GenerationResponse(
-            success=save_success,
-            message="Ontology generated successfully" if save_success else "Generation completed but saving failed",
+            success=is_success,
+            message=msg,
             triple_count=triple_count
         )
     except Exception as e:
@@ -287,20 +306,40 @@ async def run_owl_inference(request: OWLInferenceRequest):
         debug_log(logger, f"[DEBUG] Original graph size (instances.ttl): {original_graph_size} triples")
         debug_log(logger, f"[DEBUG] Current om.graph size (instances_reasoned.ttl): {current_graph_size} triples")
         
-        # 원본 그래프에서 OWL-RL 추론 실행
-        reasoner = OWLReasoner(original_graph, namespace)
-        inferred_graph = reasoner.run_inference(include_rdfs=request.include_rdfs)
+        # [MOD] 단순 OWL-RL 추론이 아닌, EnhancedOntologyManager의 고도화된 추론 프로세스 실행
+        debug_log(logger, "[DEBUG] Running fully integrated inference process (Semantic + Tactical + OWL)...")
         
+        # [PERFORMANCE] RDFS 추론은 매우 느리므로 대규모 그래프에서는 기본적으로 비활성화 권장
+        # 사용자가 명시적으로 요청한 경우에만 수행
+        should_run_rdfs = request.include_rdfs if hasattr(request, 'include_rdfs') else False
+        
+        inferred_graph = om.generate_reasoned_graph(
+            enable_semantic_inference=True, # 항상 실행하되 om 내부에서 수 제한
+            run_tactical_rules=True,
+            run_owl_reasoner=True
+        )
+        
+        # [FIX] om 내부 설정으로 include_rdfs_inference 전달이 안되므로 config 임시 수정
+        old_rdfs_cfg = om.config.get("include_rdfs_inference")
+        om.config["include_rdfs_inference"] = should_run_rdfs
+        
+        # OWL Reasoner 인스턴스 생성 (통계 및 비교를 위해)
+        reasoner = OWLReasoner(original_graph, namespace)
+        # 이미 추론된 그래프를 reasoner에 주입
+        reasoner.inferred_graph = inferred_graph
+        reasoner._inference_performed = True
+        
+        # 추론 통계 계산
         if inferred_graph is not None:
-            inferred_graph_size = len(set(inferred_graph))
-            debug_log(logger, f"[DEBUG] Newly inferred graph size: {inferred_graph_size} triples")
-            debug_log(logger, f"[DEBUG] New triples from inference: {inferred_graph_size - original_graph_size}")
-            
-            # 현재 om.graph(instances_reasoned.ttl)와 새로 추론한 그래프 비교
-            current_graph_set = set(om.graph)
-            inferred_graph_set = set(inferred_graph)
-            new_triples_in_reasoned = inferred_graph_set - current_graph_set
-            debug_log(logger, f"[DEBUG] Triples in newly inferred graph but not in instances_reasoned.ttl: {len(new_triples_in_reasoned)}")
+            original_triples_count = len(set(original_graph))
+            inferred_triples_count = len(set(inferred_graph))
+            reasoner.inference_stats = {
+                "original_triples": original_triples_count,
+                "inferred_triples": inferred_triples_count,
+                "new_inferences": inferred_triples_count - original_triples_count,
+                "success": True
+            }
+            debug_log(logger, f"[DEBUG] Integrated inference complete: {reasoner.inference_stats['new_inferences']} new triples")
         
         # 추론 결과를 원본 그래프에 적용할지 여부
         applied_count = 0
@@ -311,7 +350,14 @@ async def run_owl_inference(request: OWLInferenceRequest):
                 if triple not in original_triples:
                     om.graph.add(triple)
                     applied_count += 1
-            logger.info(f"Applied {applied_count} inferred triples to original graph")
+            
+            # [FIX] 변경사항 영구 저장 (이미 계산된 inferred_graph를 전달하여 중복 연산 방지)
+            om.save_graph(
+                save_reasoned_separately=True, 
+                enable_semantic_inference=False,
+                reasoned_graph=inferred_graph  # [NEW] 이미 계산된 결과 재사용
+            )
+            logger.info(f"Applied {applied_count} inferred triples to original graph and saved.")
         
         # 엔티티 ID 정규화
         import re

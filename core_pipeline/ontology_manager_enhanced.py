@@ -35,9 +35,11 @@ except ImportError:
 
 
 def _localname(u) -> str:
-    """URI에서 로컬 이름 추출"""
+    """URI에서 로컬 이름 추출 (Enhanced)"""
     s = str(u)
-    return s.split('#')[-1]
+    if '#' in s:
+        return s.split('#')[-1]
+    return s.split('/')[-1]
 
 
 def _make_uri_safe(s: str) -> str:
@@ -236,16 +238,25 @@ class EnhancedOntologyManager:
         """
         self.config = config
         
+        # [NEW] 통계용 카운터
+        self.virtual_entities_count = 0
+        
         # 네임스페이스 직접 초기화 (base 의존성 제거)
         if RDFLIB_AVAILABLE:
             self.graph = Graph()
             # 통일된 네임스페이스 사용 (COA Agent Platform)
             self.ns = Namespace("http://coa-agent-platform.org/ontology#")
             self.ns_legacy = Namespace("http://coa-agent-platform.org/ontology#")  # Legacy alias updated to match standard
+            # [NEW] 가상 엔티티 전용 네임스페이스
+            self.virtual_ns = Namespace("http://coa-agent-platform.org/ontology/virtual#")
         else:
             self.graph = None
             self.ns = None
             self.ns_legacy = None
+            self.virtual_ns = None # Ensure virtual_ns is also None if RDFLib is not available
+        
+        # [INFO] 초기화 완료 메시지
+        # safe_print(f"[INFO] EnhancedOntologyManager 초기화 완료")
         
         # OntologyManager와 동일한 속성 추가
         self.ontology_path = config.get("ontology_path", "./knowledge/ontology")
@@ -273,6 +284,10 @@ class EnhancedOntologyManager:
         # 관계 매핑 캐시
         self._relation_mappings = None
         self._relation_mappings_cache_time = {}  # 파일별 수정 시간 캐시
+        
+        # [NEW] JSON 직렬화 캐시
+        self._json_cache = None
+        self._last_graph_hash = None
 
     def _load_schema_registry(self) -> Dict:
         """Schema Registry 로드 (YAML)"""
@@ -1387,6 +1402,7 @@ class EnhancedOntologyManager:
             safe_print("[DEBUG] generate_instances: 그래프 초기화 완료")
         
         # 온톨로지 스키마 확인 및 로드 (기존 그래프에 추가)
+        self.virtual_entities_count = 0  # 카운터 초기화
         # [MOD] 3단계 구조(schema.ttl) 우선 순위 적용
         schema_file = Path(self.ontology_path) / "schema.ttl"
         legacy_ontology_file = Path(self.output_path) / "k_c4i_ontology_owl.ttl"
@@ -1551,7 +1567,7 @@ class EnhancedOntologyManager:
         schema_subclass = len(list(self.graph.triples((None, RDFS.subClassOf, None))))
         schema_domain = len(list(self.graph.triples((None, RDFS.domain, None))))
         schema_range = len(list(self.graph.triples((None, RDFS.range, None))))
-        safe_print(f"[INFO] generate_instances: 그래프 생성 완료 - {triples_count} triples")
+        safe_print(f"[INFO] generate_instances: 그래프 생성 완료 - {triples_count} triples (가상 엔티티: {self.virtual_entities_count}개)")
         safe_print(f"[DEBUG] generate_instances: 스키마 상태 - subClassOf={schema_subclass}, domain={schema_domain}, range={schema_range}")
         
         return self.graph
@@ -1760,8 +1776,8 @@ class EnhancedOntologyManager:
         # 1. 키워드 -> respondsTo 관계 (표준화)
         keywords = row.get('키워드') or row.get('Keywords')
         if pd.notna(keywords):
-            for keyword in str(keywords).split(','):
-                keyword_clean = keyword.strip()
+            for threat in str(keywords).split(','):
+                keyword_clean = threat.strip()
                 if keyword_clean:
                     threat_uri = URIRef(NS[self._make_uri_safe(keyword_clean)])
                     # 위협 노드가 없으면 생성 (개념적 노드)
@@ -2041,8 +2057,8 @@ class EnhancedOntologyManager:
                     keyword_uri = URIRef(NS[self._make_uri_safe(type_clean)])
                     
                 if (keyword_uri, RDF.type, None) not in self.graph:
-                    self.graph.add((keyword_uri, RDF.type, URIRef(NS["Threat"])))
-                self.graph.add((threat_uri, URIRef(NS["위협유형코드"]), keyword_uri))
+                    self.graph.add((keyword_uri, RDF.type, URIRef(NS["위협유형_마스터"])))
+                self.graph.add((threat_uri, URIRef(NS["has위협유형"]), keyword_uri))
         
         # 2. [NEW]가용자원 스냅샷 연결
         # 위협 상황 발생 시점의 가용 자원들을 연결하여 추론 엔진이 자원 가용성을 파악할 수 있게 함
@@ -2081,25 +2097,26 @@ class EnhancedOntologyManager:
             return None
         
         # URI-safe 문자열 생성
-        entity_type_clean = re.sub(r'[^\w가-힣]', '', entity_type)
-        entity_id_clean = re.sub(r'[^\w가-힣]', '', str(entity_id))
+        entity_type_clean = self._make_uri_safe(entity_type)
+        entity_id_clean = self._make_uri_safe(str(entity_id))
         
         virtual_id = f"{entity_type_clean}_{entity_id_clean}"
-        virtual_uri = URIRef(self.ns[virtual_id])
+        virtual_uri = URIRef(self.virtual_ns[virtual_id]) # Use virtual_ns for virtual entities
         
         # 이미 존재하는지 확인 (중복 생성 방지)
         if (virtual_uri, RDF.type, None) in self.graph:
             # 이미 존재하는 경우 기존 URI 반환
             return virtual_uri
         
-        # 클래스 타입 추가
+        # 가상 엔티티 생성
         class_uri = URIRef(self.ns[entity_type_clean])
         self.graph.add((virtual_uri, RDF.type, class_uri))
+        self.graph.add((virtual_uri, RDFS.label, Literal(f"가상_{entity_type_clean}_{entity_id_clean}")))
         
-        # 라벨 추가
-        self.graph.add((virtual_uri, RDFS.label, Literal(entity_id_clean)))
+        # 통계 카운트 증가
+        self.virtual_entities_count += 1
         
-        # 가상 엔티티임을 표시하는 메타데이터 추가
+        # [NEW] 가상 엔티티 속성 추가 (원본 메타데이터 보존)
         # (향후 통계에서 실제 데이터와 구분 가능)
         self.graph.add((virtual_uri, URIRef(self.ns["isVirtualEntity"]), Literal(True, datatype=XSD.boolean)))
         self.graph.add((virtual_uri, URIRef(self.ns["virtualEntitySource"]), Literal("inferred_relation")))
@@ -2108,13 +2125,30 @@ class EnhancedOntologyManager:
     
     # ========== OntologyManager 호환 메서드 추가 ==========
     
+    def _is_schema_triple(self, s, p, o) -> bool:
+        """스키마 정의 트리플인지 확인 (클래스/속성/계층구조 등)"""
+        from rdflib import RDF, RDFS, OWL
+        # 기술적 속성들
+        if p in [RDFS.subClassOf, RDFS.domain, RDFS.range, RDFS.subPropertyOf,
+                 OWL.inverseOf, OWL.equivalentClass, OWL.equivalentProperty,
+                 OWL.disjointWith, OWL.unionOf, OWL.intersectionOf]:
+            return True
+        # 클래스/속성 정의 타입
+        if p == RDF.type and o in [OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty, 
+                                 OWL.TransitiveProperty, OWL.SymmetricProperty, 
+                                 OWL.FunctionalProperty, OWL.InverseFunctionalProperty,
+                                 RDFS.Class, OWL.Ontology, OWL.Restriction, OWL.Axiom]:
+            return True
+        return False
+
     def save_graph(self, output_path: Optional[str] = None,
                    save_schema_separately: bool = True,
                    save_instances_separately: bool = True,
                    save_reasoned_separately: bool = False,
                    enable_semantic_inference: bool = True,
+                   reasoned_graph: Optional[Graph] = None,
                    cleanup_old_files: bool = True,
-                   backup_old_files: bool = True) -> bool:
+                   backup_old_files: bool = True) -> Dict[str, Any]:
         """
         RDF 그래프를 TTL 파일로 저장 (3단계 구조: schema.ttl + instances.ttl + instances_reasoned.ttl)
         
@@ -2124,15 +2158,25 @@ class EnhancedOntologyManager:
             save_instances_separately: instances.ttl 저장 여부
             save_reasoned_separately: instances_reasoned.ttl 저장 여부 (추론 결과 포함)
             enable_semantic_inference: 추론 그래프 생성 시 의미 기반 추론 활성화 여부
+            reasoned_graph: [NEW] 이미 계산된 추론 그래프가 있는 경우 전달 (중복 추론 방지)
             cleanup_old_files: 기존 중간 생성물 파일 삭제 여부
             backup_old_files: 기존 파일 백업 여부
         
         Returns:
-            저장 성공 여부
+            Dict: 저장 통계 (success, schema_triples, instances_triples, reasoned_triples 등)
         """
+        stats = {
+            "success": False,
+            "schema_triples": 0,
+            "instances_triples": 0,
+            "reasoned_triples": 0,
+            "message": ""
+        }
+        
         if not RDFLIB_AVAILABLE or self.graph is None:
-            safe_print("[WARN] RDFLib not available or graph is None. Cannot save graph.")
-            return False
+            stats["message"] = "RDFLib not available or graph is None"
+            safe_print(f"[WARN] {stats['message']}")
+            return stats
         
         if output_path is None:
             output_path = self.ontology_path
@@ -2174,25 +2218,13 @@ class EnhancedOntologyManager:
                 
                 # 스키마 관련 트리플만 추출
                 for s, p, o in self.graph:
-                    # 클래스 정의, 속성 정의, 관계 정의 등
-                    if p in [RDF.type, RDFS.subClassOf, RDFS.domain, RDFS.range, 
-                            RDFS.subPropertyOf, RDFS.comment, RDFS.label]:
-                        # OWL 클래스, 속성 정의인 경우
-                        if p == RDF.type and o in [OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty, RDFS.Class]:
-                            schema_graph.add((s, p, o))
-                        # 클래스 계층 구조
-                        elif p == RDFS.subClassOf:
-                            schema_graph.add((s, p, o))
-                        # 속성 정의 (domain, range)
-                        elif p in [RDFS.domain, RDFS.range]:
-                            schema_graph.add((s, p, o))
-                        # 주석 및 라벨 (스키마 레벨)
-                        elif p in [RDFS.comment, RDFS.label]:
-                            schema_graph.add((s, p, o))
+                    if self._is_schema_triple(s, p, o):
+                        schema_graph.add((s, p, o))
                 
                 schema_path = ontology_dir / "schema.ttl"
                 schema_graph.serialize(destination=str(schema_path), format="turtle")
-                safe_print(f"[INFO] 스키마 저장 완료: {schema_path}")
+                stats["schema_triples"] = len(list(schema_graph.triples((None, None, None))))
+                safe_print(f"[INFO] 스키마 저장 완료: {schema_path} ({stats['schema_triples']} triples)")
             
             # 2. 인스턴스만 추출하여 저장 (instances.ttl)
             if save_instances_separately:
@@ -2201,21 +2233,37 @@ class EnhancedOntologyManager:
                 for prefix, namespace in self.graph.namespaces():
                     instances_graph.bind(prefix, namespace)
                 
-                # 인스턴스 데이터만 추출 (스키마 제외)
+                # 인스턴스 데이터만 추출 (스키마 제외 및 추론 결과 제외)
+                inferred_triples_count = 0
                 for s, p, o in self.graph:
-                    # 스키마 정의가 아닌 경우
-                    if p not in [RDFS.subClassOf, RDFS.domain, RDFS.range, RDFS.subPropertyOf]:
-                        # OWL 클래스/속성 정의가 아닌 경우
-                        if not (p == RDF.type and o in [OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty, RDFS.Class]):
-                            instances_graph.add((s, p, o))
+                    # [MOD] 스키마 트리플 제외
+                    if self._is_schema_triple(s, p, o):
+                        continue
+                        
+                    # [FIX] 추론된 트리플 제외 (원본 순수성 유지)
+                    if self._is_inferred_triple(s, p, o):
+                        inferred_triples_count += 1
+                        continue
+                        
+                    instances_graph.add((s, p, o))
+                
+                if inferred_triples_count > 0:
+                    safe_print(f"[INFO] {inferred_triples_count}개의 추론된 트리플을 instances.ttl 저장에서 제외했습니다.")
                 
                 instances_path = ontology_dir / "instances.ttl"
                 instances_graph.serialize(destination=str(instances_path), format="turtle")
-                safe_print(f"[INFO] 인스턴스 저장 완료: {instances_path}")
+                stats["instances_triples"] = len(list(instances_graph.triples((None, None, None))))
+                safe_print(f"[INFO] 인스턴스 저장 완료: {instances_path} ({stats['instances_triples']} triples)")
             
             # 3. 추론된 그래프 저장 (instances_reasoned.ttl)
             if save_reasoned_separately:
-                reasoned_graph = self.generate_reasoned_graph(enable_semantic_inference=enable_semantic_inference)
+                # [FIX] reasoned_graph가 인자로 전달되었으면 그것을 사용, 없으면 생성
+                if reasoned_graph is None:
+                    safe_print("[INFO] 저장용 추론 그래프 생성 중...")
+                    reasoned_graph = self.generate_reasoned_graph(enable_semantic_inference=enable_semantic_inference)
+                else:
+                    safe_print("[INFO] 전달받은 추론 그래프를 사용하여 저장합니다. (중복 생성 스킵)")
+                
                 if reasoned_graph:
                     reasoned_instances_graph = Graph()
                     # 네임스페이스 바인딩 복사
@@ -2224,20 +2272,20 @@ class EnhancedOntologyManager:
                     
                     # 추론된 그래프의 모든 트리플 복사 (스키마 제외)
                     for s, p, o in reasoned_graph:
-                        # 스키마 정의가 아닌 경우
-                        if p not in [RDFS.subClassOf, RDFS.domain, RDFS.range, RDFS.subPropertyOf]:
-                            # OWL 클래스/속성 정의가 아닌 경우
-                            if not (p == RDF.type and o in [OWL.Class, OWL.ObjectProperty, OWL.DatatypeProperty, RDFS.Class]):
-                                reasoned_instances_graph.add((s, p, o))
+                        # [MOD] 동일한 방식으로 스키마 제외
+                        if self._is_schema_triple(s, p, o):
+                            continue
+                        reasoned_instances_graph.add((s, p, o))
                     
                     reasoned_path = ontology_dir / "instances_reasoned.ttl"
                     reasoned_instances_graph.serialize(destination=str(reasoned_path), format="turtle")
-                    reasoned_triples = len(list(reasoned_instances_graph.triples((None, None, None))))
-                    safe_print(f"[INFO] 추론된 인스턴스 저장 완료: {reasoned_path} ({reasoned_triples} triples)")
+                    stats["reasoned_triples"] = len(list(reasoned_instances_graph.triples((None, None, None))))
+                    safe_print(f"[INFO] 추론된 인스턴스 저장 완료: {reasoned_path} ({stats['reasoned_triples']} triples)")
                     
-                    # [FIX] 메모리 그래프 업데이트: 추론된 결과를 현재 그래프로 설정하여 UI에 반영
-                    self.graph = reasoned_graph
-                    safe_print(f"[INFO] 메모리 그래프 업데이트 완료: {len(reasoned_graph)} triples")
+                    # [FIX] 원본 오염 방지를 위해 self.graph를 reasoned_graph로 자동 교체하는 로직 제거
+                    # self.graph = reasoned_graph
+                    # safe_print(f"[INFO] 메모리 그래프 업데이트 완료: {len(reasoned_graph)} triples")
+                    pass
                 else:
                     safe_print("[WARN] 추론 그래프 생성 실패. instances_reasoned.ttl 저장 건너뜀")
             
@@ -2256,7 +2304,7 @@ class EnhancedOntologyManager:
                                 if str(old_file).startswith(str(Path(self.ontology_path))):
                                     backup_dir = Path(self.ontology_path) / "backup"
                                 else:
-                                    backup_dir = Path(self.output_path) / "backup"
+                                    backup_dir = ontology_dir / "backup" # Use ontology_dir here
                                 backup_dir.mkdir(parents=True, exist_ok=True)
                                 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
                                 backup_path = backup_dir / f"{old_file.name}.backup_{timestamp}"
@@ -2269,20 +2317,67 @@ class EnhancedOntologyManager:
                         except Exception as e:
                             safe_print(f"[WARN] 파일 정리 실패: {old_file}, {e}")
             
-            return True
+            stats["success"] = True
+            stats["message"] = "Graph saved successfully"
+            return stats
             
         except Exception as e:
-            safe_print(f"[WARN] Failed to save RDF graph: {e}")
+            stats["message"] = f"Failed to save RDF graph: {str(e)}"
+            safe_print(f"[WARN] {stats['message']}")
             import traceback
             traceback.print_exc()
-            return False
+            return stats
     
-    def generate_reasoned_graph(self, enable_semantic_inference: bool = True) -> Optional[Graph]:
+    def _is_inferred_triple(self, s, p, o) -> bool:
+        """
+        특정 트리플이 추론된 것인지 판단
+        
+        판단 기준:
+        1. Axiom(주석) 정보가 있는지 확인
+        2. 특정 추론 전용 프레디케이트인지 확인 (hasAdvantage 등)
+        """
+        if self.graph is None:
+            return False
+            
+        # 1. Axiom 정보 확인 (annotatedSource/Property/Target)
+        # 이 작업은 성능에 영향을 줄 수 있으므로 주의
+        from rdflib import OWL, RDF, RDFS
+        # [MOD] 효율성을 위해 모든 Axiom을 먼저 찾지 않고, 
+        # (Axiom, annotatedSource, s)가 있는 노드만 필터링
+        for axiom in self.graph.subjects(OWL.annotatedSource, s):
+            if (axiom, RDF.type, OWL.Axiom) in self.graph and \
+               (axiom, OWL.annotatedProperty, p) in self.graph and \
+               (axiom, OWL.annotatedTarget, o) in self.graph:
+                # Axiom 설명 확인
+                for _, _, comment in self.graph.triples((axiom, RDFS.comment, None)):
+                    if str(comment) == "inferred_relation":
+                        return True
+        
+        # 2. 추론 전용 프레디케이트 확인 (전술 규칙 등에서 생성)
+        # NS가 초기화되지 않았을 경우를 대비해 문자열 평탄화
+        ns_str = str(self.ns) if self.ns else "http://coa-agent-platform.org/ontology#"
+        inferred_predicates = [
+            ns_str + "hasAdvantage", 
+            ns_str + "hasDisadvantage",
+            ns_str + "tacticalEffect",
+            ns_str + "inferred_relation"
+        ]
+        if str(p) in inferred_predicates:
+            return True
+            
+        return False
+
+    def generate_reasoned_graph(self, 
+                               enable_semantic_inference: bool = True,
+                               run_tactical_rules: bool = True,
+                               run_owl_reasoner: bool = True) -> Optional[Graph]:
         """
         추론 엔진을 사용하여 추론된 그래프 생성
         
         Args:
-            enable_semantic_inference: 의미 기반 추론 활성화 여부
+            enable_semantic_inference: 의미 기반 추론(LLM/Search) 활성화 여부
+            run_tactical_rules: SPARQL 기반 전술 규칙 실행 여부
+            run_owl_reasoner: OWL-RL 추론기 실행 여부
         
         Returns:
             추론 결과가 추가된 Graph 객체 (instances_reasoned.ttl로 저장될 그래프)
@@ -2290,6 +2385,9 @@ class EnhancedOntologyManager:
         if not RDFLIB_AVAILABLE or self.graph is None:
             safe_print("[WARN] RDFLib not available or graph is None. Cannot generate reasoned graph.")
             return None
+        
+        import time
+        start_total = time.time()
         
         try:
             # 기존 그래프 복사 (추론 결과를 추가하기 위해)
@@ -2337,16 +2435,18 @@ class EnhancedOntologyManager:
                     safe_print(f"[INFO] COA 인스턴스 {len(coa_instances)}개 발견")
                     
                     if len(coa_instances) == 0:
-                        safe_print("[WARN] COA 인스턴스를 찾을 수 없습니다. 그래프에 COA 데이터가 있는지 확인하세요.")
-                        safe_print(f"[DEBUG] COA 클래스 URI: {coa_class}")
-                        # 디버깅: 그래프의 모든 타입 확인
-                        all_types = set()
-                        for s, p, o in self.graph.triples((None, RDF.type, None)):
-                            all_types.add(str(o))
-                        safe_print(f"[DEBUG] 그래프에 있는 타입 샘플 (최대 20개): {list(all_types)[:20]}")
+                        safe_print("[WARN] COA 인스턴스를 찾을 수 없습니다.")
+                    
+                    # [PERFORMANCE] 처리할 인스턴스 수 제한 및 로그 강화
+                    max_coa_to_process = self.config.get("max_coa_semantic_inference", 20)
+                    process_count = min(len(coa_instances), max_coa_to_process)
+                    safe_print(f"[INFO] Semantic Inference 시작 (대상: {process_count}/{len(coa_instances)}개)")
                     
                     inferred_count = 0
-                    for coa_subj, _, _ in coa_instances[:50]:  # 최대 50개만 처리 (성능 고려)
+                    start_semantic = time.time()
+                    for idx, (coa_subj, _, _) in enumerate(coa_instances[:process_count]):
+                        if idx > 0 and idx % 5 == 0:
+                            safe_print(f"  - 진행률: {idx}/{process_count}...")
                         # [FIX] Subject URI에 공백이 있는 경우 처리
                         coa_str = str(coa_subj)
                         if " " in coa_str:
@@ -2384,6 +2484,11 @@ class EnhancedOntologyManager:
                                     
                                     
                                     # [NEW] 추론 필터링 (과도한 추론 방지)
+                                    # [MOD] rdf:type, sameAs, equivalentClass 등은 추론 결과로 추가하지 않음 (오염 방지)
+                                    from rdflib import RDF, OWL
+                                    if pred_uri in [RDF.type, OWL.sameAs, OWL.equivalentClass, OWL.equivalentProperty]:
+                                        continue
+
                                     if hasattr(semantic_inference, '_should_exclude_inference'):
                                         if semantic_inference._should_exclude_inference(str(coa_subj), str(pred_uri), str(related_uri)):
                                             continue
@@ -2406,7 +2511,7 @@ class EnhancedOntologyManager:
                                 except Exception as e:
                                     safe_print(f"[WARN] 추론 관계 추가 실패: {e}")
                     
-                    safe_print(f"[INFO] 추론 완료: {inferred_count}개 관계 추가")
+                    safe_print(f"[INFO] Semantic Inference 완료: {inferred_count}개 관계 추가 (시간: {time.time() - start_semantic:.2f}초)")
                     
                 except ImportError as e:
                     safe_print(f"[WARN] SemanticInference를 임포트할 수 없습니다: {e}")
@@ -2417,9 +2522,10 @@ class EnhancedOntologyManager:
             
             # 🔥 NEW: SPARQL 기반 전술적 유불리 추론 (hasAdvantage, hasDisadvantage)
             tactical_rules_path = Path(self.ontology_path) / "tactical_rules.sparql"
-            if tactical_rules_path.exists():
+            if run_tactical_rules and tactical_rules_path.exists():
+                start_tactical = time.time()
                 try:
-                    safe_print(f"[INFO] 전술 추론 규칙 실행: {tactical_rules_path}")
+                    safe_print(f"[INFO] 전술 추론 규칙 실행 중: {tactical_rules_path}")
                     with open(tactical_rules_path, 'r', encoding='utf-8') as f:
                         rules_content = f.read()
                     
@@ -2451,7 +2557,7 @@ class EnhancedOntologyManager:
                         except Exception as qe:
                             safe_print(f"[WARN] 개별 전술 쿼리 실행 실패: {qe}")
                     
-                    safe_print(f"[INFO] 전술 추론 완료: {tactical_inferred_count}개 유불리 관계 추가")
+                    safe_print(f"[INFO] 전술 추론 완료: {tactical_inferred_count}개 유불리 관계 추가 (시간: {time.time() - start_tactical:.2f}초)")
                     
                 except Exception as e:
                     safe_print(f"[WARN] 전술 추론 규칙 실행 중 오류: {e}")
@@ -2459,32 +2565,42 @@ class EnhancedOntologyManager:
                     traceback.print_exc()
             
             # OWL-RL 추론 실행 (SemanticInference 이후)
-            try:
-                from core_pipeline.owl_reasoner import OWLReasoner, OWLRL_AVAILABLE
-                if OWLRL_AVAILABLE:
-                    safe_print("[INFO] OWL-RL 추론 실행 중...")
-                    namespace = str(self.ns) if self.ns else None
-                    reasoner = OWLReasoner(reasoned_graph, namespace)
-                    inferred_graph = reasoner.run_inference(include_rdfs=True)
-                    
-                    if inferred_graph is not None:
-                        stats = reasoner.get_stats()
-                        if stats.get("success"):
-                            owl_new_count = stats.get("new_inferences", 0)
-                            if owl_new_count > 0:
-                                safe_print(f"[INFO] OWL-RL 추론 완료: {owl_new_count}개 새로운 트리플 생성")
-                                # OWL-RL 추론 결과를 reasoned_graph에 반영
-                                reasoned_graph = inferred_graph
+            if run_owl_reasoner:
+                start_owl = time.time()
+                try:
+                    from core_pipeline.owl_reasoner import OWLReasoner, OWLRL_AVAILABLE
+                    if OWLRL_AVAILABLE:
+                        # [PERFORMANCE] 대규모 그래프 자동 체크 및 보호
+                        graph_size = len(reasoned_graph)
+                        include_rdfs = self.config.get("include_rdfs_inference", False) # 기본값 False로 변경
+                        
+                        if graph_size > 20000 and include_rdfs:
+                            safe_print(f"[WARN] 대규모 그래프 감지 ({graph_size} triples). 안전을 위해 RDFS 추론을 비활성화합니다.")
+                            include_rdfs = False
+                            
+                        safe_print(f"[INFO] OWL-RL 추론기 가동 중 (대상: {graph_size} triples, RDFS: {include_rdfs})...")
+                        namespace = str(self.ns) if self.ns else None
+                        reasoner = OWLReasoner(reasoned_graph, namespace)
+                        inferred_graph = reasoner.run_inference(include_rdfs=include_rdfs)
+                        
+                        if inferred_graph is not None:
+                            stats = reasoner.get_stats()
+                            if stats.get("success"):
+                                owl_new_count = stats.get("new_inferences", 0)
+                                if owl_new_count > 0:
+                                    safe_print(f"[INFO] OWL-RL 추론 완료: {owl_new_count}개 새로운 트리플 생성 (시간: {time.time() - start_owl:.2f}초)")
+                                    # OWL-RL 추론 결과를 reasoned_graph에 반영
+                                    reasoned_graph = inferred_graph
+                                else:
+                                    safe_print(f"[INFO] OWL-RL 추론 완료: 새로운 트리플 없음 (시간: {time.time() - start_owl:.2f}초)")
                             else:
-                                safe_print("[INFO] OWL-RL 추론 완료: 새로운 트리플 없음")
-                        else:
-                            safe_print(f"[WARN] OWL-RL 추론 실패: {stats.get('error', 'Unknown error')}")
-                else:
-                    safe_print("[INFO] owlrl 라이브러리가 없어 OWL-RL 추론을 건너뜁니다.")
-            except Exception as e:
-                safe_print(f"[WARN] OWL-RL 추론 실행 실패: {e}")
-                import traceback
-                traceback.print_exc()
+                                safe_print(f"[WARN] OWL-RL 추론 실패: {stats.get('error', 'Unknown error')}")
+                    else:
+                        safe_print("[INFO] owlrl 라이브러리가 없어 OWL-RL 추론을 건너뜁니다.")
+                except Exception as e:
+                    safe_print(f"[WARN] OWL-RL 추론 실행 실패: {e}")
+                    import traceback
+                    traceback.print_exc()
             
             # 추론된 그래프의 트리플 수 확인 (정확한 측정)
             reasoned_triples_set = set(reasoned_graph)
@@ -2493,7 +2609,7 @@ class EnhancedOntologyManager:
             original_triples = len(original_triples_set)
             new_triples = reasoned_triples - original_triples
             
-            safe_print(f"[INFO] 추론 그래프 생성 완료: 원본 {original_triples}개, 추론 후 {reasoned_triples}개 (+{new_triples}개)")
+            safe_print(f"[INFO] 전체 추론 프로세스 완료: 원본 {original_triples}개 -> 최종 {reasoned_triples}개 (총 소요시간: {time.time() - start_total:.2f}초)")
             
             return reasoned_graph
             
@@ -2798,86 +2914,106 @@ class EnhancedOntologyManager:
             }
         
         # 디버깅: 그래프 상태 확인
-        total_triples = len(list(self.graph.triples((None, None, None))))
-        owl_class_count = len(list(self.graph.triples((None, RDF.type, OWL.Class))))
-        owl_property_count = len(list(self.graph.triples((None, RDF.type, OWL.ObjectProperty))))
-        subClassOf_count = len(list(self.graph.triples((None, RDFS.subClassOf, None))))
-        domain_count = len(list(self.graph.triples((None, RDFS.domain, None))))
-        range_count = len(list(self.graph.triples((None, RDFS.range, None))))
-        # 🔥 로그 최적화: 불필요한 DEBUG 로그 제거 (to_json은 자주 호출되므로)
-        # safe_print(f"[DEBUG] to_json 시작: 총 triples={total_triples}, OWL.Class={owl_class_count}, OWL.ObjectProperty={owl_property_count}, subClassOf={subClassOf_count}, domain={domain_count}, range={range_count}")
+        # [OPTIMIZATION] 불필요한 len(list(triples)) 호출 제거 (매우 느림)
+        # safe_print(f"[DEBUG] to_json 시작")
         
+        # [OPTIMIZATION] 캐시 확인
+        # 그래프 변경 감지를 위해 id와 사이즈 체크
+        current_graph_hash = (id(self.graph), len(self.graph))
+        if self._json_cache and self._last_graph_hash == current_graph_hash:
+            # safe_print("[DEBUG] Using cached JSON data")
+            return self._json_cache
+            
+        # 변수 초기화 (Stats 생성용)
+        total_triples = len(self.graph)
+        owl_class_count = 0
+        owl_property_count = 0
+        subClassOf_count = 0
+        domain_count = 0
+        range_count = 0
+            
         instances = {"nodes": [], "links": []}
         schema = {"nodes": [], "links": []}
         
-        # 인스턴스 노드 추출
+        # [OPTIMIZATION] 한 번의 순회로 필요한 모든 정보 수집 (RDFLib triples 탐색 최소화)
+        node_groups = {}      # {uri: group_name} (최종 결정된 그룹)
+        node_labels = {}      # {uri: label}
+        virtual_status = {}   # {uri: bool}
+        
+        # 엔티티 타입 우선순위 (가장 구체적이고 사용자에게 친숙한 타입 우선)
+        type_priority = [
+            "DefenseCOA", "OffensiveCOA", "CounterAttackCOA", "PreemptiveCOA",
+            "DeterrenceCOA", "ManeuverCOA", "InformationOpsCOA",
+            "COA", "COA_Library",
+            "아군부대현황", "적군부대현황", "아군가용자산", "위협상황", "임무정보", 
+            "전장축선", "지형셀", "기상상황", "제약조건", "민간인지역", "시나리오모음",
+            "위협유형_마스터", "임무별_자원할당"
+        ]
+        priority_set = set(type_priority)
+        
+        # 1. 타입 정보 수집 및 그룹 결정
+        for s, _, o in self.graph.triples((None, RDF.type, None)):
+            if isinstance(s, BNode): continue
+            
+            local_type = _localname(o)
+            
+            # 이미 우선순위가 높은 그룹으로 결정된 경우 스킵 (단, 더 높은 우선순위가 나오면 교체)
+            current_group = node_groups.get(s)
+            
+            if local_type in priority_set:
+                # 우선순위 타입 발견!
+                # 기존 그룹이 없거나, 기존 그룹이 우선순위 목록에 없거나(기타 등), 
+                # 현재 타입이 더 높은 우선순위라면 교체
+                if not current_group or current_group not in priority_set:
+                    node_groups[s] = local_type
+                else:
+                    # 둘 다 우선순위 목록에 있다면, 리스트 인덱스로 비교 (낮은 인덱스가 높은 우선순위)
+                    try:
+                        curr_idx = type_priority.index(current_group)
+                        new_idx = type_priority.index(local_type)
+                        if new_idx < curr_idx:
+                            node_groups[s] = local_type
+                    except ValueError:
+                        pass # should not happen
+            elif not current_group:
+                # 아직 그룹이 없으면 일반 타입 할당 (단, NamedIndividual 등 제외)
+                if local_type not in ["NamedIndividual", "Thing", "Resource"]:
+                    node_groups[s] = local_type
+            
+        # 2. 라벨 정보 수집
+        for s, _, o in self.graph.triples((None, RDFS.label, None)):
+            if isinstance(s, BNode): continue
+            node_labels[s] = str(o)
+            
+        # 3. 가상 엔티티 정보 수집
+        is_virtual_uri = URIRef(self.ns["isVirtualEntity"])
+        for s, _, o in self.graph.triples((None, is_virtual_uri, None)):
+            virtual_status[s] = str(o).lower() in ['true', '1']
+
         inst_nodes = {}
         virtual_entity_count = 0
         actual_data_node_count = 0
         
-        # 먼저 모든 노드의 타입을 수집 (가장 구체적인 타입 우선)
-        node_types = {}  # {node_uri: [타입 리스트]}
-        for s, _, o in self.graph.triples((None, RDF.type, None)):
-            # Schema 노드 제외
-            if o == self.ns.Table or o == self.ns.Column:
-                continue
-            
-            # [MOD] 네임스페이스 필터링 완화: 모든 타입 수집 (그래프 시각화를 위해)
-            # if str(o).startswith(str(self.ns)) or str(o).startswith(str(self.ns_legacy)):
-            if True:
-                 # Blank Node는 건너뜀 (시각화 제외)
-                if isinstance(s, BNode):
-                    continue
-
-                if s not in node_types:
-                    node_types[s] = []
-                node_types[s].append(_localname(o))
+        # 수집된 노드들 생성
+        # (타입이 하나라도 있는 노드들 대상)
+        # 주의: 타입이 없는 노드(라벨만 있는 경우 등)는 여기서 누락될 수 있으므로, 
+        # node_groups, node_labels, virtual_status의 합집합을 순회해야 함
+        all_subjects = set(node_groups.keys()) | set(node_labels.keys()) | set(virtual_status.keys())
         
-        # COA 타입 우선순위 (가장 구체적인 타입 우선)
-        coa_type_priority = [
-            "DefenseCOA", "OffensiveCOA", "CounterAttackCOA", "PreemptiveCOA",
-            "DeterrenceCOA", "ManeuverCOA", "InformationOpsCOA",
-            "COA", "COA_Library"  # 일반 타입은 낮은 우선순위
-        ]
-        
-        for s, types in node_types.items():
+        for s in all_subjects:
             local_name = _localname(s)
             
-            # 가장 구체적인 타입 선택 (COA 타입 우선순위 적용)
-            type_name = None
-            for priority_type in coa_type_priority:
-                if priority_type in types:
-                    type_name = priority_type
-                    break
+            # 그룹 결정 (없으면 '기타')
+            type_name = node_groups.get(s, "기타")
             
-            # 우선순위에 없는 타입이면 generic 타입 제외하고 선택
-            if type_name is None:
-                generic_types = ["Resource", "Thing", "NamedIndividual"]
-                specific_types = [t for t in types if t not in generic_types]
-                type_name = specific_types[0] if specific_types else (types[0] if types else "기타")
-            
-            # 가상 엔티티 여부 확인
-            is_virtual = False
-            for _, _, val in self.graph.triples((s, URIRef(self.ns["isVirtualEntity"]), None)):
-                try:
-                    if str(val).lower() in ['true', '1']:
-                        is_virtual = True
-                        virtual_entity_count += 1
-                        break
-                except Exception:
-                    pass
-            
-            if not is_virtual:
+            # 인덱싱된 정보 사용 (성능 향상)
+            is_virtual = virtual_status.get(s, False)
+            if is_virtual:
+                virtual_entity_count += 1
+            else:
                 actual_data_node_count += 1
             
-            # rdfs:label 직접 가져오기 (있으면)
-            rdfs_label = None
-            for _, _, lbl in self.graph.triples((s, RDFS.label, None)):
-                try:
-                    rdfs_label = str(lbl)
-                    break
-                except Exception:
-                    pass
+            rdfs_label = node_labels.get(s)
             
             # 노드 표시: ID를 기본으로 하고, rdfs:label이 있으면 ID (Label) 형식 사용
             if rdfs_label and rdfs_label != local_name:
@@ -2913,17 +3049,27 @@ class EnhancedOntologyManager:
             u_local = _localname(u)
             a_local = _localname(a)
             
-            # 소스 노드가 있으면 링크 생성 시도
-            if u_local in inst_nodes:
-                # 타겟 노드가 없으면 추가 리스트에 넣음
-                if a_local not in inst_nodes:
-                    missing_targets.add(a)
-                
-                inst_links.append({
-                    "source": u_local,
-                    "target": a_local,
-                    "relation": _localname(p)
-                })
+            # 소스 노드가 있으면 링크 생성 시도, 없으면 자동 생성
+            if u_local not in inst_nodes:
+                # 소스 노드 자동 생성 (타입/라벨 정보가 없었던 경우)
+                inst_nodes[u_local] = {
+                    "id": u_local,
+                    "label": u_local, # 기본 라벨
+                    "group": "기타", # 기본 그룹
+                    "is_virtual": False
+                }
+                # 나중에 라벨/타입 보강을 위해 missing_targets처럼 관리할 수도 있으나, 
+                # 일단 링크 연결성이 중요하므로 즉시 생성
+            
+            # 타겟 노드가 없으면 추가 리스트에 넣음
+            if a_local not in inst_nodes:
+                missing_targets.add(a)
+            
+            inst_links.append({
+                "source": u_local,
+                "target": a_local,
+                "relation": _localname(p)
+            })
         
         # [NEW] 누락된 타겟 노드 추가
         for missing_uri in missing_targets:
@@ -3139,11 +3285,17 @@ class EnhancedOntologyManager:
             }
         }
         
-        return {
+        result = {
             "instances": instances,
             "schema": schema,
             "stats": stats
         }
+        
+        # [OPTIMIZATION] 캐시 저장
+        self._json_cache = result
+        self._last_graph_hash = current_graph_hash
+        
+        return result
 
     def get_node_details(self, node_id: str) -> Dict[str, Any]:
         """

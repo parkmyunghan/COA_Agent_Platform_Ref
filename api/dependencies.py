@@ -144,6 +144,10 @@ class GlobalStateManager:
                     ontology_manager=self.orchestrator.core.ontology_manager,
                     use_enhanced=True
                 )
+                 
+                 # [NEW] 에이전트 기반 생성을 위한 core 주입 (옵션 A)
+                 self.coa_service.set_agent_core(self.orchestrator.core)
+                 logger.info("COAService에 agent_core 주입 완료 - 에이전트 기반 생성 활성화")
         logger.info("Global State Initialized.")
 
     def get_coa_service(self) -> COAService:

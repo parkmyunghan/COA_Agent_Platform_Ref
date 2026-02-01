@@ -1,0 +1,39 @@
+Columns: ['자산ID', '자산명', '자산종류', '수량', '배치지형셀ID', '가용상태', '비고', 'SIDC', '전투력지수', '이동속도_kmh', '감지범위_km', '탐지범위_km']
+------------------------------
+Missing Values Check:
+자산ID         0
+자산명          0
+자산종류         0
+수량           0
+배치지형셀ID      0
+가용상태         0
+비고           2
+SIDC         0
+전투력지수        0
+이동속도_kmh     0
+감지범위_km      0
+탐지범위_km     23
+dtype: int64
+------------------------------
+
+ Rows with missing '비고':
+      자산ID  ... 탐지범위_km
+21  AST022  ...     NaN
+22  AST023  ...     NaN
+
+[2 rows x 12 columns]
+
+ Rows with missing '탐지범위_km':
+     자산ID  ... 탐지범위_km
+0  AST001  ...     NaN
+1  AST002  ...     NaN
+2  AST003  ...     NaN
+3  AST004  ...     NaN
+4  AST005  ...     NaN
+5  AST006  ...     NaN
+6  AST007  ...     NaN
+7  AST008  ...     NaN
+8  AST009  ...     NaN
+9  AST010  ...     NaN
+
+[10 rows x 12 columns]

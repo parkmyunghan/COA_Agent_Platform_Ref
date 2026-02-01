@@ -1,0 +1,37 @@
+Total Graph Size: 568 nodes, 1613 links
+------------------------------------------------------------
+
+Scenario: 축선별 부대 (axis-units)
+  - Nodes: 69
+  - Links: 82
+  - Node Groups: {'임무정보': 10, 'Threat': 16, '아군부대현황': 13, '적군부대현황': 10, '전장축선': 10, '위협상황': 10}
+  - Relations: {'has전장축선': 62, 'has임무정보': 10, 'has적군부대현황': 10}
+  - Connected Nodes: 52
+  - Isolated Nodes: 17 (24.6%)
+    - Isolated Breakdown: {'Threat': 16, '아군부대현황': 1}
+
+Scenario: 위협-방책 (threat-coa)
+  - Nodes: 111
+  - Links: 321
+  - Node Groups: {'DefenseCOA': 14, 'Threat': 16, 'ManeuverCOA': 10, 'InformationOpsCOA': 10, 'PreemptiveCOA': 10, 'OffensiveCOA': 10, '위협유형_마스터': 11, 'CounterAttackCOA': 10, '위협상황': 10, 'DeterrenceCOA': 10}
+  - Relations: {'respondsTo': 311, '위협유형코드': 10}
+  - Connected Nodes: 111
+  - Isolated Nodes: 0 (0.0%)
+
+Scenario: 임무-자원 (mission-resource)
+  - Nodes: 221
+  - Links: 318
+  - Node Groups: {'임무별_자원할당': 159, '임무정보': 10, '아군가용자산': 24, 'Resource': 28}
+  - Relations: {'assignedToMission': 159, 'referencesAsset': 159}
+  - Connected Nodes: 191
+  - Isolated Nodes: 30 (13.6%)
+    - Isolated Breakdown: {'아군가용자산': 2, 'Resource': 28}
+
+Scenario: 부대-지형 (unit-terrain)
+  - Nodes: 78
+  - Links: 46
+  - Node Groups: {'아군가용자산': 24, '아군부대현황': 13, '지형셀': 31, '적군부대현황': 10}
+  - Relations: {'locatedIn': 46}
+  - Connected Nodes: 74
+  - Isolated Nodes: 4 (5.1%)
+    - Isolated Breakdown: {'지형셀': 3, '아군가용자산': 1}

@@ -1,0 +1,28 @@
+Analyzing relations for Terrain IDs: ['TERR021', 'TERR022', 'TERR023', 'TERR024', 'TERR025', 'TERR026', 'TERR027', 'TERR028', 'TERR029', 'TERR030']
+------------------------------------------------------------
+Found 20 references to patched terrain cells.
+
+[Detailed Findings]
+Terrain TERR021 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 기계화여단 (기계화)
+Terrain TERR023 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 보병여단 (보병)
+Terrain TERR024 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 기갑여단 (기갑)
+Terrain TERR024 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 포병여단 (포병)
+Terrain TERR022 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 수색대대 (수색)
+Terrain TERR021 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 전차대대 (기갑)
+Terrain TERR028 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 공병대대 (공병)
+Terrain TERR028 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 통신대대 (통신)
+Terrain TERR028 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 의무중대 (의무)
+Terrain TERR027 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 보급대대 (군수)
+Terrain TERR029 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 1항공여단 (항공)
+Terrain TERR030 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 특수작전팀 (특수전)
+Terrain TERR027 is used in 아군부대현황.xlsx (배치지형셀ID) -> 부대: 제1공격헬기대대 (항공)
+Terrain TERR023 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR022 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR028 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR024 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR024 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR027 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+Terrain TERR030 is used in 아군가용자산.xlsx (배치지형셀ID) -> 
+
+[Logical Validation Required]
+Check if 'Mountain' (default) type fits the context above.

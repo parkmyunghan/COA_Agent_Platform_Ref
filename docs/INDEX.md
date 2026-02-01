@@ -35,14 +35,15 @@
 
 ### 📁 [20_Components](20_Components)
 각 계층(Layer)별 컴포넌트의 상세 구현 명세입니다.
-- **agent_layer**: 지능형 에이전트 구현 명세
-- **data_layer**: 16개 테이블 기반 데이터 파이프라인 명세
-- **command_layer**: React 기반 인터페이스 및 시각화 명세
+- **agent_layer**: 지능형 에이전트 (COAScorer, OntologyReasoner 등) 구현 명세
+- **data_layer**: 16개 테이블 기반 데이터 파이프라인 및 온톨로지 변환 명세
+- **command_layer**: React 기반 대시보드 및 전술 시각화 명세
 
 ### 📁 [30_Guides](30_Guides)
 사용자 및 개발자를 위한 각종 가이드 문서입니다.
-- **사용자_가이드.md**: React 대시보드 사용 매뉴얼
-- **INSTALLATION_GUIDE.md**: 설치 및 환경 구성 가이드
+- **사용자_가이드.md**: React 대시보드 및 프로젝트 실행 매뉴얼
+- **관리자_가이드.md**: 시스템 설정 및 모델 관리 가이드
+- **데이터_관리_가이드.md**: 16개 데이터 테이블 관리 지침
 - **[system_architecture.html](system_architecture.html)**: 인터랙티브 아키텍처 다이어그램 (최신)
 
 ### 📁 [99_Archive](99_Archive)

@@ -1,0 +1,56 @@
+2026-01-29 15:51:32,388 - root - INFO - Logging initialized. File: logs\platform_20260129.log
+2026-01-29 15:51:32,388 - root - INFO - [시스템] 운영 모드 - 기본 로그만 기록됩니다.
+2026-01-29 15:51:32,390 - api.dependencies - INFO - Initializing Orchestrator...
+2026-01-29 15:51:32,419 - OntologyManager - INFO - 기존 온톨로지 파일 발견: instances_reasoned.ttl. 자동 로드를 시도합니다.
+2026-01-29 15:51:32,421 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\schema.ttl)
+2026-01-29 15:51:32,465 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 1436
+2026-01-29 15:51:32,479 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\instances_reasoned.ttl)
+2026-01-29 15:51:33,095 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 17241
+2026-01-29 15:51:33,096 - OntologyManager - INFO - 'instances_reasoned.ttl' 기반으로 그래프 초기화 완료.
+2026-01-29 15:51:36,281 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:51:36,294 - LLMManager - INFO - OpenAI API 초기화 및 검증(생성 테스트) 완료 (모델: gpt-4o)
+2026-01-29 15:51:48,352 - LLMManager - INFO - 사내망 모델 4개 중 0개 사용 가능
+2026-01-29 15:51:48,361 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:51:48,370 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:51:48,370 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:51:48,373 - RuleEngine - INFO - 규칙 파일 로드 완료: 3개 규칙, 3개 가중치
+2026-01-29 15:51:48,373 - core_pipeline.orchestrator - INFO - Enhanced Ontology Manager initialized (독립 모드)
+2026-01-29 15:51:52,488 - core_pipeline.orchestrator - INFO - GPU 메모리 상태: 4.00 GB 사용 가능 / 4.00 GB 전체
+2026-01-29 15:51:52,492 - core_pipeline.orchestrator - INFO - OpenAI API 사용 가능 (모델: gpt-4o)
+2026-01-29 15:51:52,492 - core_pipeline.orchestrator - INFO - 로컬 모델 로드를 생략하고 원격 모델을 우선 사용합니다. (지연 로드)
+2026-01-29 15:51:52,492 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 중 (RAG 인덱스 최적화)...
+2026-01-29 15:51:58,853 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-29 15:51:59,023 - core_pipeline.rag_manager - INFO - Embedding model loaded (CPU): C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-29 15:51:59,027 - core_pipeline.rag_manager - INFO - FAISS index loaded: C:\POC\COA_Agent_Platform_Ref\knowledge\embeddings\faiss_index.bin
+2026-01-29 15:51:59,027 - core_pipeline.rag_manager - INFO - RAG 인덱스 메타데이터 로드 완료: 67개 청크
+2026-01-29 15:51:59,027 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 완료
+2026-01-29 15:51:59,027 - core_pipeline.orchestrator - INFO - RAG 인덱스가 이미 존재합니다: 67개 청크
+2026-01-29 15:51:59,108 - core_pipeline.orchestrator - INFO - StatusManager 초기화 완료
+2026-01-29 15:51:59,109 - core_pipeline.orchestrator - INFO - 실시간 데이터 감시 활성화
+2026-01-29 15:51:59,110 - api.dependencies - INFO - Initializing COAService...
+2026-01-29 15:51:59,120 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-29 15:51:59,130 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-29 15:51:59,130 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-29 15:51:59,134 - api.dependencies - INFO - COAService에 agent_core 주입 완료 - 에이전트 기반 생성 활성화
+2026-01-29 15:51:59,134 - api.dependencies - INFO - Global State Initialized.
+2026-01-29 15:51:59,172 - core_pipeline.visualization_generator - INFO - 지형셀 데이터 로드 완료 (31개 셀)
+2026-01-29 15:51:59,173 - api.routers.chat - INFO - [Chat] Request received - situation_id: THR001, has_situation_info: True
+2026-01-29 15:51:59,173 - api.routers.chat - INFO - [Chat] situation_info keys: ['situation_id', 'approach_mode', 'timestamp', 'is_manual', 'threat_level', 'location', 'threat_type', '위협ID', 'threat_id', 'selected_threat_id', 'threat_type_code', 'axis_id', '위협유형', '위협수준', '발생장소', '관련축선ID', 'location_cell_id', 'related_axis_id', 'latitude', 'longitude', 'mission_id', '임무ID', 'related_mission_id', 'occurrence_time', 'related_enemy_unit_id', 'raw_report_text', 'confidence', 'status', 'threat_type_original', 'enemy_unit_original', 'remarks', 'is_demo', 'is_sitrep']
+2026-01-29 15:51:59,177 - api.routers.chat - INFO - [Chat] Injected situation_info from request: THR001
+2026-01-29 15:51:59,177 - api.routers.chat - INFO - [Chat] Total contexts for LLM: 1 - {'situation_info': 1}
+2026-01-29 15:52:08,000 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:52:08,003 - LLMManager - INFO - OpenAI API 사용: gpt-4o
+2026-01-29 15:52:55,933 - api.routers.coa - INFO - [정황보고] 자연어 변환 완료: 212고지, 동부 조공축선, 포병준비
+2026-01-29 15:52:55,934 - api.routers.coa - INFO - [정황보고] LLM 생성 시작 - approach_mode: threat_centered
+2026-01-29 15:52:57,865 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:52:57,867 - api.routers.coa - INFO - [정황보고] LLM으로 생성됨 (길이: 122)
+2026-01-29 15:53:07,759 - api.routers.chat - INFO - [Chat] Request received - situation_id: THR002, has_situation_info: True
+2026-01-29 15:53:07,759 - api.routers.chat - INFO - [Chat] situation_info keys: ['situation_id', 'approach_mode', 'timestamp', 'is_manual', 'threat_level', 'location', 'threat_type', '위협ID', 'threat_id', 'selected_threat_id', 'threat_type_code', 'axis_id', '위협유형', '위협수준', '발생장소', '관련축선ID', 'location_cell_id', 'related_axis_id', 'latitude', 'longitude', 'mission_id', '임무ID', 'related_mission_id', 'occurrence_time', 'related_enemy_unit_id', 'raw_report_text', 'confidence', 'status', 'threat_type_original', 'enemy_unit_original', 'remarks', 'is_demo', 'is_sitrep']
+2026-01-29 15:53:07,763 - api.routers.chat - INFO - [Chat] Injected situation_info from request: THR002
+2026-01-29 15:53:07,764 - api.routers.chat - INFO - [Chat] Total contexts for LLM: 2 - {'hypothesis': 1, 'situation_info': 1}
+2026-01-29 15:53:18,708 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-29 15:53:53,659 - api.routers.chat - INFO - [Chat] Request received - situation_id: THR002, has_situation_info: True
+2026-01-29 15:53:53,659 - api.routers.chat - INFO - [Chat] situation_info keys: ['situation_id', 'approach_mode', 'timestamp', 'is_manual', 'threat_level', 'location', 'threat_type', '위협ID', 'threat_id', 'selected_threat_id', 'threat_type_code', 'axis_id', '위협유형', '위협수준', '발생장소', '관련축선ID', 'location_cell_id', 'related_axis_id', 'latitude', 'longitude', 'mission_id', '임무ID', 'related_mission_id', 'occurrence_time', 'related_enemy_unit_id', 'raw_report_text', 'confidence', 'status', 'threat_type_original', 'enemy_unit_original', 'remarks', 'is_demo', 'is_sitrep']
+2026-01-29 15:53:53,660 - api.routers.chat - INFO - [Chat] Injected situation_info from request: THR002
+2026-01-29 15:53:53,661 - api.routers.chat - INFO - [Chat] Total contexts for LLM: 1 - {'situation_info': 1}
+2026-01-29 15:53:59,935 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"

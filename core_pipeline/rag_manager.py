@@ -9,15 +9,18 @@ import os
 import re
 import sys
 import numpy as np
+import logging
 from typing import List, Dict, Optional
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 try:
     import faiss
     FAISS_AVAILABLE = True
 except ImportError:
     FAISS_AVAILABLE = False
-    print("[WARN] faiss-cpu not installed. FAISS indexing will be disabled.")
+    logger.warning("faiss-cpu not installed. FAISS indexing will be disabled.")
 
 
 def _get_windows_short_path(path: str) -> str:
@@ -100,7 +103,7 @@ class RAGManager:
         if doc_names is None:
             doc_names = [None] * len(docs)
         elif len(doc_names) != len(docs):
-            print(f"[WARN] 문서 수({len(docs)})와 파일명 수({len(doc_names)})가 일치하지 않습니다.")
+            logger.warning(f"문서 수({len(docs)})와 파일명 수({len(doc_names)})가 일치하지 않습니다.")
             doc_names = [None] * len(docs)
         
         for doc_idx, doc in enumerate(docs):
@@ -378,9 +381,9 @@ class RAGManager:
                     self.faiss_index = faiss.IndexFlatL2(dimension)
                     self.faiss_index.add(embeddings.astype('float32'))
                     self.embeddings = embeddings
-                    print(f"[INFO] FAISS index built: {len(text_chunks)} chunks, dimension {dimension}")
+                    logger.info(f"FAISS index built: {len(text_chunks)} chunks, dimension {dimension}")
             except Exception as e:
-                print(f"[WARN] FAISS index build failed: {e}")
+                logger.warning(f"FAISS index build failed: {e}")
                 self.faiss_index = None
         else:
             self.faiss_index = None
@@ -428,11 +431,11 @@ class RAGManager:
                     
                     # FAISS에 추가
                     self.faiss_index.add(new_embeddings.astype('float32'))
-                    print(f"[INFO] Added {len(new_chunks)} chunks to FAISS index. Total: {self.faiss_index.ntotal}")
+                    logger.info(f"Added {len(new_chunks)} chunks to FAISS index. Total: {self.faiss_index.ntotal}")
                 else:
-                    print("[WARN] Failed to compute embeddings for new chunks")
+                    logger.warning("Failed to compute embeddings for new chunks")
             except Exception as e:
-                print(f"[WARN] Failed to update FAISS index: {e}")
+                logger.warning(f"Failed to update FAISS index: {e}")
     
     def load_embeddings(self, model_path: Optional[str] = None, device: Optional[str] = None):
         """
@@ -446,8 +449,10 @@ class RAGManager:
         try:
             from sentence_transformers import SentenceTransformer
             import torch
-        except ImportError:
-            print("[WARN] sentence-transformers 또는 torch가 설치되지 않았습니다. RAG 임베딩 기능을 사용할 수 없습니다.")
+        except Exception as e:
+            logger.error(f"RAG 임베딩 라이브러리 임포트 실패: {str(e)}")
+            import traceback
+            logger.error(traceback.format_exc())
             return
         
         if model_path is None:
@@ -475,7 +480,7 @@ class RAGManager:
                         else:
                             model_path = "./models/embedding/rogel-embedding-v2"
                 except Exception as e:
-                    print(f"[WARN] Config 파일 로드 실패: {e}, 기본 경로 사용")
+                    logger.warning(f"Config 파일 로드 실패: {e}, 기본 경로 사용")
                     model_path = "./models/embedding/rogel-embedding-v2"
         
         # 상대 경로를 절대 경로로 변환
@@ -485,10 +490,8 @@ class RAGManager:
             model_path = os.path.normpath(model_path)
         
         if not os.path.exists(model_path):
-            print(f"[WARN] Embedding model not found at {model_path}")
-            print("   모델을 복사하려면 다음 명령을 실행하세요:")
-            print("   python scripts/copy_models_from_poc.py")
-            print("   Using simple retrieval.")
+            logger.warning(f"Embedding model not found at {model_path}")
+            logger.warning("   Using simple retrieval.")
             return
         
         # GPU 사용 가능 여부 확인
@@ -496,7 +499,7 @@ class RAGManager:
         
         # CPU 우선 정책 강제 적용: 안정성을 위해 항상 CPU로 로드
         if device is None or device == 'cuda':
-            print("[INFO] CPU 우선 정책: Embedding 모델을 CPU에 로드합니다.")
+            logger.info("CPU 우선 정책: Embedding 모델을 CPU에 로드합니다.")
             device = 'cpu'
         # device가 명시적으로 'cpu'인 경우 그대로 사용
         
@@ -509,17 +512,17 @@ class RAGManager:
             try:
                 retry_count += 1
                 if retry_count > 1:
-                    print(f"[INFO] Embedding 모델 로드 재시도 {retry_count}/{max_retries}...")
+                    logger.info(f"Embedding 모델 로드 재시도 {retry_count}/{max_retries}...")
                 
                 # CPU 모드로 직접 로드 (안정성 우선)
                 model = SentenceTransformer(model_path, device='cpu')
-                print(f"[INFO] Embedding model loaded (CPU): {model_path}")
+                logger.info(f"Embedding model loaded (CPU): {model_path}")
                 device = 'cpu'
                 break
                 
             except Exception as e1:
                 error_msg = str(e1)
-                print(f"[WARN] Embedding 모델 로드 실패 (시도 {retry_count}/{max_retries}): {error_msg[:150]}")
+                logger.warning(f"Embedding 모델 로드 실패 (시도 {retry_count}/{max_retries}): {error_msg[:150]}")
                 
                 if retry_count < max_retries:
                     # 재시도 전 잠시 대기
@@ -528,20 +531,20 @@ class RAGManager:
                     continue
                 else:
                     # 최종 실패
-                    print(f"[ERROR] Embedding model loading failed after {max_retries} attempts: {e1}")
+                    logger.error(f"Embedding model loading failed after {max_retries} attempts: {e1}")
                     import traceback
                     traceback.print_exc()
                     
                     # 모델 경로 확인
                     if not os.path.exists(model_path):
-                        print(f"[ERROR] 모델 경로가 존재하지 않습니다: {model_path}")
+                        logger.error(f"모델 경로가 존재하지 않습니다: {model_path}")
                     else:
                         # 모델 파일 확인
                         model_files = os.listdir(model_path)
-                        print(f"[INFO] 모델 디렉토리 파일: {model_files[:10]}")
+                        logger.info(f"모델 디렉토리 파일: {model_files[:10]}")
                     
                     # None을 반환하지 않고 계속 진행 (RAG 기능은 제한적으로 작동)
-                    print("[WARN] Embedding 모델 없이 계속 진행합니다. RAG 기능은 제한적입니다.")
+                    logger.warning("Embedding 모델 없이 계속 진행합니다. RAG 기능은 제한적입니다.")
                     return
         
         self.embedding_model = model
@@ -562,21 +565,21 @@ class RAGManager:
             self.load_index()  # chunks와 FAISS 인덱스 모두 로드 (중복 방지 로직 포함)
             if len(self.chunks) > 0:
                 chunks_loaded = True
-                print(f"[INFO] RAG 인덱스 메타데이터 로드 완료: {len(self.chunks)}개 청크")
+                logger.info(f"RAG 인덱스 메타데이터 로드 완료: {len(self.chunks)}개 청크")
                 # load_index()에서 이미 FAISS 인덱스를 로드했으므로 여기서는 추가 로드 불필요
                 if self.faiss_index is not None:
                     # FAISS 인덱스 크기와 청크 수 일치 확인
                     faiss_size = self.faiss_index.ntotal
                     chunks_size = len(self.chunks)
                     if faiss_size != chunks_size:
-                        print(f"[WARN] FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
-                        print(f"[WARN] 인덱스 재구축이 필요합니다.")
+                        logger.warning(f"FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
+                        logger.warning(f"인덱스 재구축이 필요합니다.")
                         # 불일치 시 초기화
                         self.faiss_index = None
                         self.chunks = []
                         chunks_loaded = False
         except Exception as e:
-            print(f"[INFO] 저장된 인덱스 메타데이터 없음: {e}")
+            logger.info(f"저장된 인덱스 메타데이터 없음: {e}")
         
         # load_index()에서 FAISS를 로드하지 못한 경우에만 여기서 로드 시도
         if chunks_loaded and self.faiss_index is None and os.path.exists(faiss_path) and FAISS_AVAILABLE:
@@ -584,24 +587,24 @@ class RAGManager:
                 # Windows에서 한글 경로 처리
                 faiss_path_normalized = _get_windows_short_path(faiss_path)
                 self.faiss_index = faiss.read_index(faiss_path_normalized)
-                print(f"[INFO] FAISS index loaded: {faiss_path}")
+                logger.info(f"FAISS index loaded: {faiss_path}")
                 
                 # FAISS 인덱스 크기와 청크 수 일치 확인
                 faiss_size = self.faiss_index.ntotal
                 chunks_size = len(self.chunks)
                 if faiss_size != chunks_size:
-                    print(f"[WARN] FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
-                    print(f"[WARN] 인덱스 재구축이 필요합니다.")
+                    logger.warning(f"FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
+                    logger.warning(f"인덱스 재구축이 필요합니다.")
                     # 불일치 시 초기화
                     self.faiss_index = None
                     self.chunks = []
             except Exception as e:
-                print(f"[WARN] FAISS index load failed: {e}")
+                logger.warning(f"FAISS index load failed: {e}")
                 self.faiss_index = None
         elif os.path.exists(faiss_path) and not chunks_loaded:
             # FAISS 인덱스는 있지만 chunks가 없는 경우 (불일치 상태)
-            print(f"[WARN] FAISS 인덱스 파일은 있지만 청크 데이터가 없습니다.")
-            print(f"[WARN] 인덱스 재구축이 필요합니다.")
+            logger.warning(f"FAISS 인덱스 파일은 있지만 청크 데이터가 없습니다.")
+            logger.warning(f"인덱스 재구축이 필요합니다.")
             # FAISS 인덱스는 로드하지 않음 (불일치 방지)
     
     def compute_embeddings(self, texts: List[str]) -> Optional[np.ndarray]:
@@ -621,7 +624,7 @@ class RAGManager:
             embeddings = self.embedding_model.encode(texts, show_progress_bar=False)
             return embeddings
         except Exception as e:
-            print(f"[WARN] Failed to compute embeddings: {e}")
+            logger.warning(f"Failed to compute embeddings: {e}")
             return None
     
     def retrieve(self, query: str, top_k: int = 3, use_hybrid: bool = True) -> List[Dict]:
@@ -640,13 +643,13 @@ class RAGManager:
         # 인덱스가 비어있으면 로드 시도 (Self-healing)
         if not self.index:
             try:
-                print("[INFO] RAG 인덱스가 비어있어 로드를 시도합니다...")
+                logger.info("RAG 인덱스가 비어있어 로드를 시도합니다...")
                 self.load_index()
             except Exception as e:
-                print(f"[WARN] RAG 인덱스 자동 로드 실패: {e}")
+                logger.warning(f"RAG 인덱스 자동 로드 실패: {e}")
 
         if not self.index:
-            print("[WARN] RAG 인덱스가 여전히 비어있습니다. 검색 결과 없음.")
+            logger.warning("RAG 인덱스가 여전히 비어있습니다. 검색 결과 없음.")
             return []
         
         # 하이브리드 검색 (TF-IDF + Vector)
@@ -695,7 +698,7 @@ class RAGManager:
                 return final_results[:top_k]
                 
             except Exception as e:
-                print(f"[WARN] Hybrid search failed: {e}. Using simple retrieval.")
+                logger.warning(f"Hybrid search failed: {e}. Using simple retrieval.")
         
         # 단순 임베딩 검색
         if self.embedding_model is not None:
@@ -740,7 +743,7 @@ class RAGManager:
                             })
                         return results
             except Exception as e:
-                print(f"[WARN] Embedding-based retrieval failed: {e}. Using keyword retrieval.")
+                logger.warning(f"Embedding-based retrieval failed: {e}. Using keyword retrieval.")
         
         # 키워드 기반 검색 (fallback)
         return self._tfidf_search(query, top_k)
@@ -825,9 +828,9 @@ class RAGManager:
                 # Windows에서 한글 경로 처리
                 faiss_path_normalized = _get_windows_short_path(faiss_path)
                 faiss.write_index(self.faiss_index, faiss_path_normalized)
-                print(f"[INFO] FAISS index saved: {faiss_path}")
+                logger.info(f"FAISS index saved: {faiss_path}")
             except Exception as e:
-                print(f"[WARN] FAISS index save failed: {e}")
+                logger.warning(f"FAISS index save failed: {e}")
     
     def load_index(self, path: Optional[str] = None):
         """
@@ -866,14 +869,14 @@ class RAGManager:
         
         # 불일치 감지 및 경고
         if has_faiss_file and not has_index_file:
-            print(f"[WARN] FAISS 인덱스 파일은 있지만 rag_index.json이 없습니다. 인덱스 불일치 가능성.")
-            print(f"[WARN] FAISS 인덱스 파일: {faiss_path}")
-            print(f"[WARN] rag_index.json 파일: {path}")
-            print(f"[WARN] 청크 데이터 없이 FAISS 인덱스만 로드하지 않습니다. 인덱스 재구축이 필요합니다.")
+            logger.warning(f"FAISS 인덱스 파일은 있지만 rag_index.json이 없습니다. 인덱스 불일치 가능성.")
+            logger.warning(f"FAISS 인덱스 파일: {faiss_path}")
+            logger.warning(f"rag_index.json 파일: {path}")
+            logger.warning(f"청크 데이터 없이 FAISS 인덱스만 로드하지 않습니다. 인덱스 재구축이 필요합니다.")
             return
         
         if not has_index_file:
-            print(f"[WARN] Index file not found: {path}")
+            logger.warning(f"Index file not found: {path}")
             return
         
         import json
@@ -889,16 +892,16 @@ class RAGManager:
                 # Windows에서 한글 경로 처리
                 faiss_path_normalized = _get_windows_short_path(faiss_path)
                 self.faiss_index = faiss.read_index(faiss_path_normalized)
-                print(f"[INFO] FAISS index loaded: {faiss_path}")
+                logger.info(f"FAISS index loaded: {faiss_path}")
                 
                 # FAISS 인덱스 크기와 청크 수 일치 확인
                 faiss_size = self.faiss_index.ntotal
                 chunks_size = len(self.chunks)
                 if faiss_size != chunks_size:
-                    print(f"[WARN] FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
-                    print(f"[WARN] 인덱스 재구축을 권장합니다.")
+                    logger.warning(f"FAISS 인덱스 크기({faiss_size})와 청크 수({chunks_size})가 일치하지 않습니다.")
+                    logger.warning(f"인덱스 재구축을 권장합니다.")
             except Exception as e:
-                print(f"[WARN] FAISS index load failed: {e}")
+                logger.warning(f"FAISS index load failed: {e}")
                 self.faiss_index = None
     
     def retrieve_with_context(self, query: str, top_k: int = 3) -> List[Dict]:

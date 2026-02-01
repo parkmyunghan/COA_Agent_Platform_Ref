@@ -200,8 +200,7 @@ async def chat_completions(request: ChatRequest, orchestrator: Orchestrator = De
                                 }
                             })
                     except Exception as e:
-                        logger.warning(f"Failed to inject CoA context: {e}")
-
+                        logger.warning(f"Failed to fetch COA recommendations: {e}")
                 # [DEBUG] 컨텍스트 카운트 로깅
                 context_counts = {}
                 for doc in retrieved_docs:

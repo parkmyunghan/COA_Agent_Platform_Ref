@@ -1,0 +1,15 @@
+// 프론트엔드 수정 가이드
+
+// 파일: frontend/src/pages/CommandControlPage.tsx
+// 라인: 838
+
+// 변경 전:
+situationAssessment={coaResponse?.coas?.[0]?.reasoning?.situation_assessment}
+
+// 변경 후:
+situationAssessment={coaResponse?.situation_assessment}
+
+// 설명:
+// 상황판단(situation_assessment)은 전체 상황에 대한 평가이므로
+// 개별 방책(coas[0])이 아닌 응답 최상위 필드에서 추출해야 합니다.
+// 이제 백엔드가 COAResponse.situation_assessment로 제공합니다.

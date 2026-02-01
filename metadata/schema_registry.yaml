@@ -173,6 +173,9 @@ tables:
       - name: "has임무정보"
         source_col: "관련임무ID"
         target_table: "임무정보"
+      - name: "has위협유형"
+        source_col: "위협유형코드"
+        target_table: "위협유형_마스터" 
 
   제약조건:
     description: "작전 수행 간 제약사항 (ROE 등)"

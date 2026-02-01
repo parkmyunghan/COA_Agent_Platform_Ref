@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 1 상세 분석: 데이터 준비 및 온톨로지 구축</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1976D2;
+            border-bottom: 2px solid #1976D2;
+            padding-bottom: 10px;
+        }
+
+        .diagram-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .description-box {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .code-snippet {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Phase 1: 데이터 준비 및 온톨로지 구축 상세 프로세스</h1>
+
+        <div class="description-box">
+            <h3>📌 프로세스 개요</h3>
+            <p>
+                Phase 1은 이기종 원천 데이터(Excel, 문서)를 AI가 이해하고 추론할 수 있는 지식 아키텍처(Knowledge Graph, Vector DB)로 변환하는 핵심 단계입니다.
+                <strong>EnhancedOntologyManager</strong>와 <strong>RAGManager</strong>가 이 과정의 핵심 역할을 수행합니다.
+            </p>
+        </div>
+
+        <div class="diagram-box">
+            <div class="mermaid">
+                flowchart TD
+                %% Input Layer
+                subgraph InputLayer ["📂 원천 데이터 (Source Data)"]
+                ExcelFiles[("Excel Tables<br />(16개 파일)")]
+                TableDef["스키마 레지스트리<br />(schema_registry.yaml)"]
+                RelMap["관계 매핑 규칙<br />(relation_mappings.json)"]
+                Docs[("비정형 문서<br />(군사 교범 DB)")]
+                end
+
+                %% Processing Layer
+                subgraph ProcessLayer ["⚙️ 처리 엔진 (Processing Engine)"]
+                direction TB
+
+                subgraph OntoProc ["Ontology Processing (OntologyManager)"]
+                LoadData["1. 데이터 로드<br />(pd.read_excel)"]
+                ParseSchema["2. 스키마 파싱<br />(Class/Prop 정의)"]
+                CreateInst["3. 인스턴스 생성<br />(URI 부여, RDF.type)"]
+                MapRel["4. 관계 매핑<br />(FK & Custom Logic)"]
+                Reasoning["5. 추론 (Reasoning)<br />(SPARQL Rule)"]
+                end
+
+                subgraph RAGProc ["RAG Processing (RAGManager)"]
+                DocLoad["1. 문서 로드"]
+                Chunking["2. 청킹 (Split)"]
+                Embedding["3. 임베딩<br />(rogel-embedding-v2)"]
+                end
+                end
+
+                %% Output Layer
+                subgraph OutputLayer ["💾 지식 저장소 (Knowledge Storage)"]
+                SchemaTTL[("schema.ttl<br />(T-Box)")]
+                InstTTL[("instances.ttl<br />(A-Box)")]
+                ReasonedTTL[("instances_reasoned.ttl<br />(Inferred)")]
+                VectorDB[("Vector DB<br />(FAISS Index)")]
+                end
+
+                %% Data Flow Connections
+                ExcelFiles -->|"Raw Data"| LoadData
+                TableDef -->|"Class/Prop Def"| ParseSchema
+                RelMap -->|"Link Rules"| MapRel
+
+                LoadData --> CreateInst
+                ParseSchema --> SchemaTTL
+                CreateInst --> MapRel
+                MapRel --> InstTTL
+                InstTTL -.-> Reasoning
+                Reasoning --> ReasonedTTL
+
+                Docs --> DocLoad
+                DocLoad --> Chunking
+                Chunking --> Embedding
+                Embedding --> VectorDB
+
+                %% Special Logic Highlighting
+                CreateInst --"COA 특수처리<br />(Keyword->Threat)"--> MapRel
+
+                %% Styling
+                classDef input fill:#e1f5fe,stroke:#01579b
+                classDef process fill:#fff3e0,stroke:#e65100
+                classDef output fill:#e8f5e9,stroke:#1b5e20
+
+                class ExcelFiles,TableDef,RelMap,Docs input
+                class LoadData,ParseSchema,CreateInst,MapRel,Reasoning,DocLoad,Chunking,Embedding process
+                class SchemaTTL,InstTTL,ReasonedTTL,VectorDB output
+            </div>
+        </div>
+
+        <div class="description-box" style="background-color: #fff3e0; border-left: 5px solid #ff9800;">
+            <h3>🔍 주요 처리 로직 상세</h3>
+            <ul>
+                <li><strong>스키마 자동 생성:</strong> <code>schema_registry.yaml</code>을 파싱하여 RDF Class(테이블)와 Property(컬럼)를
+                    정의합니다. (T-Box 구축)</li>
+                <li><strong>URI 표준화:</strong> 각 행(Row)의 ID 컬럼을 사용하여 <code>ns:Table_ID</code> 형태의 고유 URI를 생성합니다. (16개 엑셀
+                    테이블 처리)</li>
+                <li><strong>관계 연결 (Linking):</strong>
+                    <ul>
+                        <li><strong>Foreign Key:</strong> 임무ID, 축선ID 등 명시적 키를 통한 연결 (e.g., <code>hasMission</code>)</li>
+                        <li><strong>Semantic Link:</strong> COA의 '키워드' 컬럼을 분석하여 <code>countersThreat</code> 관계로 자동 변환
+                            (전략 체인 형성의 핵심)</li>
+                    </ul>
+                </li>
+                <li><strong>RAG 처리:</strong> 군사 교범 및 작전 지침 문서를 로드하여 청킹 및 임베딩 처리합니다.</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+    </script>
+</body>
+
+</html>

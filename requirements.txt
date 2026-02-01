@@ -1,14 +1,17 @@
 # Defense Intelligent Agent Platform - 필수 패키지
-# 최종 업데이트: 2026-01-17
+# 최종 업데이트: 2026-02-01
 # Python 3.9 이상 (3.12 이상 권장)
 
 # ============================================
 # 핵심 웹 프레임워크 (FastAPI & API)
 # ============================================
 fastapi>=0.115.0
-uvicorn>=0.30.0
+uvicorn[standard]>=0.30.0
+gunicorn>=21.2.0  # Production ASGI server
 python-multipart>=0.0.6
 pydantic>=2.0.0
+pydantic-settings>=2.1.0 # Environment variable management
+httpx>=0.25.0
 
 # ============================================
 # 데이터 분석 및 수치 연산
@@ -33,7 +36,6 @@ pyvis>=0.3.2      # 대화형 네트워크 그래프
 # ============================================
 rdflib>=7.0.0     # RDF 그래프 처리
 owlrl>=6.0.2      # OWL-RL 추론 엔진
-owlrl>=6.0.0      # OWL 추론 엔진
 
 # ============================================
 # RAG (Retrieval Augmented Generation) & 벡터 검색
@@ -47,10 +49,13 @@ scikit-learn>=1.0.0
 # LLM 및 생성형 AI (선택적)
 # ============================================
 openai>=1.0.0
-transformers>=4.35.0
-torch>=2.7.0
+transformers>=4.45.0
+torch>=2.5.0
 # GPU 버전 설치 시: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 accelerate>=0.24.0
+auto-gptq>=0.7.0  # GPTQ 양자화 지원
+bitsandbytes>=0.43.0  # 8-bit/4-bit 양자화 지원
+huggingface-hub>=0.24.0  # 모델 관리 및 자동 다운로드
 
 # ============================================
 # 문서 처리 및 보고서 생성 (docs/reports)
@@ -66,6 +71,9 @@ pyyaml>=6.0
 requests>=2.28.0
 python-dateutil>=2.8.2
 tqdm>=4.65.0
+python-dotenv>=1.0.0  # 환경 변수 관리
+tiktoken>=0.7.0      # OpenAI 토큰 카운팅
+tenacity>=8.5.0      # 재시도 로직
 
 # ============================================
 # 설치 및 실행 주의사항
@@ -74,4 +82,5 @@ tqdm>=4.65.0
 # 2. 경로 문제: Windows 환경에서 venv 경로 오류 발생 시, 
 #    'uvicorn' 대신 'python -m uvicorn' 명령어를 사용 권장
 # 3. 브라우저: 최신 Chrome 또는 Edge 브라우저 권장
+# 4. 사내망 프록시: pip install --proxy http://your_proxy:port -r requirements.txt
 

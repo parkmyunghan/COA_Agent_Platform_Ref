@@ -1,0 +1,74 @@
+==================================================
+ [SAFE] No References Found in Production Code
+==================================================
+  [v] analyze_axis_mismatch.py
+  [v] analyze_geography.py
+  [v] analyze_scenarios.py
+  [v] analyze_terrain_relations.py
+  [v] debug_axis_units.py
+  [v] debug_final.py
+  [v] debug_groups.py
+  [v] debug_keys.py
+  [v] debug_mission_links_v2.py
+  [v] debug_mission_res.py
+  [v] debug_responds_to.py
+  [v] debug_threat_triples.py
+  [v] fix_asset_data.py
+  [v] fix_axis_data.py
+  [v] fix_terrain_data.py
+  [v] fix_terrain_logic.py
+  [v] fix_unit_data.py
+  [v] inspect_axis.py
+  [v] inspect_coa_library.py
+  [v] inspect_terrain.py
+  [v] scripts\analyze_541_triples.py
+  [v] scripts\analyze_civilian_areas.py
+  [v] scripts\analyze_coa_library.py
+  [v] scripts\analyze_column_usage.py
+  [v] scripts\analyze_enemy_units.py
+  [v] scripts\analyze_inference_difference.py
+  [v] scripts\analyze_mission_info.py
+  [v] scripts\analyze_priority.py
+  [v] scripts\analyze_relevance_data.py
+  [v] scripts\analyze_remaining_tables.py
+  [v] scripts\analyze_scenario_data.py
+  [v] scripts\analyze_schema_issues.py
+  [v] scripts\analyze_scoring_weights.py
+  [v] scripts\analyze_table_structures.py
+  [v] scripts\analyze_terrain_cells.py
+  [v] scripts\analyze_threat_master.py
+  [v] scripts\analyze_threat_relationships.py
+  [v] scripts\analyze_threat_situations.py
+  [v] scripts\analyze_weather_data.py
+  [v] scripts\fix_numpy_types.py
+  [v] scripts\fix_unit_schema.py
+  [v] scripts\inspect_coordinates.py
+  [v] scripts\inspect_custom_functions.py
+  [v] scripts\inspect_excel_headers.py
+  [v] scripts\inspect_node_groups.py
+  [v] scripts\inspect_rdflib.py
+  [v] scripts\inspect_unit_data.py
+  [v] temp_axes.json
+  [v] temp_cells.json
+  [v] temp_threats.json
+
+==================================================
+ [WARNING] Potential Dependencies Found!
+ The following files are referenced in api/, core_pipeline/, or frontend/src/
+==================================================
+  [!] frontend\src\test
+      - Referenced in: core_pipeline\recommendation_history.py
+      - Referenced in: scripts\reproduce_sparql_error.py
+      - Referenced in: scripts\test_agent_viz_fix.py
+      ... and 1 more.
+  [!] run_streamlit.py
+      - Referenced in: scripts\verify_deletion_safety.py
+  [!] scripts\kill_streamlit.py
+      - Referenced in: scripts\verify_deletion_safety.py
+  [!] tests
+      - Referenced in: scripts\comprehensive_test_suite_v1.py
+  [!] ui
+      - Referenced in: frontend\src\components\AgentSelector.tsx
+      - Referenced in: frontend\src\components\ChainVisualizer.tsx
+      - Referenced in: frontend\src\components\COAExecutionPlanPanel.tsx
+      ... and 27 more.

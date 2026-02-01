@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
 import { ExecutionProvider } from './contexts/ExecutionContext';
@@ -14,6 +15,13 @@ import LearningGuidePage from './pages/LearningGuidePage';
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 function App() {
+  // 테마 고정을 위해 useEffect에서 한 번 더 확인
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+    // 혹시라도 light 클래스가 있다면 제거
+    document.documentElement.classList.remove('light');
+  }, []);
+
   return (
     <ErrorBoundary>
       <SystemDataProvider>

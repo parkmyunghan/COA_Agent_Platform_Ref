@@ -1,0 +1,42 @@
+2026-01-26 10:05:50,297 - root - INFO - Logging initialized. File: logs\platform_20260126.log
+2026-01-26 10:05:50,316 - root - INFO - [시스템] 디버깅 모드 활성화됨 - 상세 로그가 기록됩니다.
+2026-01-26 10:05:50,382 - api.dependencies - INFO - Initializing Orchestrator...
+2026-01-26 10:05:50,486 - OntologyManager - INFO - 기존 온톨로지 파일 발견: instances_reasoned.ttl. 자동 로드를 시도합니다.
+2026-01-26 10:05:50,532 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\schema.ttl)
+2026-01-26 10:05:50,699 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 1436
+2026-01-26 10:05:50,717 - OntologyManager - INFO - 온톨로지 로드 중... (knowledge\ontology\instances_reasoned.ttl)
+2026-01-26 10:05:52,330 - OntologyManager - INFO - 온톨로지 로드 완료. 현재 트리플 수: 17241
+2026-01-26 10:05:52,340 - OntologyManager - INFO - 'instances_reasoned.ttl' 기반으로 그래프 초기화 완료.
+2026-01-26 10:05:57,243 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-01-26 10:05:57,257 - LLMManager - INFO - OpenAI API 초기화 및 검증(생성 테스트) 완료 (모델: gpt-4o)
+2026-01-26 10:06:10,316 - LLMManager - INFO - 사내망 모델 4개 중 0개 사용 가능
+2026-01-26 10:06:10,323 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-26 10:06:10,331 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-26 10:06:10,331 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-26 10:06:10,334 - RuleEngine - INFO - 규칙 파일 로드 완료: 3개 규칙, 3개 가중치
+2026-01-26 10:06:10,335 - core_pipeline.orchestrator - INFO - Enhanced Ontology Manager initialized (독립 모드)
+2026-01-26 10:06:12,876 - core_pipeline.orchestrator - INFO - CUDA 사용 불가 또는 torch 미설치. CPU 모드로 로드합니다.
+2026-01-26 10:06:12,881 - core_pipeline.orchestrator - INFO - OpenAI API 사용 가능 (모델: gpt-4o)
+2026-01-26 10:06:12,881 - core_pipeline.orchestrator - INFO - 로컬 모델 로드를 생략하고 원격 모델을 우선 사용합니다. (지연 로드)
+2026-01-26 10:06:12,881 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 중 (RAG 인덱스 최적화)...
+2026-01-26 10:06:24,121 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-26 10:06:24,285 - core_pipeline.rag_manager - INFO - Embedding model loaded (CPU): C:\POC\COA_Agent_Platform_Ref\models\embedding\rogel-embedding-v2
+2026-01-26 10:06:24,291 - core_pipeline.rag_manager - INFO - FAISS index loaded: C:\POC\COA_Agent_Platform_Ref\knowledge\embeddings\faiss_index.bin
+2026-01-26 10:06:24,291 - core_pipeline.rag_manager - INFO - RAG 인덱스 메타데이터 로드 완료: 67개 청크
+2026-01-26 10:06:24,291 - core_pipeline.orchestrator - INFO - 임베딩 모델 로드 완료
+2026-01-26 10:06:24,292 - core_pipeline.orchestrator - INFO - RAG 인덱스가 이미 존재합니다: 67개 청크
+2026-01-26 10:06:24,361 - core_pipeline.orchestrator - INFO - StatusManager 초기화 완료
+2026-01-26 10:06:24,363 - core_pipeline.orchestrator - INFO - 실시간 데이터 감시 활성화
+2026-01-26 10:06:24,363 - api.dependencies - INFO - Initializing COAService...
+2026-01-26 10:06:24,373 - core_pipeline.relevance_mapper - INFO - 위협 마스터 매핑 로드 완료: 22개 항목
+2026-01-26 10:06:24,383 - core_pipeline.relevance_mapper - INFO - 관련성 테이블의 위협 유형을 코드로 정규화했습니다.
+2026-01-26 10:06:24,384 - core_pipeline.relevance_mapper - INFO - 유형 레벨 매핑 로드 완료: 77개 매핑
+2026-01-26 10:06:24,387 - api.dependencies - INFO - COAService에 agent_core 주입 완료 - 에이전트 기반 생성 활성화
+2026-01-26 10:06:24,387 - api.dependencies - INFO - Global State Initialized.
+2026-01-26 10:06:49,920 - core_pipeline.visualization_generator - INFO - 지형셀 데이터 로드 완료 (31개 셀)
+2026-01-26 13:09:21,822 - api.routers.ontology - INFO - ======== GRAPH DATA REQUEST START (mode=instances, include_inferred=False) ========
+2026-01-26 13:09:21,823 - api.routers.ontology - INFO - Fetching graph data (mode=instances)
+2026-01-26 13:09:21,951 - api.routers.ontology - INFO - Returning 890 nodes and 4017 links
+2026-01-26 13:09:21,967 - api.routers.ontology - INFO - ======== GRAPH DATA REQUEST START (mode=instances, include_inferred=False) ========
+2026-01-26 13:09:21,968 - api.routers.ontology - INFO - Fetching graph data (mode=instances)
+2026-01-26 13:09:21,983 - api.routers.ontology - INFO - Returning 890 nodes and 4017 links

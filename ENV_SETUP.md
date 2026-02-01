@@ -23,6 +23,33 @@
 ```powershell
 deactivate
 ```
+## 7. 사내망 프록시(Proxy) 설정
+
+사내망 등 외부 인터넷 연결이 제한된 환경에서는 패키지 설치 시 프록시 설정이 필요합니다.
+
+### Backend (Python/pip)
+패키지 설치 시 `--proxy` 옵션을 사용합니다.
+```powershell
+pip install --proxy http://아이피:포트 -r requirements.txt
+```
+
+### Frontend (Node.js/npm)
+npm 설정에 프록시를 추가합니다.
+```powershell
+npm config set proxy http://아이피:포트
+npm config set https-proxy http://아이피:포트
+npm install
+```
+
+### LLM (Runtime)
+OpenAI API 등을 외부망 연결을 통해 사용해야 하는 경우, 시스템 환경 변수를 설정합니다. OpenAI SDK는 이를 자동으로 인식합니다.
+```powershell
+$env:HTTP_PROXY="http://아이피:포트"
+$env:HTTPS_PROXY="http://아이피:포트"
+```
+
+---
+*최종 업데이트: 2026-02-01 (Antigravity)*
 
 ### 프로젝트 실행
 

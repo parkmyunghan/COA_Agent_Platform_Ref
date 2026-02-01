@@ -1,0 +1,15 @@
+// 디버깅용 임시 코드
+// CommandControlPage.tsx의 적절한 위치(예: 815라인 근처)에 추가
+
+useEffect(() => {
+    if (coaResponse) {
+        console.log('[DEBUG] COA Response 상태:', {
+            hasCoas: !!coaResponse.coas,
+            coasLength: coaResponse.coas?.length,
+            hasSituationSummary: !!coaResponse.situation_summary,
+            situationSummarySource: coaResponse.situation_summary_source,
+            hasSituationAssessment: !!coaResponse.situation_assessment,
+            situationAssessmentPreview: coaResponse.situation_assessment?.substring(0, 50)
+        });
+    }
+}, [coaResponse]);

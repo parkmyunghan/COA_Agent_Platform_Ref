@@ -125,12 +125,13 @@ orchestrator.initialize()
 agent = orchestrator.get_agent("coa_recommendation_agent")
 ```
 
-### 6.2 Streamlit에서 사용
+### 6.2 FastAPI에서 사용
 ```python
-# ui/common/orchestrator_init.py
-from ui.common.orchestrator_init import get_or_initialize_orchestrator
+# api/routers/system.py
+from api.dependencies import get_global_state
 
-orchestrator = get_or_initialize_orchestrator(config)
+state = get_global_state()
+orchestrator = state.get_orchestrator()
 ```
 
 ---
@@ -160,6 +161,7 @@ orchestrator = get_or_initialize_orchestrator(config)
 
 ---
 
-**작성일**: 2025년 12월  
-**버전**: 1.0
+**작성일**: 2026년 1월
+**최종 업데이트**: 2026-01-26
+**버전**: 2.0 (React Re-platforming)
 

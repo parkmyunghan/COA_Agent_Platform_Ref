@@ -18,7 +18,7 @@ export default function LearningGuidePage() {
 
     const fetchDocs = async () => {
         try {
-            const res = await fetch('http://localhost:8000/api/v1/system/docs');
+            const res = await fetch(`http://${window.location.hostname}:8000/api/v1/system/docs`);
             const data = await res.json();
             setCategories(data.categories || {});
         } catch (err) {

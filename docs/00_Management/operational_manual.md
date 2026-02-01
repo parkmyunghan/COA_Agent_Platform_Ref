@@ -1,7 +1,7 @@
 # COA 평가 시스템 개선 - 운영 매뉴얼
 
-**버전**: 1.0  
-**작성일**: 2025-12-27  
+**버전**: 2.0 (React Re-platforming)
+**작성일**: 2026-01-26
 **대상**: 시스템 운영자, 데이터 관리자
 
 ---
@@ -44,38 +44,25 @@
 ### 오전 체크 (09:00)
 
 ```bash
-# 1. 데이터 품질 검증
-cd c:\POC\COA_Agent_Platform
+# 1. 데이터 품질 검증 (필수)
 python scripts/validate_data_quality.py
 
-# 2. 단위 테스트 실행
-python tests/test_core_improvements.py
-
-# 3. 통합 테스트 (주 1회)
-python scripts/test_integration_phase1_2.py
+# 2. 데이터 무결성 검증 (참조 무결성 등)
+python scripts/validate_data_integrity.py
 ```
 
 **예상 결과**:
-- 데이터 검증: 0 에러
-- 단위 테스트: 20/20 통과
-- 통합 테스트: 8/8 체크리스트 통과
+- 데이터 검증: 0 에러, 0 경고 권장 (경고 발생 시 확인 필요)
 
-### 오후 체크 (17:00)
+### 상시 모니터링
 
-1. 로그 파일 확인
-   ```bash
-   # 최신 로그 확인
-   Get-Content logs/system_$(Get-Date -Format "yyyyMMdd").log -Tail 100
-   ```
+1. **로그 파일 확인**
+   - `logs/` 디렉토리 내의 최신 로그 파일 확인
+   - `[ERROR]` 태그 검색하여 심각한 오류 발생 여부 점검
 
-2. 에러/경고 확인
-   - `[ERROR]` 태그 검색
-   - `[WARN]` 태그 검색 (가용 자원 없음 경고 확인)
-
-3. 성능 지표 확인
-   - COA 평가 평균 시간
-   - 관련성 점수 분포 (0.5~0.9 범위)
-   - 자원 점수 분포 (0.3~1.0 범위)
+2. **시스템 성능 지표**
+   - 방책 추천 요청 시 응답 속도 (통상 3-5초 이내)
+   - 온톨로지 로딩 상태 확인 (Ontology Studio 페이지)
 
 ---
 
@@ -123,7 +110,7 @@ MSN009      | 전차대대      | 24                | 정비중
    예: "침투, 기습공격"
    ```
 
-2. **자원우선순위**: 괄호로 우선순위 표시
+2. **자원 중요도 (Importance)**: 괄호로 중요도 표시
    ```
    예: "포병대대(필수), 보병여단(필수), 공격헬기(권장), 공병대대(선택)"
    ```
@@ -153,11 +140,11 @@ MSN009      | 전차대대      | 24                | 정비중
 ### 자동 검증 실행
 
 ```bash
-# 매일 자동 실행 (Windows 작업 스케줄러)
-python scripts/validate_data_quality.py > logs/validation_$(Get-Date -Format "yyyyMMdd").log
+# 매일 자동 실행 (작업 스케줄러 등록 권장)
+python scripts/validate_data_quality.py > logs/validation_report.log
 ```
 
-### 수동 검증
+### 수동 검증 가이드 (Python Shell)
 
 #### 1. 관련성 점수 검증
 
@@ -167,11 +154,11 @@ from core_pipeline.relevance_mapper import RelevanceMapper
 mapper = RelevanceMapper()
 stats = mapper.get_type_mapping_stats()
 
-print(f"총 매핑: {stats['total_mappings']}")  # 42개 확인
-print(f"평균 관련성: {stats['avg_relevance']:.2f}")  # 0.6~0.7
+print(f"총 매핑: {stats['total_mappings']}")
+print(f"평균 관련성: {stats['avg_relevance']:.2f}")
 ```
 
-#### 2. 자원 우선순위 검증
+#### 2. 자원 중요도 검증
 
 ```python
 from core_pipeline.resource_priority_parser import ResourcePriorityParser
@@ -179,7 +166,7 @@ from core_pipeline.resource_priority_parser import ResourcePriorityParser
 parser = ResourcePriorityParser()
 result = parser.parse_resource_priority("포병대대(필수), 공격헬기(권장)")
 
-# 정상: [{'resource': '포병대대', 'priority': '필수', 'weight': 1.0}, ...]
+# 정상: [{'resource': '포병대대', 'importance': '필수', 'weight': 1.0}, ...]
 print(result)
 ```
 
@@ -213,16 +200,8 @@ print(is_valid)  # True
 - COA 타입 또는 위협 유형 누락
 
 **해결**:
-```bash
-# 1. RelevanceMapper 초기화 확인
-python core_pipeline/relevance_mapper.py
-
-# 2. 데이터 검증
-python scripts/validate_data_quality.py
-
-# 3. COA 타입 확인
-# context에 'coa_type'과 'threat_type'이 있는지 확인
-```
+1. `validate_data_quality.py` 실행하여 데이터 오류 확인
+2. `방책유형_위협유형_관련성.xlsx` 파일 확인
 
 ### 문제 2: 자원 점수가 항상 0.2 (fallback)
 
@@ -238,7 +217,6 @@ python scripts/validate_data_quality.py
 **해결**:
 1. `가용자원.xlsx`에 시나리오 자원 추가
 2. COA Library에 `자원우선순위` 입력
-3. Context에 두 정보 모두 전달 확인
 
 ### 문제 3: Situation ID 불일치
 
@@ -247,38 +225,8 @@ python scripts/validate_data_quality.py
 [WARN] 상황 THREAT001에 대한 가용 자원을 찾을 수 없습니다.
 ```
 
-**원인**:
-- THREAT001과 THR001 표기 불일치
-
 **해결**:
-```python
-# SituationIDMapper 사용
-from core_pipeline.situation_id_mapper import SituationIDMapper
-
-# 자동 정규화
-situation_id = SituationIDMapper.extract_situation_id(situation_info)
-# THREAT001 → THR001로 자동 변환
-```
-
-### 문제 4: 테스트 실패
-
-**증상**:
-```
-FAILED test_defense_infiltration_relevance
-```
-
-**원인**:
-- 데이터 테이블 손상 또는 누락
-- 파일 경로 문제
-
-**해결**:
-```bash
-# 1. 데이터 재생성
-python scripts/create_improvement_tables.py
-
-# 2. 테스트 재실행
-python tests/test_core_improvements.py -v
-```
+- `SituationIDMapper`가 자동 처리하므로 코드가 최신인지 확인합니다.
 
 ---
 
@@ -286,29 +234,13 @@ python tests/test_core_improvements.py -v
 
 ### RelevanceMapper 캐싱
 
-RelevanceMapper는 초기화 시 Excel 파일을 로드하므로, 반복 사용 시 인스턴스 재사용:
+RelevanceMapper는 초기화 시 Excel 파일을 로드하므로, 인스턴스를 재사용하는 것이 효율적입니다.
 
 ```python
-# ❌ 비효율적
-for coa in coas:
-    mapper = RelevanceMapper()  # 매번 로드
-    score = mapper.get_relevance_score(...)
-
 # ✅ 효율적
 mapper = RelevanceMapper()  # 한 번만 로드
 for coa in coas:
     score = mapper.get_relevance_score(...)
-```
-
-### 대량 COA 평가 최적화
-
-```python
-# COAScorer 인스턴스 재사용
-scorer = COAScorer(coa_type="defense")
-
-for coa in coa_list:
-    context = prepare_context(coa)
-    result = scorer.calculate_score(context)
 ```
 
 ### 로그 레벨 조정
@@ -317,7 +249,7 @@ for coa in coa_list:
 
 ```python
 import logging
-logging.basicConfig(level=logging.INFO)  # DEBUG 제거
+logging.basicConfig(level=logging.INFO)
 ```
 
 ---
@@ -327,29 +259,15 @@ logging.basicConfig(level=logging.INFO)  # DEBUG 제거
 ### 일일 백업
 
 ```powershell
-# 데이터 테이블 백업 (매일 02:00)
+# 데이터 테이블 및 로그 백업 예시
 $date = Get-Date -Format "yyyyMMdd"
 Copy-Item data_lake\*.xlsx backup\$date\
-```
-
-### 복구
-
-```powershell
-# 특정 날짜로 복구
-$date = "20251227"
-Copy-Item backup\$date\*.xlsx data_lake\ -Force
+Copy-Item logs\*.log backup\$date\
 ```
 
 ---
 
 ## 연락처 및 지원
 
-**기술 지원**: COA Agent Platform Team  
-**긴급 연락**: (내부 문의)  
-**문서 위치**: `logs/` 디렉토리
-
----
-
-**문서 버전**: 1.0  
-**최종 업데이트**: 2025-12-27  
-**검토 주기**: 분기 1회
+**기술 지원**: COA Agent Platform Team
+**문서 위치**: `docs/00_Management/`
