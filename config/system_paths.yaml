@@ -1,0 +1,35 @@
+# config/system_paths.yaml
+# 시스템 경로 설정
+
+paths:
+  base_dir: "."
+  data_dir: "./data"
+  models_dir: "./models"
+  knowledge_dir: "./knowledge"
+  results_dir: "./results"
+  logs_dir: "./logs"
+  config_dir: "./config"
+  
+  data_lake: "./data/data_lake"
+  metadata: "./data/metadata"
+  ontology: "./knowledge/ontology"
+  rag_docs: "./knowledge/rag_docs"
+  embeddings: "./knowledge/embeddings"
+  prompts: "./knowledge/prompts"
+  
+  llm_model: "./models/llm/beomi-gemma-ko-2b"
+  embedding_model: "./models/embedding/rogel-embedding-v2"
+
+
+
+
+
+
+
+
+
+
+
+
+
+

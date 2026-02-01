@@ -49,4 +49,4 @@ tactical_map_backup.py
 models/*
 
 # config
-config/*
+# config/* (Removed to allow tracking of essential YAML/Python config files)

@@ -1,0 +1,78 @@
+# Model Configuration
+# 모델 경로 설정
+
+llm:
+  model_name: "beomi-gemma-ko-2b"
+  model_path: "./models/llm/beomi-gemma-ko-2b"
+  use_gpu: true
+  force_reload: false
+  max_tokens: 512
+  use_openai: true  # OpenAI 우선 사용 (true: OpenAI 우선, false: 로컬 모델만)
+  # 최적화: use_openai=true일 때 로컬 모델은 OpenAI 실패 시에만 자동 로드됨 (Lazy Loading)
+
+embedding:
+  model_name: "rogel-embedding-v2"
+  model_path: "./models/embedding/rogel-embedding-v2"
+  vector_size: 1024
+  index_path: "./knowledge/embeddings/faiss_index.bin"
+
+# HuggingFace 설정
+huggingface:
+  token: "YOUR_HUGGINGFACE_TOKEN"  # Hugging Face Access Token
+
+# OpenAI API 설정
+openai:
+## GMAIL_api key
+#  api_key: "YOUR_OPENAI_API_KEY_1"
+## NAVER_api key
+  api_key: "YOUR_OPENAI_API_KEY_2"
+  model: "gpt-4o"  # 기본 모델 (gpt-4o, gpt-4, gpt-3.5-turbo 등)
+  max_tokens: 512
+  temperature: 0.7
+
+# 사내망 모델 설정
+internal_models:
+  enabled: true
+  api_key: "dummy"  # 기본 API 키
+  models:
+    gpt-oss-safeguard-120b:
+      name: "gpt-oss-safeguard-120b"
+      url: "http://gpt-oss-gaurd-120b.aiagent.70-220-152-1.sslip.io/v1/chat/completions"
+      description: "MoE, GQA, Tool Calling, 128K context (text-to-text, reasoning)"
+      models_parameter: "mnt/models"
+      api_type: "chat"
+      reasoning_effort: "medium"
+      max_tokens: 4096
+      temperature: 0.3
+      frequency_penalty: 0.1
+      enable_thinking: false
+    Llama-3.1-70B-Instruct:
+      name: "Llama 3.1 70b instruct"
+      url: "http://meta-llama-3-1-70b-instruct.aiagent.70-220-152-1.sslip.io/v1/completions"
+      description: "Decoder-only, GQA, Tool Calling, 128K context (text-to-text)"
+      api_type: "completions"
+      max_tokens: 4096
+      temperature: 0.3
+      frequency_penalty: 0.1
+      enable_thinking: false
+    Llama-3.3-70B-Instruct:
+      name: "Llama 3.3 70b instruct"
+      url: "http://llama-3-3-70b-instruct.aiagent.70-220-152-1.sslip.io/v1/completions"
+      description: "Decoder-only, GQA, Tool Calling, 128k context (text-to-text)"
+      api_type: "completions"
+      max_tokens: 4096
+      temperature: 0.3
+      frequency_penalty: 0.1
+      enable_thinking: false
+    Qwen3-235B-A22B-GPTQ-Int4:
+      name: "Qwen3-235B-A22B-GPTQ-Int4"
+      url: "http://qwen3-235b-a22b-gptq-int4.aiagent.70-220-152-1.sslip.io/v1/completions"
+      description: "MoE, GQA, 128K, Hybrid Reasoning mode (text-to-text, reasoning)"
+      api_type: "completions"
+      max_tokens: 4096
+      temperature: 0.3
+      frequency_penalty: 0.1
+      enable_thinking: true
+
+# 참고: 데이터 경로는 config/global.yaml에서 관리
+

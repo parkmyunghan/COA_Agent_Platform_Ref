@@ -1,0 +1,210 @@
+# config/sparql_templates.yaml
+# COA 쿼리 템플릿 (네임스페이스 통일: http://coa-agent-platform.org/ontology#)
+
+find_suitable_coas: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  SELECT ?coa ?coaLabel ?coaType ?suitabilityScore ?inferenceType WHERE {
+    ?situation ns:hasSuitableCOA ?coa .
+    ?coa rdfs:label ?coaLabel .
+    ?coa rdf:type ?coaType .
+    OPTIONAL {
+      ?coa ns:suitabilityScore ?suitabilityScore .
+    }
+    OPTIONAL {
+      ?inference ns:inferredSubject ?situation .
+      ?inference ns:inferredObject ?coa .
+      ?inference ns:inferenceType ?inferenceType .
+    }
+    FILTER(?situation = ?situation_uri)
+  }
+  ORDER BY DESC(?suitabilityScore)
+  LIMIT {top_k}
+
+find_coas_by_environment: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?coa ?coaLabel ?weather ?terrain WHERE {
+    ?situation ns:occursInEnvironment ?weather .
+    ?situation ns:occursInEnvironment ?terrain .
+    ?coa ns:compatibleWith ?weather .
+    ?coa ns:compatibleWith ?terrain .
+    ?coa rdfs:label ?coaLabel .
+    FILTER(?situation = ?situation_uri)
+  }
+
+find_coas_by_resources: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?coa ?coaLabel 
+         (COUNT(DISTINCT ?requiredResource) AS ?requiredCount)
+         (COUNT(DISTINCT ?availableResource) AS ?availableCount)
+  WHERE {
+    ?coa ns:requiresResource ?requiredResource .
+    ?situation ns:hasAvailableResource ?availableResource .
+    ?coa rdfs:label ?coaLabel .
+    FILTER(?requiredResource = ?availableResource)
+    FILTER(?situation = ?situation_uri)
+  }
+  GROUP BY ?coa ?coaLabel
+  HAVING (?availableCount >= ?requiredCount * 0.7)
+  ORDER BY DESC(?availableCount)
+
+find_related_threats: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?threat ?threatType ?severity ?location ?detectionTime ?evidence WHERE {
+    ?threat rdf:type ns:위협상황 .
+    FILTER(?threat = ?situation_uri)
+    OPTIONAL { ?threat ns:위협유형코드 ?threatType . }
+    OPTIONAL { ?threat ns:위협유형 ?threatType . }
+    OPTIONAL { ?threat rdfs:label ?threatType . }
+    OPTIONAL { ?threat ns:심각도 ?severity . }
+    OPTIONAL { ?threat ns:발생장소 ?location . }
+    OPTIONAL { ?threat ns:탐지시각 ?detectionTime . }
+    OPTIONAL { ?threat ns:근거 ?evidence . }
+  }
+
+find_available_resources: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  SELECT DISTINCT ?resource ?resourceType ?resourceLabel ?quantity ?자산종류 WHERE {
+    {
+      # 직접 연결된 가용 자원
+      { ?situation ns:hasAvailableResource ?resource . }
+      UNION
+      { ?situation ns:has가용자원 ?resource . }
+    } UNION {
+      # 🔥 개선: 아군가용자산 테이블 우선 활용 (정규화된 설계, 우선순위 1)
+      ?situation ns:has지형셀 ?location .
+      { ?resource ns:locatedIn ?location . } UNION { ?resource ns:has지형셀 ?location . }
+      ?resource rdf:type ns:아군가용자산 .
+      ?resource ns:가용상태 "가용" .
+      OPTIONAL { ?resource ns:자산종류 ?자산종류 . }
+    } UNION {
+      # 🔥 개선: 아군부대현황도 함께 고려 (기존 로직 유지, 우선순위 2)
+      ?situation ns:has지형셀 ?location .
+      { ?resource ns:locatedIn ?location . } UNION { ?resource ns:has지형셀 ?location . }
+      ?resource rdf:type ns:아군부대현황 .
+      ?resource ns:가용상태 "가용" .
+    } UNION {
+      # 🔥 NEW: 축선 기반 자원 추론 (우선순위 3)
+      ?situation ns:has전장축선 ?axis .
+      { ?resource ns:has전장축선 ?axis . } UNION { ?resource ns:locatedIn ?axis . }
+      { 
+        ?resource rdf:type ns:아군가용자산 . 
+        ?resource ns:가용상태 "가용" .
+        OPTIONAL { ?resource ns:자산종류 ?자산종류 . }
+      }
+      UNION
+      { ?resource rdf:type ns:아군부대현황 . ?resource ns:가용상태 "가용" . }
+    }
+    ?resource rdf:type ?resourceType .
+    OPTIONAL {
+      ?resource rdfs:label ?resourceLabel .
+    }
+    OPTIONAL {
+      ?resource ns:수량 ?quantity .
+    }
+    FILTER(?situation = ?situation_uri)
+  }
+  ORDER BY ?resourceType
+
+find_required_resources: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  SELECT ?resource ?resourceType ?resourceLabel ?quantity WHERE {
+    {
+      { ?coa ns:requiresResource ?resource . }
+      UNION
+      { ?coa ns:필요자원 ?resource . }
+    }
+    ?resource rdf:type ?resourceType .
+    OPTIONAL {
+      ?resource rdfs:label ?resourceLabel .
+    }
+    OPTIONAL {
+      ?resource ns:수량 ?quantity .
+    }
+    FILTER(?coa = ?coa_uri)
+  }
+
+get_coa_properties: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?effectiveness ?risk ?cost ?time ?coaLabel WHERE {
+    ?coa ns:effectivenessScore ?effectiveness .
+    ?coa ns:riskLevel ?risk .
+    ?coa ns:estimatedCost ?cost .
+    ?coa ns:estimatedTime ?time .
+    ?coa rdfs:label ?coaLabel .
+    FILTER(?coa = ?coa_uri)
+  }
+
+get_situation_properties: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  SELECT ?urgency ?risk ?timePressure WHERE {
+    ?situation ns:urgencyLevel ?urgency .
+    ?situation ns:riskLevel ?risk .
+    ?situation ns:timePressure ?timePressure .
+    FILTER(?situation = ?situation_uri)
+  }
+
+list_all_threats: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  SELECT ?threat ?threatType ?severity ?location ?detectionTime ?evidence WHERE {
+    ?threat rdf:type ns:위협상황 .
+    FILTER(CONTAINS(STR(?threat), "위협상황_"))
+    OPTIONAL { ?threat rdfs:label ?threatType . }
+    OPTIONAL { ?threat ns:위협유형코드 ?threatType . }
+    OPTIONAL { ?threat ns:위협유형 ?threatType . }
+    OPTIONAL { ?threat ns:심각도 ?severity . }
+    OPTIONAL { ?threat ns:발생장소 ?location . }
+    OPTIONAL { ?threat ns:탐지시각 ?detectionTime . }
+    OPTIONAL { ?threat ns:근거 ?evidence . }
+  }
+  ORDER BY ?threat
+
+# 노드 정보 조회 템플릿
+get_node_properties: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?predicate ?object ?object_label WHERE {
+    <{node_uri}> ?predicate ?object .
+    OPTIONAL {
+      ?object rdfs:label ?object_label .
+    }
+  }
+  ORDER BY ?predicate
+
+get_node_incoming_relations: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?source ?predicate ?source_label WHERE {
+    ?source ?predicate <{node_uri}> .
+    OPTIONAL {
+      ?source rdfs:label ?source_label .
+    }
+  }
+  LIMIT 50
+
+get_node_outgoing_relations: |
+  PREFIX ns: <http://coa-agent-platform.org/ontology#>
+  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+  SELECT ?predicate ?target ?target_label WHERE {
+    <{node_uri}> ?predicate ?target .
+    FILTER (isIRI(?target))
+    OPTIONAL {
+      ?target rdfs:label ?target_label .
+    }
+  }
+  LIMIT 50
+
+

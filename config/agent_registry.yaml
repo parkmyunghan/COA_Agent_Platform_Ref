@@ -1,0 +1,16 @@
+# config/agent_registry.yaml
+# Agent 등록 정보
+
+agents:
+  - name: coa_recommendation_agent
+    class: agents.defense_coa_agent.logic_defense_enhanced.EnhancedDefenseCOAAgent
+    description: "전술 방책 추천 Agent (7가지 타입 지원: 방어/공격/반격/선제/억제/기동/정보작전, 위협수준 기반 추천, 4가지 입력방식 지원: 실제데이터/SITREP/수동입력/데모시나리오, 팔란티어 모드: 6개 요소 종합 평가 활성화)"
+    enabled: true
+  
+  - name: intel_management_agent
+    class: agents.intel_management_agent.logic_intel.IntelManagementAgent
+    description: 첩보 수집 및 신뢰도 평가 Agent (레거시)
+    enabled: false
+
+
+

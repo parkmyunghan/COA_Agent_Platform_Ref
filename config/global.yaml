@@ -1,0 +1,49 @@
+# config/global.yaml
+# 전역 설정
+
+# 데이터 경로 (한글 테이블명 지원)
+# data_lake 폴더에 실제로 존재하는 파일만 등록
+data_paths:
+  # 새롭게 구성된 input 테이블 (data_lake 폴더)
+  아군부대현황: "./data_lake/아군부대현황.xlsx"
+  적군부대현황: "./data_lake/적군부대현황.xlsx"
+  위협상황: "./data_lake/위협상황.xlsx"
+  임무정보: "./data_lake/임무정보.xlsx"
+  전장축선: "./data_lake/전장축선.xlsx"
+  제약조건: "./data_lake/제약조건.xlsx"
+  지형셀: "./data_lake/지형셀.xlsx"
+  시나리오모음: "./data_lake/시나리오모음.xlsx"
+  COA_Library: "./data_lake/COA_Library.xlsx"
+
+# 데이터 레이크 경로 (현재 시스템 호환)
+data_lake_path: "./data_lake"
+
+# 메타데이터 경로
+metadata_path: "./metadata"
+
+# 출력 경로
+output_path: "./outputs"
+
+# 온톨로지 경로
+ontology_path: "./knowledge/ontology"
+
+# RAG 설정
+rag_config_path: "./config/rag_config.yaml"
+
+# 모델 설정
+model_config_path: "./config/model_config.yaml"
+
+# 결과 저장 경로
+results_path: "./results"
+
+# 로그 설정
+log_level: "INFO"
+log_path: "./logs"
+debug_mode: false  # true로 설정 시 상세 디버깅 로그 기록 (성능에 영향 있음)
+
+# 실시간 기능 설정
+enable_realtime_watching: true  # true로 설정 시 데이터 변경 자동 감시 활성화
+
+# OWL-RL 추론 설정
+enable_auto_owl_inference: true  # 시스템 시작 시 OWL-RL 추론 자동 실행 (기본값: true)
+save_reasoned_graph_on_startup: false  # 추론된 그래프를 instances_reasoned.ttl로 저장할지 여부 (기본값: false)
